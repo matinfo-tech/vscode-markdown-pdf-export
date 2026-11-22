@@ -5,6 +5,11 @@
   "version": "0.0.1",
   "private": true,
   "publisher": "matinfo-tech",
+  "icon": "media/icon.png",
+  "galleryBanner": {
+    "color": "#1e2128",
+    "theme": "dark"
+  },
   "license": "MIT",
   "type": "module",
   "author": {

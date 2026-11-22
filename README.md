@@ -5,6 +5,8 @@ by clicking, then export.
 
 > **In development.** Not on the Marketplace yet.
 
+![The real PDF beside the Markdown, drawn as you type](media/screenshots/preview.png)
+
 ## See the PDF while you write
 
 Open a Markdown file and click the preview button at the top right of the editor (or run
@@ -53,6 +55,8 @@ pdf:
 ```
 
 ## Page design
+
+![Page style, fonts, header and footer, shown on the PDF as you choose](media/screenshots/design.png)
 
 Click **Design pages** in the preview panel, or run **Markdown PDF: Design Pages**. The page
 style, fonts, paper, header, footer and logos appear with the PDF, and every choice shows on it

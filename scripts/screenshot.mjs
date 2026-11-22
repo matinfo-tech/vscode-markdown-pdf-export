@@ -26,6 +26,21 @@ const work = fs.mkdtempSync(path.join(os.tmpdir(), "mpe-shot-"));
 const doc = path.join(work, "report.md");
 fs.copyFileSync(path.join(root, "node_modules", "markdown-pdf-export", "studio", "sample.md"), doc);
 
+// A neutral page design of its own: never the settings (names, logos) of whoever runs this.
+const config = fs.mkdtempSync(path.join(os.tmpdir(), "mpe-shot-config-"));
+// It is the home folder of the run, so the panel shows the usual ~/.config/... path.
+const settingsDir = path.join(config, ".config", "markdown-pdf-export");
+fs.mkdirSync(settingsDir, { recursive: true });
+fs.writeFileSync(
+  path.join(settingsDir, "settings.json"),
+  JSON.stringify({
+    look: "report",
+    font: "humanist",
+    header: { height: "16mm", left_text: "{title}", right_text: "Northwind Studio", border_bottom: true },
+    footer: { height: "14mm", left_text: "{author}", center_text: "Page {page} of {pages}", right_text: "{date:d MMMM yyyy}" },
+  }),
+);
+
 const profile = path.join(os.tmpdir(), "mpe-shot-profile");
 fs.mkdirSync(path.join(profile, "User"), { recursive: true });
 fs.writeFileSync(
@@ -35,6 +50,7 @@ fs.writeFileSync(
 
 const app = await electron.launch({
   executablePath: exe,
+  env: { ...process.env, HOME: config, XDG_CONFIG_HOME: path.join(config, ".config"), APPDATA: path.join(config, ".config"), MARKDOWN_PDF_SETTINGS: "" },
   args: [
     `--extensionDevelopmentPath=${root}`,
     `--user-data-dir=${profile}`,
@@ -82,4 +98,5 @@ try {
 } finally {
   await app.close();
   fs.rmSync(work, { recursive: true, force: true });
+  fs.rmSync(config, { recursive: true, force: true });
 }
