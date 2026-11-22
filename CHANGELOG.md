@@ -16,6 +16,11 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
   choice shown on the PDF at once. Saves to the one settings file shared with the command line
   and other editors. Also **Design Pages for This Folder Only** (`.markdown-pdf.json`). The panel
   follows your VS Code colour theme.
+- **One document, its own design**: inside the `pdf:` block of a Markdown file's front matter, VS Code
+  suggests the keys (page, margins, header, footer, code, maths, contents) and their values, taken
+  from the exporter's schema. The preview shows the result as you type.
+- A **walkthrough** (Welcome page, or *Help: Open Walkthrough*) in five steps: preview, design,
+  one document, export, check setup.
 - **Problems panel**: raw HTML left out for safety and diagrams that could not be drawn are
   listed on the line that caused them, after a preview or an export.
 - **Export to PDF** command for Markdown files: Command Palette, the button in the editor title,
