@@ -1,6 +1,6 @@
 import * as vscode from "vscode";
 import { exportCommand, installBrowser, type Context } from "./commands/export.ts";
-import { disposeStudio, openStudio, studioEvents, type StudioEvents } from "./studio.ts";
+import { disposeStudio, openStudio, studioEvents, watchSaves, type StudioEvents } from "./studio.ts";
 
 /** Returned by `activate` for the integration tests. */
 export interface Api {
@@ -28,6 +28,7 @@ export function activate(context: vscode.ExtensionContext): Api {
     ),
     vscode.commands.registerCommand("markdownPdfExport.installBrowser", () => installBrowser(ctx)),
     vscode.commands.registerCommand("markdownPdfExport.showOutput", () => output.show()),
+    watchSaves(),
     { dispose: disposeStudio },
   );
   return { studio: studioEvents };

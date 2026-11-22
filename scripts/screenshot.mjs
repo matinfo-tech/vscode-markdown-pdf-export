@@ -10,6 +10,9 @@ import { _electron as electron } from "playwright-core";
 const root = path.resolve(import.meta.dirname, "..");
 const out = path.resolve(process.argv[2] ?? "studio.png");
 const wait = Number(process.argv[3] ?? 9000);
+// THEME="Default Light Modern" picks the colour theme; INSPECT=1 prints what overflows in the panel;
+// SCROLL=1 scrolls the controls to their end.
+const theme = process.env.THEME ?? "Default Dark Modern";
 
 const install = fs.readdirSync(path.join(root, ".vscode-test")).find((d) => d.startsWith("vscode-"));
 if (!install) throw new Error("Run `npm run test:integration` once: it downloads the test copy of VS Code.");
@@ -23,11 +26,18 @@ const work = fs.mkdtempSync(path.join(os.tmpdir(), "mpe-shot-"));
 const doc = path.join(work, "report.md");
 fs.copyFileSync(path.join(root, "node_modules", "markdown-pdf-export", "studio", "sample.md"), doc);
 
+const profile = path.join(os.tmpdir(), "mpe-shot-profile");
+fs.mkdirSync(path.join(profile, "User"), { recursive: true });
+fs.writeFileSync(
+  path.join(profile, "User", "settings.json"),
+  JSON.stringify({ "workbench.colorTheme": theme, "workbench.secondarySideBar.defaultVisibility": "hidden" }),
+);
+
 const app = await electron.launch({
   executablePath: exe,
   args: [
     `--extensionDevelopmentPath=${root}`,
-    `--user-data-dir=${path.join(os.tmpdir(), "mpe-shot-profile")}`,
+    `--user-data-dir=${profile}`,
     "--disable-extensions",
     "--disable-workspace-trust",
     "--skip-welcome",
@@ -45,7 +55,22 @@ try {
   await window.waitForTimeout(800);
   await window.keyboard.press("Enter");
   await window.waitForTimeout(wait);
+  const panel = window.frames().find((f) => f.name() === "active-frame" || f.url().includes("fake.html"));
+  // SCROLL=1 shows the end of the controls (header and footer).
+  if (process.env.SCROLL) {
+    await panel?.evaluate(() => document.querySelector(".rail-body").scrollTo(0, 1e6));
+    await window.waitForTimeout(500);
+  }
   await window.screenshot({ path: out });
+  if (process.env.INSPECT) {
+    const found = await panel?.evaluate(() =>
+      [...document.querySelectorAll("*")]
+        .filter((e) => e.scrollWidth > e.clientWidth + 1 && getComputedStyle(e).overflowX !== "visible")
+        .map((e) => `${e.tagName.toLowerCase()}#${e.id}.${e.className} ${e.clientWidth} < ${e.scrollWidth}`)
+        .concat([`viewport ${innerWidth}x${innerHeight}`]),
+    );
+    console.log(found ? found.join("\n") : `panel frame not found: ${window.frames().map((f) => f.url().slice(0, 60)).join(" | ")}`);
+  }
   console.log(out);
 } finally {
   await app.close();

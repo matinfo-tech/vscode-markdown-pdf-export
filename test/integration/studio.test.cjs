@@ -17,6 +17,23 @@ suite("Studio panel", () => {
     });
     await vscode.commands.executeCommand("markdownPdfExport.openStudio", md);
     assert.ok((await pages) >= 1, "no page drawn");
+
+    // Saving the Markdown draws the preview again, with the new text.
+    const again = new Promise((resolve, reject) => {
+      api.studio.onRendered(resolve);
+      setTimeout(() => reject(new Error(`no new preview after saving. Panel log:\n${api.studio.log()}`)), 30_000);
+    });
+    const doc = await vscode.workspace.openTextDocument(md);
+    const original = doc.getText();
+    const edit = new vscode.WorkspaceEdit();
+    edit.insert(md, new vscode.Position(doc.lineCount, 0), "\nOne more line.\n");
+    await vscode.workspace.applyEdit(edit);
+    await doc.save();
+    try {
+      assert.ok((await again) >= 1);
+    } finally {
+      require("node:fs").writeFileSync(md.fsPath, original);
+    }
     await vscode.commands.executeCommand("workbench.action.closeAllEditors");
   });
 });

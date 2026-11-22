@@ -43,6 +43,17 @@ function note(ctx: StudioContext, text: string): void {
 
 let panel: vscode.WebviewPanel | undefined;
 let server: Server | undefined;
+/** The Markdown file the open panel previews. */
+let previewed: vscode.Uri | undefined;
+
+/** Draw the preview again when the previewed file is saved. */
+export function watchSaves(): vscode.Disposable {
+  return vscode.workspace.onDidSaveTextDocument((doc) => {
+    if (panel && previewed && doc.uri.toString() === previewed.toString()) {
+      void panel.webview.postMessage({ type: "refresh" });
+    }
+  });
+}
 
 function startServer(ctx: StudioContext, args: string[], cwd: string): Promise<Server> {
   const cfg = vscode.workspace.getConfiguration("markdownPdfExport");
@@ -141,6 +152,7 @@ export async function openStudio(ctx: StudioContext, options: OpenStudioOptions 
     );
     panel.onDidDispose(() => {
       panel = undefined;
+      previewed = undefined;
       close();
     });
     panel.webview.onDidReceiveMessage(async (message: { type?: string; id?: number; path?: unknown; method?: unknown; contentType?: string; body?: ArrayBuffer | null; pages?: number; message?: string }) => {
@@ -171,6 +183,7 @@ export async function openStudio(ctx: StudioContext, options: OpenStudioOptions 
     panel.reveal(vscode.ViewColumn.Beside);
   }
 
+  previewed = file;
   panel.title = file ? `Design: ${path.basename(file.fsPath)}` : "Design PDF Pages";
   const index = fs.readFileSync(path.join(studioDir.fsPath, "index.html"), "utf8");
   // A new nonce each time also makes VS Code reload the page for the new server.
