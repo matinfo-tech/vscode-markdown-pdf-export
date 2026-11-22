@@ -11,7 +11,7 @@ const root = path.resolve(import.meta.dirname, "..");
 const out = path.resolve(process.argv[2] ?? "studio.png");
 const wait = Number(process.argv[3] ?? 9000);
 // THEME="Default Light Modern" picks the colour theme; INSPECT=1 prints what overflows in the panel;
-// SCROLL=1 scrolls the controls to their end.
+// SCROLL=1 scrolls the controls to their end; COMMAND="..." runs another command from the palette.
 const theme = process.env.THEME ?? "Default Dark Modern";
 
 const install = fs.readdirSync(path.join(root, ".vscode-test")).find((d) => d.startsWith("vscode-"));
@@ -51,7 +51,7 @@ try {
   await window.waitForTimeout(6000);
   await window.keyboard.press("F1");
   await window.waitForTimeout(600);
-  await window.keyboard.type("Markdown PDF: Design Pages (Studio)");
+  await window.keyboard.type(process.env.COMMAND ?? "Markdown PDF: Design Pages (Studio)");
   await window.waitForTimeout(800);
   await window.keyboard.press("Enter");
   await window.waitForTimeout(wait);
