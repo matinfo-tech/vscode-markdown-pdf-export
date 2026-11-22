@@ -1,0 +1,15 @@
+# vsce adds the production dependencies itself; this file only drops what users never need.
+src/**
+test/**
+.github/**
+.vscode/**
+.vscode-test/**
+**/*.map
+**/*.ts
+!node_modules/**/*.d.ts
+tsconfig.json
+esbuild.mjs
+eslint.config.mjs
+.gitignore
+PLAN.md
+.vscode-test.mjs
