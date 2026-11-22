@@ -37,6 +37,21 @@ The PDF is written next to the Markdown file.
 - Nothing else: no Node.js, no terminal. The exporter,
   [markdown-pdf-export](https://markdown-pdf.matinfo.tech), ships inside the extension.
 
+## One document, its own design
+
+At the top of a Markdown file, a `pdf:` block changes only that document. VS Code suggests the keys
+and their values as you type, and the preview shows the result:
+
+```yaml
+---
+title: Quarterly report
+pdf:
+  orientation: landscape
+  footer:
+    center_text: "Draft, page {page}"
+---
+```
+
 ## Page design
 
 Click **Design pages** in the preview panel, or run **Markdown PDF: Design Pages**. The page

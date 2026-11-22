@@ -4,6 +4,7 @@ import * as vscode from "vscode";
 import { exportCommand, installBrowser, type Context } from "./commands/export.ts";
 import { openFolderSettingsFile, openSettingsFile, runDoctor, showMenu, statusBarItem } from "./commands/tools.ts";
 import { mcpLaunch, registerMcp, type McpLaunch } from "./mcp.ts";
+import { registerFrontMatterCompletion } from "./completion.ts";
 import { problemsOf, registerDiagnostics } from "./diagnostics.ts";
 import { disposeStudio, openStudio, studioEvents, watchDocuments, type StudioEvents } from "./studio.ts";
 
@@ -59,6 +60,7 @@ export function activate(context: vscode.ExtensionContext): Api {
     statusBarItem(),
     registerMcp(context, exporterVersion(context.extensionPath)),
     registerDiagnostics(),
+    registerFrontMatterCompletion(context.extensionPath),
     watchDocuments(),
     { dispose: disposeStudio },
   );

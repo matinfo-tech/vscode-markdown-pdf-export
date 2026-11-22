@@ -241,6 +241,67 @@
         "id": "markdownPdfExport.mcp",
         "label": "Markdown PDF Export"
       }
+    ],
+    "walkthroughs": [
+      {
+        "id": "markdownPdfExport.start",
+        "title": "Get started with Markdown PDF Export",
+        "description": "See the real PDF beside your Markdown, design its header and footer, and export.",
+        "steps": [
+          {
+            "id": "preview",
+            "title": "See the real PDF while you write",
+            "description": "Open a Markdown file, then open the preview beside it.\n[Open the PDF preview](command:markdownPdfExport.openPreview)",
+            "media": {
+              "markdown": "media/walkthrough/preview.md"
+            },
+            "completionEvents": [
+              "onCommand:markdownPdfExport.openPreview"
+            ]
+          },
+          {
+            "id": "design",
+            "title": "Design your header and footer",
+            "description": "Page style, fonts, header, footer and logo, shown on the PDF as you choose.\n[Design pages](command:markdownPdfExport.openStudio)",
+            "media": {
+              "markdown": "media/walkthrough/design.md"
+            },
+            "completionEvents": [
+              "onCommand:markdownPdfExport.openStudio"
+            ]
+          },
+          {
+            "id": "document",
+            "title": "One document, its own design",
+            "description": "A pdf: block at the top of a file changes only that document, with suggestions as you type.",
+            "media": {
+              "markdown": "media/walkthrough/document.md"
+            }
+          },
+          {
+            "id": "export",
+            "title": "Export",
+            "description": "One key press writes the PDF next to the Markdown.\n[Export this file](command:markdownPdfExport.export)",
+            "media": {
+              "markdown": "media/walkthrough/export.md"
+            },
+            "completionEvents": [
+              "onCommand:markdownPdfExport.export"
+            ]
+          },
+          {
+            "id": "setup",
+            "title": "Something not working?",
+            "description": "Check the browser and the settings files in use.\n[Check setup](command:markdownPdfExport.runDoctor)",
+            "media": {
+              "markdown": "media/walkthrough/setup.md"
+            },
+            "completionEvents": [
+              "onCommand:markdownPdfExport.runDoctor"
+            ]
+          }
+        ]
+      }
     ]
   },
   "scripts": {
