@@ -1,7 +1,16 @@
 import assert from "node:assert/strict";
 import path from "node:path";
 import { describe, it } from "node:test";
-import { cliPath, errorMessage, exportArgs, isNoBrowserError, parseExportStdout, parseStudioUrl } from "../../src/engine.ts";
+import {
+  allowedStudioRequest,
+  cliPath,
+  errorMessage,
+  exportArgs,
+  isNoBrowserError,
+  parseExportStdout,
+  parseStudioUrl,
+  studioArgs,
+} from "../../src/engine.ts";
 
 describe("cliPath", () => {
   it("points at the exporter shipped inside the extension", () => {
@@ -49,13 +58,52 @@ describe("isNoBrowserError", () => {
 });
 
 describe("parseStudioUrl", () => {
-  it("finds the private link", () => {
-    assert.equal(parseStudioUrl("http://127.0.0.1:51234/#0a1b2c\n"), "http://127.0.0.1:51234/#0a1b2c");
+  it("finds the private link, its port and its token", () => {
+    assert.deepEqual(parseStudioUrl("http://127.0.0.1:51234/#0a1b2c\n"), {
+      url: "http://127.0.0.1:51234/#0a1b2c",
+      port: 51234,
+      token: "0a1b2c",
+    });
   });
 
   it("refuses anything that is not the local Studio link", () => {
     assert.equal(parseStudioUrl("http://evil.example/#abc\n"), null);
     assert.equal(parseStudioUrl("see http://127.0.0.1:1/#abc for details\n"), null);
+  });
+});
+
+describe("studioArgs", () => {
+  it("never opens a browser", () => {
+    assert.deepEqual(studioArgs({ project: false, restricted: false }), ["studio", "--no-open"]);
+  });
+
+  it("previews the given file", () => {
+    assert.deepEqual(studioArgs({ file: "/a b/d.md", project: false, restricted: false }), [
+      "studio",
+      "--no-open",
+      "--file",
+      "/a b/d.md",
+    ]);
+  });
+
+  it("ignores the project file in Restricted Mode, except when designing that file", () => {
+    assert.ok(studioArgs({ file: "d.md", project: false, restricted: true }).includes("--no-project-settings"));
+    const project = studioArgs({ file: "d.md", project: true, restricted: true });
+    assert.ok(project.includes("--project") && !project.includes("--no-project-settings"));
+  });
+});
+
+describe("allowedStudioRequest", () => {
+  it("lets the design API through", () => {
+    for (const path of ["/api/state", "/api/preview", "/api/save", "/api/logo?name=a.png", "/api/logo?name=logo%20(1)!.png", "/api/ping", "/api/check"]) {
+      assert.ok(allowedStudioRequest(path, "POST"), path);
+    }
+  });
+
+  it("refuses other editors' setup and anything that is not an API path", () => {
+    for (const path of ["/api/editors", "/api/editors/apply", "/app.mjs", "http://x/api/state", "/api/../x", "//evil/api/x", 5]) {
+      assert.ok(!allowedStudioRequest(path, "GET"), String(path));
+    }
   });
 });
 

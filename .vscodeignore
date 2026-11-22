@@ -5,6 +5,7 @@ test/**
 .vscode/**
 .vscode-test/**
 **/*.map
+node_modules/pdfjs-dist/**
 **/*.ts
 !node_modules/**/*.d.ts
 tsconfig.json
@@ -13,3 +14,4 @@ eslint.config.mjs
 .gitignore
 PLAN.md
 .vscode-test.mjs
+scripts/**
