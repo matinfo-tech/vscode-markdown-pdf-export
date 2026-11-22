@@ -20,6 +20,18 @@ const studioRoot = {
     build.onResolve({ filter: /^\/[\w.-]+\.mjs$/ }, (args) => ({
       path: path.resolve("node_modules/markdown-pdf-export/studio", `.${args.path}`),
     }));
+    // Until the exporter offers it: let the panel ask Studio to draw the preview again
+    // (the Markdown file was saved).
+    build.onLoad({ filter: /[\\/]studio[\\/]app\.mjs$/ }, (args) => {
+      const source = fs.readFileSync(args.path, "utf8");
+      if (!source.includes("\nfunction schedulePreview() {")) {
+        throw new Error("Studio's app.mjs has no schedulePreview(): update the refresh hook in esbuild.mjs.");
+      }
+      return {
+        contents: `${source}\nwindow.addEventListener("studio:refresh", () => schedulePreview());\n`,
+        loader: "js",
+      };
+    });
   },
 };
 

@@ -30,6 +30,8 @@ let lastId = 0;
 
 window.addEventListener("message", (event) => {
   const message = event.data;
+  // The Markdown file was saved: Studio draws its preview again.
+  if (message?.type === "refresh") return void window.dispatchEvent(new Event("studio:refresh"));
   if (message?.type !== "response") return;
   waiting.get(message.id)?.(message);
   waiting.delete(message.id);

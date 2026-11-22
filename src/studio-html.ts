@@ -17,11 +17,36 @@ export interface StudioPageUris {
   nonce: string;
 }
 
-/** Styles for what the panel changes: PDF frames are scrolling <div>s of pages. */
+/** Styles for what the panel changes. */
 const PANEL_CSS = `
-.frames [data-pdf-frame] { position: absolute; inset: 0; overflow: auto; background: var(--desk); padding: 12px; text-align: center; }
+/* Studio's colours, taken from the VS Code theme in use (light or dark). */
+body.vscode-light { color-scheme: light; }
+body {
+  --bg: var(--vscode-editor-background);
+  --desk: var(--vscode-editorGroupHeader-tabsBackground, var(--vscode-sideBar-background));
+  --surface: var(--vscode-input-background);
+  --raised: var(--vscode-button-secondaryBackground);
+  --rule: var(--vscode-widget-border, var(--vscode-editorWidget-border, rgba(128, 128, 128, .35)));
+  --text: var(--vscode-foreground);
+  --quiet: var(--vscode-descriptionForeground);
+  --accent: var(--vscode-button-background);
+  --accent-ink: var(--vscode-button-foreground);
+  --ok: var(--vscode-testing-iconPassed, #8fcf9f);
+  --error: var(--vscode-errorForeground);
+  --ui: var(--vscode-font-family);
+  --display: var(--vscode-font-family);
+  --mono: var(--vscode-editor-font-family);
+  font-size: var(--vscode-font-size);
+  padding: 0;
+}
+.status { background: var(--desk); }
+/* Paper needs an edge on a light theme. */
+.thumb, .sheet { box-shadow: 0 0 0 1px var(--rule), 0 1px 3px rgba(0, 0, 0, .15); }
+.looks { grid-template-columns: repeat(5, minmax(56px, 96px)); }
+/* PDF frames are scrolling <div>s of pages drawn by pdf.js. */
+.frames [data-pdf-frame] { position: absolute; inset: 0; overflow: hidden auto; scrollbar-gutter: stable; background: var(--desk); padding: 12px; text-align: center; }
 .frames [data-pdf-frame].back { opacity: 0; pointer-events: none; }
-.frames [data-pdf-frame] canvas { display: block; margin: 0 auto 12px; background: #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, .25); }
+.frames [data-pdf-frame] canvas { display: block; margin: 0 auto 12px; max-width: 100%; background: #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, .25); }
 #editors-open { display: none; }
 /* A panel beside the Markdown is narrow: keep the PDF in view on top, the controls scroll below it. */
 @media (max-width: 860px) {
@@ -29,7 +54,7 @@ const PANEL_CSS = `
   .desk { order: -1; flex: none; height: 46vh; border-bottom: 1px solid var(--rule); }
   .rail { flex: 1; min-height: 0; grid-template-rows: 1fr auto; }
   .rail-head { display: none; }
-  .rail-body { overflow-y: auto; }
+  .rail-body { overflow: hidden auto; }
   .rail-foot { position: static; }
 }
 `;
