@@ -1,4 +1,4 @@
-// Dev tool: start the test copy of VS Code with this extension, open Studio on a sample
+// Dev tool: start the test copy of VS Code with this extension, open the PDF panel on a sample
 // document and save a screenshot of the window. Used to check the look and for the README.
 //   npm run build && node scripts/screenshot.mjs out.png [wait-ms]
 import fs from "node:fs";
@@ -51,10 +51,17 @@ try {
   await window.waitForTimeout(6000);
   await window.keyboard.press("F1");
   await window.waitForTimeout(600);
-  await window.keyboard.type(process.env.COMMAND ?? "Markdown PDF: Design Pages (Studio)");
+  await window.keyboard.type(process.env.COMMAND ?? "Markdown PDF: Open PDF Preview to the Side");
   await window.waitForTimeout(800);
   await window.keyboard.press("Enter");
   await window.waitForTimeout(wait);
+  // VS Code's own notifications sit over the bottom of the panel.
+  await window.keyboard.press("F1");
+  await window.waitForTimeout(600);
+  await window.keyboard.type("Notifications: Clear All Notifications");
+  await window.waitForTimeout(800);
+  await window.keyboard.press("Enter");
+  await window.waitForTimeout(600);
   const panel = window.frames().find((f) => f.name() === "active-frame" || f.url().includes("fake.html"));
   // SCROLL=1 shows the end of the controls (header and footer).
   if (process.env.SCROLL) {

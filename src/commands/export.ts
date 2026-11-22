@@ -1,8 +1,11 @@
+import fs from "node:fs";
 import path from "node:path";
 import * as vscode from "vscode";
 import { readOptions, toEnv } from "../config.ts";
-import { cliPath, errorMessage, exportArgs, isNoBrowserError, parseExportStdout } from "../engine.ts";
+import { problemsOf, showProblems } from "../diagnostics.ts";
+import { cliPath, errorMessage, exportArgs, isNoBrowserError, parseExportResult } from "../engine.ts";
 import { runCli } from "../process.ts";
+import { studioEvents } from "../studio.ts";
 
 const EXPORT_TIMEOUT_MS = 120_000;
 
@@ -40,10 +43,30 @@ async function openPdf(pdf: string): Promise<void> {
   else await vscode.env.openExternal(uri);
 }
 
-async function showDone(pdf: string): Promise<void> {
-  const choice = await vscode.window.showInformationMessage(`PDF ready: ${path.basename(pdf)}`, "Open PDF", "Show in Folder");
+async function showDone(pdf: string, problems: number): Promise<void> {
+  const name = path.basename(pdf);
+  const choice = problems
+    ? await vscode.window.showWarningMessage(
+        `PDF ready: ${name}. ${problems === 1 ? "One thing was" : `${problems} things were`} left out or not drawn.`,
+        "Show Problems",
+        "Open PDF",
+        "Show in Folder",
+      )
+    : await vscode.window.showInformationMessage(`PDF ready: ${name}`, "Open PDF", "Show in Folder");
+  if (choice === "Show Problems") await vscode.commands.executeCommand("workbench.actions.view.problems");
   if (choice === "Open PDF") await openPdf(pdf);
   if (choice === "Show in Folder") await vscode.commands.executeCommand("revealFileInOS", vscode.Uri.file(pdf));
+}
+
+/** The text that was just exported: the file is saved, so the editor and the disk agree. */
+function exportedText(uri: vscode.Uri): string {
+  const doc = vscode.workspace.textDocuments.find((d) => d.uri.toString() === uri.toString());
+  if (doc) return doc.getText();
+  try {
+    return fs.readFileSync(uri.fsPath, "utf8");
+  } catch {
+    return "";
+  }
 }
 
 export async function installBrowser(ctx: Context): Promise<boolean> {
@@ -82,6 +105,7 @@ export async function exportCommand(ctx: Context, clicked?: vscode.Uri, selected
   }
   const flags = { restricted: !vscode.workspace.isTrusted, remote: Boolean(vscode.env.remoteName) };
   const done: string[] = [];
+  let problems = 0;
   let noBrowser = false;
 
   await vscode.window.withProgress(
@@ -104,10 +128,14 @@ export async function exportCommand(ctx: Context, clicked?: vscode.Uri, selected
           onStderr: (d) => ctx.output.append(d),
         });
         if (result.cancelled) break;
-        const pdf = result.code === 0 ? parseExportStdout(result.stdout) : null;
-        if (pdf) {
-          ctx.output.appendLine(`→ ${pdf}`);
-          done.push(pdf);
+        const exported = result.code === 0 ? parseExportResult(result.stdout) : null;
+        if (exported) {
+          ctx.output.appendLine(`→ ${exported.pdf}`);
+          done.push(exported.pdf);
+          // The open preview already keeps the file it shows up to date.
+          const live = studioEvents.previewed()?.toString() === uri.toString();
+          showProblems(uri, exportedText(uri), exported.report, live);
+          problems += problemsOf(uri).length;
           continue;
         }
         if (isNoBrowserError(result.stderr)) {
@@ -131,6 +159,11 @@ export async function exportCommand(ctx: Context, clicked?: vscode.Uri, selected
     if (pick === "Download browser" && (await installBrowser(ctx))) await exportCommand(ctx, clicked, selected);
     return;
   }
-  if (done.length === 1 && done[0]) await showDone(done[0]);
-  else if (done.length > 1) void vscode.window.showInformationMessage(`${done.length} PDFs ready.`);
+  if (done.length === 1 && done[0]) await showDone(done[0], problems);
+  else if (done.length > 1) {
+    const pick = problems
+      ? await vscode.window.showWarningMessage(`${done.length} PDFs ready. Some things were left out or not drawn.`, "Show Problems")
+      : await vscode.window.showInformationMessage(`${done.length} PDFs ready.`);
+    if (pick === "Show Problems") await vscode.commands.executeCommand("workbench.actions.view.problems");
+  }
 }

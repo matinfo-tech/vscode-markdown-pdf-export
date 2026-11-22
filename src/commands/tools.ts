@@ -82,7 +82,8 @@ export async function openFolderSettingsFile(): Promise<void> {
 export async function showMenu(): Promise<void> {
   const items: (vscode.QuickPickItem & { command: string })[] = [
     { label: "$(file-pdf) Export to PDF", command: "markdownPdfExport.export" },
-    { label: "$(paintcan) Design Pages (Studio)", description: "style, fonts, header, footer, logo", command: "markdownPdfExport.openStudio" },
+    { label: "$(open-preview) Open PDF Preview to the Side", description: "the real PDF, as you type", command: "markdownPdfExport.openPreview" },
+    { label: "$(paintcan) Design Pages", description: "style, fonts, header, footer, logo", command: "markdownPdfExport.openStudio" },
     { label: "$(folder) Design Pages for This Folder Only", command: "markdownPdfExport.openProjectStudio" },
     { label: "$(json) Open Settings File", command: "markdownPdfExport.openSettingsFile" },
     { label: "$(json) Open This Folder's Settings File", command: "markdownPdfExport.openFolderSettingsFile" },
@@ -97,7 +98,7 @@ export async function showMenu(): Promise<void> {
 export function statusBarItem(): vscode.Disposable {
   const item = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 90);
   item.text = "$(file-pdf) PDF";
-  item.tooltip = "Markdown PDF Export: export, design pages, settings";
+  item.tooltip = "Markdown PDF Export: export, preview, design pages, settings";
   item.command = "markdownPdfExport.showMenu";
   const update = () => (vscode.window.activeTextEditor?.document.languageId === "markdown" ? item.show() : item.hide());
   update();

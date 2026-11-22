@@ -4,13 +4,16 @@ import * as vscode from "vscode";
 import { exportCommand, installBrowser, type Context } from "./commands/export.ts";
 import { openFolderSettingsFile, openSettingsFile, runDoctor, showMenu, statusBarItem } from "./commands/tools.ts";
 import { mcpLaunch, registerMcp, type McpLaunch } from "./mcp.ts";
-import { disposeStudio, openStudio, studioEvents, watchSaves, type StudioEvents } from "./studio.ts";
+import { problemsOf, registerDiagnostics } from "./diagnostics.ts";
+import { disposeStudio, openStudio, studioEvents, watchDocuments, type StudioEvents } from "./studio.ts";
 
 /** Returned by `activate` for the integration tests. */
 export interface Api {
   studio: StudioEvents;
   /** How the AI tools server is started. */
   mcpLaunch(): McpLaunch;
+  /** The Problems panel entries of a Markdown file. */
+  problems(uri: vscode.Uri): readonly vscode.Diagnostic[];
 }
 
 const markdownUri = (arg: unknown): vscode.Uri | undefined => {
@@ -38,9 +41,14 @@ export function activate(context: vscode.ExtensionContext): Api {
     vscode.commands.registerCommand("markdownPdfExport.export", (clicked?: vscode.Uri, selected?: vscode.Uri[]) =>
       exportCommand(ctx, clicked instanceof vscode.Uri ? clicked : undefined, Array.isArray(selected) ? selected : undefined),
     ),
-    vscode.commands.registerCommand("markdownPdfExport.openStudio", (arg?: unknown) => openStudio(studio, { file: markdownUri(arg) })),
+    vscode.commands.registerCommand("markdownPdfExport.openPreview", (arg?: unknown) =>
+      openStudio(studio, { file: markdownUri(arg), mode: "preview" }),
+    ),
+    vscode.commands.registerCommand("markdownPdfExport.openStudio", (arg?: unknown) =>
+      openStudio(studio, { file: markdownUri(arg), mode: "design" }),
+    ),
     vscode.commands.registerCommand("markdownPdfExport.openProjectStudio", (arg?: unknown) =>
-      openStudio(studio, { file: markdownUri(arg), project: true }),
+      openStudio(studio, { file: markdownUri(arg), project: true, mode: "design" }),
     ),
     vscode.commands.registerCommand("markdownPdfExport.installBrowser", () => installBrowser(ctx)),
     vscode.commands.registerCommand("markdownPdfExport.showOutput", () => output.show()),
@@ -50,10 +58,11 @@ export function activate(context: vscode.ExtensionContext): Api {
     vscode.commands.registerCommand("markdownPdfExport.showMenu", () => showMenu()),
     statusBarItem(),
     registerMcp(context, exporterVersion(context.extensionPath)),
-    watchSaves(),
+    registerDiagnostics(),
+    watchDocuments(),
     { dispose: disposeStudio },
   );
-  return { studio: studioEvents, mcpLaunch: () => mcpLaunch(context.extensionPath) };
+  return { studio: studioEvents, mcpLaunch: () => mcpLaunch(context.extensionPath), problems: problemsOf };
 }
 
 export function deactivate(): void {

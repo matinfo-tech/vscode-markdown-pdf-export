@@ -1,7 +1,7 @@
 {
   "name": "markdown-pdf-export",
   "displayName": "Markdown PDF Export",
-  "description": "Export Markdown to PDF with your header, footer, page numbers and logo. Design pages in Studio with a live preview.",
+  "description": "The real PDF beside your Markdown, as you type. Design the header, footer, page numbers and logo by clicking, then export.",
   "version": "0.0.1",
   "private": true,
   "publisher": "matinfo-tech",
@@ -59,8 +59,14 @@
         "icon": "$(file-pdf)"
       },
       {
+        "command": "markdownPdfExport.openPreview",
+        "title": "Open PDF Preview to the Side",
+        "category": "Markdown PDF",
+        "icon": "$(open-preview)"
+      },
+      {
         "command": "markdownPdfExport.openStudio",
-        "title": "Design Pages (Studio)",
+        "title": "Design Pages",
         "category": "Markdown PDF",
         "icon": "$(paintcan)"
       },
@@ -114,9 +120,14 @@
           "group": "navigation@90"
         },
         {
-          "command": "markdownPdfExport.openStudio",
+          "command": "markdownPdfExport.openPreview",
           "when": "resourceLangId == markdown",
           "group": "navigation@91"
+        },
+        {
+          "command": "markdownPdfExport.openStudio",
+          "when": "resourceLangId == markdown",
+          "group": "markdownPdf@1"
         }
       ],
       "editor/context": [
@@ -126,9 +137,14 @@
           "group": "markdownPdf@1"
         },
         {
-          "command": "markdownPdfExport.openStudio",
+          "command": "markdownPdfExport.openPreview",
           "when": "resourceLangId == markdown",
           "group": "markdownPdf@2"
+        },
+        {
+          "command": "markdownPdfExport.openStudio",
+          "when": "resourceLangId == markdown",
+          "group": "markdownPdf@3"
         }
       ],
       "editor/title/context": [
@@ -138,9 +154,14 @@
           "group": "markdownPdf@1"
         },
         {
-          "command": "markdownPdfExport.openStudio",
+          "command": "markdownPdfExport.openPreview",
           "when": "resourceLangId == markdown",
           "group": "markdownPdf@2"
+        },
+        {
+          "command": "markdownPdfExport.openStudio",
+          "when": "resourceLangId == markdown",
+          "group": "markdownPdf@3"
         }
       ],
       "explorer/context": [
@@ -150,9 +171,14 @@
           "group": "markdownPdf@1"
         },
         {
-          "command": "markdownPdfExport.openStudio",
+          "command": "markdownPdfExport.openPreview",
           "when": "resourceLangId == markdown && !explorerResourceIsFolder",
           "group": "markdownPdf@2"
+        },
+        {
+          "command": "markdownPdfExport.openStudio",
+          "when": "resourceLangId == markdown && !explorerResourceIsFolder",
+          "group": "markdownPdf@3"
         }
       ]
     },
@@ -178,6 +204,20 @@
           "default": "",
           "scope": "machine",
           "markdownDescription": "Browser that draws the PDF: `chrome`, `msedge`, `chromium`, or the full path of a browser. Leave empty to use Chrome or Edge when installed."
+        },
+        "markdownPdfExport.preview.refresh": {
+          "type": "string",
+          "enum": [
+            "onType",
+            "onSave"
+          ],
+          "enumDescriptions": [
+            "Draw the PDF again shortly after you stop typing.",
+            "Draw the PDF again when the file is saved."
+          ],
+          "default": "onType",
+          "scope": "window",
+          "description": "When the PDF preview follows your changes."
         },
         "markdownPdfExport.debug": {
           "type": "boolean",

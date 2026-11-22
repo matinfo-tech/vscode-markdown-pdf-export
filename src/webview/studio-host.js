@@ -2,8 +2,9 @@
 // Studio was written for a browser tab talking to its local server. Here:
 //  - its calls to /api/... go to the extension, which forwards them to that server
 //    (the server's token never enters the panel);
-//  - its PDF preview frames, <iframe>s in the browser, are <div>s drawn with pdf.js,
-//    because a VS Code panel has no built-in PDF viewer.
+//  - its PDF preview is drawn with pdf.js through Studio's `window.studioHost.showPdf` hook,
+//    because a VS Code panel has no built-in PDF viewer;
+//  - two buttons over the preview: show or hide the design controls, and export.
 import * as pdfjs from "pdfjs-dist/legacy/build/pdf.min.mjs";
 
 const vscode = acquireVsCodeApi();
@@ -24,14 +25,41 @@ window.addEventListener("unhandledrejection", (e) => report(e.reason?.message ??
 document.addEventListener("securitypolicyviolation", (e) => report(`Blocked by the panel's security policy: ${e.violatedDirective} ${e.blockedURI}`));
 vscode.postMessage({ type: "ready" });
 
+// ── preview only, or preview and design ─────────────────────────────────────
+const modeButton = document.createElement("button");
+modeButton.type = "button";
+modeButton.className = "btn small";
+
+function setMode(mode) {
+  const preview = mode === "preview";
+  document.body.classList.toggle("mpe-preview", preview);
+  modeButton.textContent = preview ? "Design pages" : "Hide design";
+  modeButton.title = preview ? "Choose the page style, fonts, header and footer" : "Show the PDF only";
+}
+modeButton.addEventListener("click", () => setMode(document.body.classList.contains("mpe-preview") ? "design" : "preview"));
+setMode(document.body.classList.contains("mpe-preview") ? "preview" : "design");
+
+const exportButton = document.createElement("button");
+exportButton.type = "button";
+exportButton.className = "btn small";
+exportButton.textContent = "Export PDF";
+exportButton.title = "Save the file and write its PDF";
+exportButton.addEventListener("click", () => vscode.postMessage({ type: "export" }));
+
+const bar = document.createElement("div");
+bar.id = "mpe-bar";
+bar.append(modeButton, exportButton);
+document.querySelector(".desk").append(bar);
+
 // ── /api bridge ─────────────────────────────────────────────────────────────
 const waiting = new Map();
 let lastId = 0;
 
 window.addEventListener("message", (event) => {
   const message = event.data;
-  // The Markdown file was saved: Studio draws its preview again.
+  // The document changed, or another one is in front: Studio draws its preview again.
   if (message?.type === "refresh") return void window.dispatchEvent(new Event("studio:refresh"));
+  if (message?.type === "mode") return void setMode(message.mode);
   if (message?.type !== "response") return;
   waiting.get(message.id)?.(message);
   waiting.delete(message.id);
@@ -60,7 +88,10 @@ window.fetch = async (input, init) => {
   return new Response(empty ? null : answer.body, { status: answer.status, headers: answer.headers });
 };
 
-// ── PDF frames ──────────────────────────────────────────────────────────────
+// ── PDF pages ───────────────────────────────────────────────────────────────
+const box = document.getElementById("pdf-pages");
+const GAP = 12; // px around and between pages, as in the panel's stylesheet
+
 let worker = null;
 /** pdf.js parses in a worker; a panel may only start one from a blob: URL. */
 async function ensureWorker() {
@@ -72,51 +103,106 @@ async function ensureWorker() {
   pdfjs.GlobalWorkerOptions.workerPort = worker;
 }
 
-const GAP = 12; // px around and between pages
+let runs = 0;
+/** The document on screen: one slot per page, painted when it comes near the visible part. */
+let shown = null;
+let lastBlob = null;
+let lastWidth = 0;
 
-async function draw(frame, src) {
-  const run = (frame.pdfRun = (frame.pdfRun ?? 0) + 1);
+const pageWidth = () => Math.max(200, box.clientWidth - 2 * GAP);
+const near = (slot, margin) => slot.top + slot.height > box.scrollTop - margin && slot.top < box.scrollTop + box.clientHeight + margin;
+
+async function paint(slot) {
+  if (slot.painted) return;
+  slot.painted = true;
+  const ratio = window.devicePixelRatio || 1;
+  const viewport = slot.page.getViewport({ scale: slot.scale * ratio });
+  slot.canvas.width = Math.floor(viewport.width);
+  slot.canvas.height = Math.floor(viewport.height);
+  await slot.page.render({ canvas: slot.canvas, canvasContext: slot.canvas.getContext("2d"), viewport }).promise;
+}
+
+let painting = false;
+let paintAgain = false;
+/** Paint the pages on screen and one screen around them; a long document is never painted whole. */
+async function paintNear() {
+  if (painting) return void (paintAgain = true);
+  painting = true;
+  let current = shown;
   try {
-    await ensureWorker();
-    const data = await (await realFetch(src.split("#")[0])).arrayBuffer();
-    const doc = await pdfjs.getDocument({ data }).promise;
-    const width = Math.max(200, (frame.clientWidth || frame.parentElement.clientWidth) - 2 * GAP);
-    const ratio = window.devicePixelRatio || 1;
-    const pages = [];
-    for (let n = 1; n <= doc.numPages; n++) {
-      if (run !== frame.pdfRun) return;
-      const page = await doc.getPage(n);
-      const scale = width / page.getViewport({ scale: 1 }).width;
-      const viewport = page.getViewport({ scale: scale * ratio });
-      const canvas = document.createElement("canvas");
-      canvas.width = Math.floor(viewport.width);
-      canvas.height = Math.floor(viewport.height);
-      canvas.style.width = `${Math.floor(viewport.width / ratio)}px`;
-      canvas.style.height = `${Math.floor(viewport.height / ratio)}px`;
-      await page.render({ canvas, canvasContext: canvas.getContext("2d"), viewport }).promise;
-      pages.push(canvas);
-    }
-    if (run !== frame.pdfRun) return;
-    // Keep the reading position: the frame on show is the other one until Studio swaps them.
-    const shown = [...document.querySelectorAll("[data-pdf-frame]")].find((f) => f !== frame);
-    frame.replaceChildren(...pages);
-    frame.scrollTop = shown ? shown.scrollTop : 0;
-    frame.dispatchEvent(new Event("load")); // Studio swaps the two frames on "load"
-    vscode.postMessage({ type: "rendered", pages: doc.numPages });
-    void doc.destroy();
+    do {
+      paintAgain = false;
+      current = shown;
+      for (const slot of current?.slots ?? []) {
+        if (shown !== current) break;
+        if (near(slot, box.clientHeight)) await paint(slot);
+      }
+    } while (paintAgain || shown !== current);
   } catch (error) {
-    vscode.postMessage({ type: "render-error", message: String(error?.message ?? error) });
+    // A document replaced while one of its pages was being painted is not a failure.
+    if (shown === current) vscode.postMessage({ type: "render-error", message: String(error?.message ?? error) });
+  } finally {
+    painting = false;
   }
 }
+box.addEventListener("scroll", () => void paintNear(), { passive: true });
 
-for (const frame of document.querySelectorAll("[data-pdf-frame]")) {
-  let current = "";
-  // Studio shows a PDF by setting the frame's `src`, as it would on an <iframe>.
-  Object.defineProperty(frame, "src", {
-    get: () => current,
-    set(value) {
-      current = String(value);
-      void draw(frame, current);
-    },
-  });
+/**
+ * @param {Blob} blob  the PDF
+ * @param {boolean} fresh  a new PDF (not the same one laid out again for another panel width)
+ */
+async function draw(blob, fresh) {
+  const run = ++runs;
+  await ensureWorker();
+  const task = pdfjs.getDocument({ data: await blob.arrayBuffer() });
+  const doc = await task.promise;
+  const width = pageWidth();
+  const slots = [];
+  let top = GAP;
+  for (let n = 1; n <= doc.numPages; n++) {
+    const page = await doc.getPage(n);
+    const base = page.getViewport({ scale: 1 });
+    const scale = width / base.width;
+    const height = Math.floor(base.height * scale);
+    const canvas = document.createElement("canvas");
+    canvas.style.width = `${Math.floor(width)}px`;
+    canvas.style.height = `${height}px`;
+    slots.push({ page, canvas, scale, top, height, painted: false });
+    top += height + GAP;
+  }
+  // Paint what will be on screen before showing it: no blank page while typing.
+  for (const slot of slots) {
+    if (run !== runs) break;
+    if (near(slot, 0)) await paint(slot);
+  }
+  if (run !== runs) return void task.destroy();
+  const keep = box.scrollTop; // the reading position
+  box.replaceChildren(...slots.map((slot) => slot.canvas));
+  box.scrollTop = keep;
+  void shown?.task.destroy();
+  shown = { task, slots };
+  lastWidth = width;
+  if (fresh) vscode.postMessage({ type: "rendered", pages: doc.numPages });
+  void paintNear();
 }
+
+window.studioHost = {
+  /** Called by Studio with each new preview. */
+  async showPdf(blob) {
+    lastBlob = blob;
+    try {
+      await draw(blob, true);
+    } catch (error) {
+      vscode.postMessage({ type: "render-error", message: String(error?.message ?? error) });
+      throw error;
+    }
+  },
+};
+
+// A wider or narrower panel: lay the same PDF out again.
+let resizeTimer = null;
+new ResizeObserver(() => {
+  if (!lastBlob || box.clientWidth === 0 || Math.abs(pageWidth() - lastWidth) < 8) return;
+  clearTimeout(resizeTimer);
+  resizeTimer = setTimeout(() => draw(lastBlob, false).catch((error) => report(error?.message ?? error)), 150);
+}).observe(box);
