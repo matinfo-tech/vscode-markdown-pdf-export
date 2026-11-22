@@ -11,6 +11,9 @@ updates:
       - dependency-name: markdown-pdf-export
       # Must match engines.vscode: a newer one lets code use APIs older VS Code lacks.
       - dependency-name: "@types/vscode"
+      # Stay on the Node major VS Code runs extensions with (24).
+      - dependency-name: "@types/node"
+        update-types: ["version-update:semver-major"]
     groups:
       npm-minor-patch:
         update-types: [minor, patch]
