@@ -36,6 +36,7 @@ try {
   const cli = path.join(exporter, "cli.mjs");
 
   // ── what must be there, and what must not ─────────────────────────────────
+  const all = fs.readdirSync(ext, { recursive: true }).map((f) => String(f).replaceAll("\\", "/"));
   for (const file of [
     "package.json",
     "README.md",
@@ -51,9 +52,9 @@ try {
     "node_modules/markdown-pdf-export/studio/sample.md",
     "node_modules/markdown-pdf-export/schema/settings.schema.json",
   ]) {
-    assert.ok(fs.existsSync(path.join(ext, file)), `missing from the package: ${file}`);
+    // vsce stores README, CHANGELOG and LICENSE in lower case or upper case depending on its mood.
+    assert.ok(all.some((f) => f.toLowerCase() === file.toLowerCase()), `missing from the package: ${file}`);
   }
-  const all = fs.readdirSync(ext, { recursive: true }).map((f) => String(f).replaceAll("\\", "/"));
   const unwanted = all.filter((f) => /^(src|test|scripts|\.github|\.vscode-test)\/|^PLAN\.md$|\.map$|^node_modules\/(pdfjs-dist|typescript|esbuild|eslint)\//.test(f));
   assert.deepEqual(unwanted.slice(0, 5), [], "files that should not ship");
   const manifest = JSON.parse(fs.readFileSync(path.join(ext, "package.json"), "utf8"));
