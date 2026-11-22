@@ -1,10 +1,25 @@
 # Markdown PDF Export for VS Code
 
-Export Markdown to PDF with your header, footer, page numbers and logo.
+The real PDF beside your Markdown, as you type. Design the header, footer, page numbers and logo
+by clicking, then export.
 
 > **In development.** Not on the Marketplace yet.
 
-## Use
+## See the PDF while you write
+
+Open a Markdown file and click the preview button at the top right of the editor (or run
+**Markdown PDF: Open PDF Preview to the Side**). The panel shows the PDF itself, with its pages,
+header, footer and page numbers, not an approximation:
+
+- it is drawn again shortly after you stop typing, saved or not
+  (`markdownPdfExport.preview.refresh` set to `onSave` waits for a save);
+- it follows the Markdown file you bring to the front;
+- raw HTML left out for safety and diagrams that could not be drawn are listed in the **Problems**
+  panel, on the line that caused them.
+
+**Design pages** and **Export PDF** are at the bottom of the panel.
+
+## Export
 
 Open a Markdown file, then any of:
 
@@ -24,9 +39,9 @@ The PDF is written next to the Markdown file.
 
 ## Page design
 
-Run **Markdown PDF: Design Pages (Studio)** (also in the editor title bar and the right-click
-menu). A panel opens beside your Markdown: the real PDF of your file on top, and under it the page
-style, fonts, paper, header, footer and logos. Press **Save** to keep the design.
+Click **Design pages** in the preview panel, or run **Markdown PDF: Design Pages**. The page
+style, fonts, paper, header, footer and logos appear with the PDF, and every choice shows on it
+at once. Press **Save** to keep the design.
 
 Page style, fonts, header, footer and logos live in one settings file, shared with the
 `markdown-pdf-export` command line and the other editors:

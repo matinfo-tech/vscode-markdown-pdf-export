@@ -5,35 +5,12 @@
 //    copied next to it.
 //  - studio-app.js: the exporter's Studio page script (see below).
 import fs from "node:fs";
-import path from "node:path";
 import process from "node:process";
 import esbuild from "esbuild";
 
 const production = process.argv.includes("--production");
 const watch = process.argv.includes("--watch");
 const common = { bundle: true, sourcemap: !production, minify: production, logLevel: "info" };
-
-/** Studio imports its files from the root of its own server ("/model.mjs"). */
-const studioRoot = {
-  name: "studio-root",
-  setup(build) {
-    build.onResolve({ filter: /^\/[\w.-]+\.mjs$/ }, (args) => ({
-      path: path.resolve("node_modules/markdown-pdf-export/studio", `.${args.path}`),
-    }));
-    // Until the exporter offers it: let the panel ask Studio to draw the preview again
-    // (the Markdown file was saved).
-    build.onLoad({ filter: /[\\/]studio[\\/]app\.mjs$/ }, (args) => {
-      const source = fs.readFileSync(args.path, "utf8");
-      if (!source.includes("\nfunction schedulePreview() {")) {
-        throw new Error("Studio's app.mjs has no schedulePreview(): update the refresh hook in esbuild.mjs.");
-      }
-      return {
-        contents: `${source}\nwindow.addEventListener("studio:refresh", () => schedulePreview());\n`,
-        loader: "js",
-      };
-    });
-  },
-};
 
 const builds = [
   {
@@ -59,7 +36,6 @@ const builds = [
     ...common,
     entryPoints: ["node_modules/markdown-pdf-export/studio/app.mjs"],
     outfile: "dist/studio-app.js",
-    plugins: [studioRoot],
     platform: "browser",
     format: "esm",
     target: "chrome134",

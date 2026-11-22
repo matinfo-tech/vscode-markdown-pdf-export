@@ -12,6 +12,7 @@ const uris = {
   worker: "https://file+.vscode-resource.vscode-cdn.net/ext/dist/pdf.worker.min.js",
   cspSource: "https://*.vscode-cdn.net",
   nonce: "abc123",
+  mode: "design" as const,
 };
 
 describe("studioPanelHtml", () => {
@@ -26,10 +27,15 @@ describe("studioPanelHtml", () => {
     assert.doesNotMatch(html, /\.mjs"/, "a VS Code panel cannot load .mjs files");
   });
 
-  it("turns the two PDF frames into elements the host script draws in", () => {
+  it("replaces the two viewer frames by one element the host script draws in", () => {
     assert.doesNotMatch(html, /<iframe/);
-    assert.match(html, /<div id="frame-a"[^>]* data-pdf-frame><\/div>/);
-    assert.match(html, /<div id="frame-b" class="back"[^>]* data-pdf-frame><\/div>/);
+    assert.equal(html.split('id="pdf-pages"').length - 1, 1);
+    assert.match(html, /<div class="frames"><div id="pdf-pages"[^>]*><\/div><\/div>/);
+  });
+
+  it("opens on the PDF alone when asked", () => {
+    assert.match(studioPanelHtml(index, { ...uris, mode: "preview" }), /<body class="mpe-preview">/);
+    assert.match(html, /<body class="">/);
   });
 
   it("locks the page down: no inline script, nothing from the network", () => {
@@ -42,6 +48,7 @@ describe("studioPanelHtml", () => {
 
   it("fails loudly when the Studio page is not the one it knows", () => {
     assert.throws(() => studioPanelHtml("<html></html>", uris), /Studio page/);
-    assert.throws(() => studioPanelHtml(index.replace("<iframe", "<iframe x"), uris) && studioPanelHtml(index + "<iframe></iframe>", uris), /Studio page/);
+    assert.throws(() => studioPanelHtml(index.replace(/<iframe id="frame-b"[^>]*><\/iframe>/, ""), uris), /pair of preview frames/);
+    assert.throws(() => studioPanelHtml(index.replace("</body>", "<iframe></iframe></body>"), uris), /viewer frame is left/);
   });
 });

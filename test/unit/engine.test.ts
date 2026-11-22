@@ -7,9 +7,10 @@ import {
   errorMessage,
   exportArgs,
   isNoBrowserError,
-  parseExportStdout,
+  parseExportResult,
   parseStudioUrl,
   studioArgs,
+  withPreviewSource,
 } from "../../src/engine.ts";
 
 describe("cliPath", () => {
@@ -19,13 +20,14 @@ describe("cliPath", () => {
 });
 
 describe("exportArgs", () => {
-  it("passes only the file in a trusted local window", () => {
-    assert.deepEqual(exportArgs("/a b/doc.md", { restricted: false, remote: false }), ["/a b/doc.md"]);
+  it("passes the file and asks for a JSON result in a trusted local window", () => {
+    assert.deepEqual(exportArgs("/a b/doc.md", { restricted: false, remote: false }), ["/a b/doc.md", "--json"]);
   });
 
   it("ignores project settings and forces safe HTML in Restricted Mode", () => {
     assert.deepEqual(exportArgs("d.md", { restricted: true, remote: false }), [
       "d.md",
+      "--json",
       "--no-project-settings",
       "--sanitize",
       "safe",
@@ -34,19 +36,24 @@ describe("exportArgs", () => {
   });
 
   it("never opens the PDF on a remote host", () => {
-    assert.deepEqual(exportArgs("d.md", { restricted: false, remote: true }), ["d.md", "--open-after-export=false"]);
+    assert.deepEqual(exportArgs("d.md", { restricted: false, remote: true }), ["d.md", "--json", "--open-after-export=false"]);
   });
 });
 
-describe("parseExportStdout", () => {
-  it("reads the PDF path", () => {
-    assert.equal(parseExportStdout("/tmp/a b/doc.pdf\n"), "/tmp/a b/doc.pdf");
-    assert.equal(parseExportStdout("C:\\docs\\doc.PDF\r\n"), "C:\\docs\\doc.PDF");
+describe("parseExportResult", () => {
+  it("reads the PDF path and what the export left out", () => {
+    const stdout = JSON.stringify({ output_path: "/tmp/a b/doc.pdf", removed_html: ["<script>"], diagram_errors: ["Diagram 1: bad"], other: 1 }, null, 2);
+    assert.deepEqual(parseExportResult(`${stdout}\n`), {
+      pdf: "/tmp/a b/doc.pdf",
+      report: { removed_html: ["<script>"], diagram_errors: ["Diagram 1: bad"] },
+    });
+    assert.deepEqual(parseExportResult('{"output_path":"C:\\\\docs\\\\doc.pdf"}')?.report, { removed_html: [], diagram_errors: [] });
   });
 
   it("gives null when nothing was exported", () => {
-    assert.equal(parseExportStdout(""), null);
-    assert.equal(parseExportStdout("Usage: markdown-pdf-export ...\n"), null);
+    for (const stdout of ["", "Usage: markdown-pdf-export ...\n", "/tmp/doc.pdf\n", "{}", '{"output_path":5}', "null"]) {
+      assert.equal(parseExportResult(stdout), null, stdout);
+    }
   });
 });
 
@@ -73,23 +80,38 @@ describe("parseStudioUrl", () => {
 });
 
 describe("studioArgs", () => {
-  it("never opens a browser", () => {
-    assert.deepEqual(studioArgs({ project: false, restricted: false }), ["studio", "--no-open"]);
-  });
-
-  it("previews the given file", () => {
-    assert.deepEqual(studioArgs({ file: "/a b/d.md", project: false, restricted: false }), [
-      "studio",
-      "--no-open",
-      "--file",
-      "/a b/d.md",
-    ]);
+  it("starts Studio for a panel: no browser, no file of its own", () => {
+    assert.deepEqual(studioArgs({ project: false, restricted: false }), ["studio", "--embedded"]);
   });
 
   it("ignores the project file in Restricted Mode, except when designing that file", () => {
-    assert.ok(studioArgs({ file: "d.md", project: false, restricted: true }).includes("--no-project-settings"));
-    const project = studioArgs({ file: "d.md", project: true, restricted: true });
+    assert.ok(studioArgs({ project: false, restricted: true }).includes("--no-project-settings"));
+    const project = studioArgs({ project: true, restricted: true });
     assert.ok(project.includes("--project") && !project.includes("--no-project-settings"));
+  });
+});
+
+describe("withPreviewSource", () => {
+  const bytes = (value: unknown) => new TextEncoder().encode(JSON.stringify(value));
+  const read = (body: Uint8Array) => JSON.parse(new TextDecoder().decode(body)) as unknown;
+
+  it("adds the document the extension chose, with its unsaved text", () => {
+    assert.deepEqual(read(withPreviewSource(bytes({ settings: { look: "report" } }), { file: "/w/d.md", text: "# é" })), {
+      settings: { look: "report" },
+      source: { file: "/w/d.md", text: "# é" },
+    });
+  });
+
+  it("never lets the panel choose the file", () => {
+    const fromPanel = bytes({ settings: {}, source: { file: "/etc/passwd" } });
+    assert.deepEqual(read(withPreviewSource(fromPanel, { file: "/w/d.md" })), { settings: {}, source: { file: "/w/d.md" } });
+    assert.deepEqual(read(withPreviewSource(fromPanel, undefined)), { settings: {} });
+  });
+
+  it("refuses a body that is not a JSON object", () => {
+    for (const body of [null, new Uint8Array(), new TextEncoder().encode("[1]"), new TextEncoder().encode("not json")]) {
+      assert.throws(() => withPreviewSource(body, { file: "/w/d.md" }), /not valid/);
+    }
   });
 });
 
