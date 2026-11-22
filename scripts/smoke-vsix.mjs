@@ -43,6 +43,7 @@ try {
     "CHANGELOG.md",
     "LICENSE.txt",
     "dist/extension.cjs",
+    "media/icon.png",
     "media/walkthrough/preview.md",
     "media/walkthrough/setup.md",
     "dist/studio-host.js",
