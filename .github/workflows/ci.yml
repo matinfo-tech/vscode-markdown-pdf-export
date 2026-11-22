@@ -98,7 +98,8 @@ jobs:
           echo "markdown-pdf-export=$v"
           echo "$v" | grep -Eq '^[0-9]+\.[0-9]+\.[0-9]+$'
           test "$v" = "$(jq -r '.packages["node_modules/markdown-pdf-export"].version' package-lock.json)"
-      - run: npm run package
+      - name: Package, unpack and use what is inside
+        run: npm run smoke:vsix
 
   ci-ok:
     name: CI ok

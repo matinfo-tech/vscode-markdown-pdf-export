@@ -252,6 +252,7 @@
     "ci": "npm run typecheck && npm run lint && npm run test && npm run build",
     "vscode:prepublish": "node esbuild.mjs --production",
     "package": "vsce package",
+    "smoke:vsix": "npm run vscode:prepublish && node scripts/smoke-vsix.mjs",
     "test:integration": "npm run build && vscode-test"
   },
   "dependencies": {

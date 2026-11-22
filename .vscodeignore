@@ -7,7 +7,8 @@ test/**
 **/*.map
 node_modules/pdfjs-dist/**
 **/*.ts
-!node_modules/**/*.d.ts
+**/*.mts
+**/*.cts
 tsconfig.json
 esbuild.mjs
 eslint.config.mjs
@@ -15,3 +16,30 @@ eslint.config.mjs
 PLAN.md
 .vscode-test.mjs
 scripts/**
+
+# Parts of the exporter's dependencies it never loads. `npm run smoke:vsix` exports from the
+# packaged files (math, code colours, a diagram, emoji, a date) to prove nothing needed is gone.
+node_modules/**/*.md
+!node_modules/**/LICENSE*
+# Studio starts on this sample document when no file is given.
+!node_modules/markdown-pdf-export/studio/sample.md
+node_modules/**/*.markdown
+node_modules/**/*.flow
+node_modules/playwright-core/types/**
+# Playwright's trace viewer, recorder and report pages.
+node_modules/playwright-core/lib/vite/**
+# date-fns: only the default English locale is used, through the ES modules.
+node_modules/date-fns/fp/**
+node_modules/date-fns/**/*.cjs
+node_modules/date-fns/**/cdn.js
+node_modules/date-fns/**/cdn.min.js
+node_modules/date-fns/locale/**
+!node_modules/date-fns/locale/en-US.js
+!node_modules/date-fns/locale/en-US/**
+!node_modules/date-fns/locale/_lib/**
+# highlight.js: the ES entry re-exports lib/; the language copies under es/ are not loaded.
+node_modules/highlight.js/es/languages/**
+node_modules/highlight.js/scss/**
+# KaTeX: dist/ is what runs.
+node_modules/katex/src/**
+node_modules/@vscode/markdown-it-katex/node_modules/katex/src/**
