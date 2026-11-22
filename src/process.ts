@@ -40,22 +40,30 @@ export function killTree(pid: number | undefined): void {
   }, 3000).unref();
 }
 
+/** Start `cli.mjs <args>` with VS Code's own binary as Node; text comes out of stdout and stderr. */
+export function spawnCli(cli: string, args: string[], options: Pick<RunOptions, "cwd" | "env">) {
+  const runtime = nodeRuntime();
+  const child = spawn(runtime.command, [cli, ...args], {
+    cwd: options.cwd,
+    env: { ...process.env, ...runtime.env, ...options.env },
+    stdio: ["ignore", "pipe", "pipe"],
+    windowsHide: true,
+  });
+  child.stdout.setEncoding("utf8");
+  child.stderr.setEncoding("utf8");
+  return child;
+}
+
 /** Run `cli.mjs <args>` as a child process (never in-process: the exporter keeps global state). */
 export function runCli(cli: string, args: string[], options: RunOptions): Promise<RunResult> {
-  const runtime = nodeRuntime();
   return new Promise((resolve) => {
-    const child = spawn(runtime.command, [cli, ...args], {
-      cwd: options.cwd,
-      env: { ...process.env, ...runtime.env, ...options.env },
-      stdio: ["ignore", "pipe", "pipe"],
-      windowsHide: true,
-    });
+    const child = spawnCli(cli, args, options);
     let stdout = "";
     let stderr = "";
     let cancelled = false;
     let timedOut = false;
-    child.stdout.setEncoding("utf8").on("data", (d: string) => (stdout += d));
-    child.stderr.setEncoding("utf8").on("data", (d: string) => {
+    child.stdout.on("data", (d: string) => (stdout += d));
+    child.stderr.on("data", (d: string) => {
       stderr += d;
       options.onStderr?.(d);
     });

@@ -24,6 +24,10 @@ The PDF is written next to the Markdown file.
 
 ## Page design
 
+Run **Markdown PDF: Design Pages (Studio)** (also in the editor title bar and the right-click
+menu). A panel opens beside your Markdown: the real PDF of your file on top, and under it the page
+style, fonts, paper, header, footer and logos. Press **Save** to keep the design.
+
 Page style, fonts, header, footer and logos live in one settings file, shared with the
 `markdown-pdf-export` command line and the other editors:
 `~/.config/markdown-pdf-export/settings.json` (`%APPDATA%\markdown-pdf-export\settings.json` on

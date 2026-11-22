@@ -7,6 +7,12 @@ export default tseslint.config(
   js.configs.recommended,
   ...tseslint.configs.recommended,
   { rules: { "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }] } },
+  { files: ["scripts/**/*.mjs", "*.mjs"], languageOptions: { globals: globals.node } },
+  {
+    // The Studio panel's script runs in a VS Code webview (a browser page).
+    files: ["src/webview/**/*.js"],
+    languageOptions: { globals: { ...globals.browser, acquireVsCodeApi: "readonly" } },
+  },
   {
     // Integration tests run inside VS Code's extension host, which loads CommonJS.
     files: ["test/integration/**/*.cjs"],

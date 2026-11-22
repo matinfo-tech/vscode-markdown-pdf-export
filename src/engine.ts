@@ -33,10 +33,41 @@ export function isNoBrowserError(stderr: string): boolean {
   return /No usable Chrome\/Chromium browser found/i.test(stderr);
 }
 
-/** Studio prints its private link alone on stdout. */
-export function parseStudioUrl(stdout: string): string | null {
-  const match = /^http:\/\/127\.0\.0\.1:\d+\/#[0-9a-f]+$/m.exec(stdout);
-  return match ? match[0] : null;
+export interface StudioLink {
+  url: string;
+  port: number;
+  token: string;
+}
+
+/** Studio prints its private link (`http://127.0.0.1:<port>/#<token>`) alone on stdout. */
+export function parseStudioUrl(stdout: string): StudioLink | null {
+  const match = /^http:\/\/127\.0\.0\.1:(\d+)\/#([0-9a-f]+)$/m.exec(stdout);
+  return match ? { url: match[0], port: Number(match[1]), token: match[2]! } : null;
+}
+
+export interface StudioFlags {
+  /** Markdown file to preview; the built-in sample when missing. */
+  file?: string;
+  /** Edit this folder's .markdown-pdf.json instead of the user's settings file. */
+  project: boolean;
+  /** Restricted Mode: the preview ignores the project file near `file`. */
+  restricted: boolean;
+}
+
+/** Arguments for `cli.mjs studio`, never opening a browser: the page lives in a VS Code panel. */
+export function studioArgs(flags: StudioFlags): string[] {
+  const args = ["studio", "--no-open"];
+  if (flags.project) args.push("--project");
+  if (flags.file) args.push("--file", flags.file);
+  if (flags.restricted && !flags.project) args.push("--no-project-settings");
+  return args;
+}
+
+/** What the panel may ask the Studio server: its API, minus changing other editors' files. */
+export function allowedStudioRequest(path: unknown, method: unknown): path is string {
+  if (typeof path !== "string" || typeof method !== "string") return false;
+  if (!/^\/api\/[a-z]+(\/[a-z]+)*(\?[^\s#]*)?$/.test(path)) return false;
+  return !path.startsWith("/api/editors");
 }
 
 /** The message the CLI wrote after its `markdown-pdf-export:` prefix, else the raw text. */
