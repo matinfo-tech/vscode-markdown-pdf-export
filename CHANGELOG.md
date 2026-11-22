@@ -29,6 +29,9 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
   settings files) commands, and a **PDF** item in the status bar that lists everything.
 - No Node.js needed: the exporter ([markdown-pdf-export](https://markdown-pdf.matinfo.tech) 2.7.0)
   ships inside the extension and runs with VS Code's own runtime.
+- Small download (about 9 MB): parts of the exporter's dependencies that are never loaded (other
+  languages' dates, trace viewer pages, type files) are left out, and a test unpacks the package
+  and exports a document from it.
 - When no Chrome or Edge is installed, the extension offers to download a private browser.
 - Settings `markdownPdfExport.preview.refresh`, `markdownPdfExport.settingsFile`,
   `markdownPdfExport.browser`, `markdownPdfExport.debug`.
