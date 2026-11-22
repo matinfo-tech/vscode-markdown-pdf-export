@@ -1,10 +1,16 @@
+import fs from "node:fs";
+import path from "node:path";
 import * as vscode from "vscode";
 import { exportCommand, installBrowser, type Context } from "./commands/export.ts";
+import { openFolderSettingsFile, openSettingsFile, runDoctor, showMenu, statusBarItem } from "./commands/tools.ts";
+import { mcpLaunch, registerMcp, type McpLaunch } from "./mcp.ts";
 import { disposeStudio, openStudio, studioEvents, watchSaves, type StudioEvents } from "./studio.ts";
 
 /** Returned by `activate` for the integration tests. */
 export interface Api {
   studio: StudioEvents;
+  /** How the AI tools server is started. */
+  mcpLaunch(): McpLaunch;
 }
 
 const markdownUri = (arg: unknown): vscode.Uri | undefined => {
@@ -12,6 +18,16 @@ const markdownUri = (arg: unknown): vscode.Uri | undefined => {
   const doc = vscode.window.activeTextEditor?.document;
   return doc?.languageId === "markdown" ? doc.uri : undefined;
 };
+
+/** Version of the exporter inside the extension: VS Code refreshes the AI tools when it changes. */
+function exporterVersion(extensionPath: string): string {
+  try {
+    const file = path.join(extensionPath, "node_modules", "markdown-pdf-export", "package.json");
+    return String((JSON.parse(fs.readFileSync(file, "utf8")) as { version?: string }).version ?? "");
+  } catch {
+    return "";
+  }
+}
 
 export function activate(context: vscode.ExtensionContext): Api {
   const output = vscode.window.createOutputChannel("Markdown PDF Export");
@@ -28,10 +44,16 @@ export function activate(context: vscode.ExtensionContext): Api {
     ),
     vscode.commands.registerCommand("markdownPdfExport.installBrowser", () => installBrowser(ctx)),
     vscode.commands.registerCommand("markdownPdfExport.showOutput", () => output.show()),
+    vscode.commands.registerCommand("markdownPdfExport.runDoctor", () => runDoctor(ctx)),
+    vscode.commands.registerCommand("markdownPdfExport.openSettingsFile", () => openSettingsFile(ctx)),
+    vscode.commands.registerCommand("markdownPdfExport.openFolderSettingsFile", () => openFolderSettingsFile()),
+    vscode.commands.registerCommand("markdownPdfExport.showMenu", () => showMenu()),
+    statusBarItem(),
+    registerMcp(context, exporterVersion(context.extensionPath)),
     watchSaves(),
     { dispose: disposeStudio },
   );
-  return { studio: studioEvents };
+  return { studio: studioEvents, mcpLaunch: () => mcpLaunch(context.extensionPath) };
 }
 
 export function deactivate(): void {

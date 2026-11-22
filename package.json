@@ -78,6 +78,26 @@
         "command": "markdownPdfExport.showOutput",
         "title": "Show Output",
         "category": "Markdown PDF"
+      },
+      {
+        "command": "markdownPdfExport.openSettingsFile",
+        "title": "Open Settings File",
+        "category": "Markdown PDF"
+      },
+      {
+        "command": "markdownPdfExport.openFolderSettingsFile",
+        "title": "Open This Folder's Settings File",
+        "category": "Markdown PDF"
+      },
+      {
+        "command": "markdownPdfExport.runDoctor",
+        "title": "Check Setup",
+        "category": "Markdown PDF"
+      },
+      {
+        "command": "markdownPdfExport.showMenu",
+        "title": "Show Menu",
+        "category": "Markdown PDF"
       }
     ],
     "menus": {
@@ -166,7 +186,22 @@
           "description": "Write a debug log in the temporary folder."
         }
       }
-    }
+    },
+    "jsonValidation": [
+      {
+        "fileMatch": [
+          ".markdown-pdf.json",
+          "**/markdown-pdf-export/settings.json"
+        ],
+        "url": "./node_modules/markdown-pdf-export/schema/settings.schema.json"
+      }
+    ],
+    "mcpServerDefinitionProviders": [
+      {
+        "id": "markdownPdfExport.mcp",
+        "label": "Markdown PDF Export"
+      }
+    ]
   },
   "scripts": {
     "build": "node esbuild.mjs",

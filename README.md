@@ -34,6 +34,19 @@ Page style, fonts, header, footer and logos live in one settings file, shared wi
 Windows). A `.markdown-pdf.json` file in a folder changes them for that folder only.
 See [the documentation](https://markdown-pdf.matinfo.tech).
 
+To edit the file by hand, run **Markdown PDF: Open Settings File**: VS Code completes and checks
+the setting names as you type.
+
+## Ask your AI assistant
+
+In Copilot Chat's agent mode, ask *Export this file to PDF* or *Open Studio*. The tools are offered
+by the extension; there is nothing to set up.
+
+## Something not working?
+
+Click **PDF** in the status bar (bottom right, in a Markdown file) → **Check Setup**. It tells you
+which browser and which settings files are used.
+
 ## Privacy
 
 The export runs on your computer and sends nothing anywhere.

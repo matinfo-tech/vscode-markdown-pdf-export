@@ -17,6 +17,12 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 - **Export to PDF** command for Markdown files: Command Palette, the button in the editor title,
   right-click in the editor or the Explorer (several files at once), and Cmd+K Cmd+E (Ctrl+K Ctrl+E
   on Windows and Linux). Unsaved edits are saved first.
+- **AI tools**: in Copilot Chat's agent mode, ask *Export this file to PDF* or *Open Studio*. The
+  extension offers the exporter's tools to VS Code itself; nothing to configure.
+- Completion and checking while you edit a settings file (`.markdown-pdf.json` or your own
+  `settings.json`), without a network connection.
+- **Open Settings File**, **Open This Folder's Settings File** and **Check Setup** (browser and
+  settings files) commands, and a **PDF** item in the status bar that lists everything.
 - No Node.js needed: the exporter ([markdown-pdf-export](https://markdown-pdf.matinfo.tech) 2.6.0)
   ships inside the extension and runs with VS Code's own runtime.
 - When no Chrome or Edge is installed, the extension offers to download a private browser.
