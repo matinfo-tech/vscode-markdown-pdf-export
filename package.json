@@ -328,7 +328,7 @@
     "test:integration": "npm run build && vscode-test"
   },
   "dependencies": {
-    "markdown-pdf-export": "2.8.0"
+    "markdown-pdf-export": "2.9.0"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",

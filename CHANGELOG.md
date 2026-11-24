@@ -40,8 +40,10 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 - **Open Documentation**: pick a page of the documentation (header and footer, its reference, one
   document's own design, all settings...) and it opens in the browser. Also in the status bar
   menu and as **Help** in the PDF panel. The `pdf:`, `header:` and `footer:` suggestions in front
-  matter link to their page, and the walkthrough and README point to the right pages.
-- No Node.js needed: the exporter ([markdown-pdf-export](https://markdown-pdf.matinfo.tech) 2.8.0)
+  matter link to their page, and the walkthrough and README point to the right pages. In
+  **Design Pages**, each section has a **Help** link, and a *Going further* section lists the
+  per-document, header and footer, and settings pages.
+- No Node.js needed: the exporter ([markdown-pdf-export](https://markdown-pdf.matinfo.tech) 2.9.0)
   ships inside the extension and runs with VS Code's own runtime.
 - Small download (about 9 MB): parts of the exporter's dependencies that are never loaded (other
   languages' dates, trace viewer pages, type files) are left out, and a test unpacks the package
