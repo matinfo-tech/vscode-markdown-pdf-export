@@ -49,7 +49,7 @@ export const PDF_KEYS = [
 /** Keys of the front matter that the exporter reads outside `pdf:`. */
 const ROOT_KEYS: Record<string, string> = {
   title: "Document title: printed by {title} in a header or footer.",
-  author: "Author: printed by {author} in a header or footer.",
+  author: "Author printed by {author}. Replaces the author of your settings file; `none` prints no author in this document.",
   pdf: "Page design for this document only. It wins over your settings file.",
 };
 
