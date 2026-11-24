@@ -33,6 +33,12 @@ describe("studioPanelHtml", () => {
     assert.match(html, /<div class="frames"><div id="pdf-pages"[^>]*><\/div><\/div>/);
   });
 
+  it("keeps links to the documentation site as they are", () => {
+    const link = '<a class="help" href="https://markdown-pdf.matinfo.tech/advanced/header-footer" target="_blank" rel="noopener noreferrer">Help</a>';
+    const withLink = studioPanelHtml(index.replace("<h2>Header and footer</h2>", `<h2>Header and footer</h2>${link}`), uris);
+    assert.ok(withLink.includes(link));
+  });
+
   it("opens on the PDF alone when asked", () => {
     assert.match(studioPanelHtml(index, { ...uris, mode: "preview" }), /<body class="mpe-preview">/);
     assert.match(html, /<body class="">/);

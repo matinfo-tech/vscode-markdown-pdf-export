@@ -4,6 +4,8 @@
  * The keys, values and descriptions come from the settings schema shipped with the exporter.
  */
 
+import { docsLink } from "./docs.ts";
+
 /** The part of JSON Schema the settings schema uses. */
 export interface SchemaNode {
   type?: string;
@@ -50,7 +52,7 @@ export const PDF_KEYS = [
 const ROOT_KEYS: Record<string, string> = {
   title: "Document title: printed by {title} in a header or footer.",
   author: "Author printed by {author}. Replaces the author of your settings file; `none` prints no author in this document.",
-  pdf: "Page design for this document only. It wins over your settings file.",
+  pdf: `Page design for this document only. It wins over your settings file.\n\n${docsLink("per-document", "One document, its own design")}`,
 };
 
 export type Context =
@@ -142,6 +144,13 @@ const entryFor = (key: string, node: SchemaNode | undefined, indent: number, ste
   };
 };
 
+/** `header` and `footer` right under `pdf:`: their many options are on one page of the site. */
+function withDocs(path: string[], entry: Suggestion): Suggestion {
+  if (path.length !== 1 || (entry.label !== "header" && entry.label !== "footer")) return entry;
+  const link = docsLink("header-footer-reference", "Header and footer reference");
+  return { ...entry, documentation: entry.documentation ? `${entry.documentation}\n\n${link}` : link };
+}
+
 /** Keys or values to offer for a context. Empty when there is nothing to suggest. */
 export function suggest(schema: Schema, context: Context, step = 2): Suggestion[] {
   if (context.kind === "none") return [];
@@ -159,7 +168,7 @@ export function suggest(schema: Schema, context: Context, step = 2): Suggestion[
       context.path.length === 1
         ? Object.fromEntries(PDF_KEYS.flatMap((k) => (schema.properties?.[k] ? [[k, resolve(schema, schema.properties[k])!]] : [])))
         : (resolve(schema, parent)?.properties ?? {});
-    return Object.entries(children).map(([key, node]) => entryFor(key, node, context.indent, step));
+    return Object.entries(children).map(([key, node]) => withDocs(context.path, entryFor(key, node, context.indent, step)));
   }
   if (context.path.length === 0 || context.path[0] !== "pdf") return [];
   const node = nodeAt(schema, [...context.path, context.key]);

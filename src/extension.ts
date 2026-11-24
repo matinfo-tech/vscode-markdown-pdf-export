@@ -2,7 +2,7 @@ import fs from "node:fs";
 import path from "node:path";
 import * as vscode from "vscode";
 import { exportCommand, installBrowser, type Context } from "./commands/export.ts";
-import { openFolderSettingsFile, openSettingsFile, runDoctor, showMenu, statusBarItem } from "./commands/tools.ts";
+import { openDocs, openFolderSettingsFile, openSettingsFile, runDoctor, showMenu, statusBarItem } from "./commands/tools.ts";
 import { mcpLaunch, registerMcp, type McpLaunch } from "./mcp.ts";
 import { registerFrontMatterCompletion } from "./completion.ts";
 import { siteTrusted, trustSite, watchSchemaTrust } from "./schema-trust.ts";
@@ -59,6 +59,7 @@ export function activate(context: vscode.ExtensionContext): Api {
     vscode.commands.registerCommand("markdownPdfExport.openSettingsFile", () => openSettingsFile(ctx)),
     vscode.commands.registerCommand("markdownPdfExport.openFolderSettingsFile", () => openFolderSettingsFile()),
     vscode.commands.registerCommand("markdownPdfExport.showMenu", () => showMenu()),
+    vscode.commands.registerCommand("markdownPdfExport.openDocs", (topic?: unknown) => openDocs(topic)),
     statusBarItem(),
     registerMcp(context, exporterVersion(context.extensionPath)),
     registerDiagnostics(),

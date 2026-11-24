@@ -4,4 +4,6 @@ Click **Design pages** in the preview panel. Pick a page style, then click any s
 
 Every choice shows on the real PDF at once. Press **Save** to keep the design: it goes to one settings file that the command line and your other editors share.
 
+Each section has a **Help** link. To set every option by hand in the settings file, see the [header and footer reference](https://markdown-pdf.matinfo.tech/reference/header-footer).
+
 [Design pages](command:markdownPdfExport.openStudio)

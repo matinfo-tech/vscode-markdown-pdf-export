@@ -19,7 +19,7 @@ header, footer and page numbers, not an approximation:
 - raw HTML left out for safety and diagrams that could not be drawn are listed in the **Problems**
   panel, on the line that caused them.
 
-**Design pages** and **Export PDF** are at the bottom of the panel.
+**Design pages**, **Export PDF** and **Help** are at the bottom of the panel.
 
 ## Export
 
@@ -58,19 +58,30 @@ pdf:
 `{author}` prints the document's `author:`. To print the same name in every document, add
 `"author": "Jane Smith"` to your settings file; `author: none` in a document leaves it out there.
 
+Every key of the `pdf:` block, with examples:
+[One document, its own design](https://markdown-pdf.matinfo.tech/advanced/per-document).
+
 ## Page design
 
 ![Page style, fonts, header and footer, shown on the PDF as you choose](media/screenshots/design.png)
 
 Click **Design pages** in the preview panel, or run **Markdown PDF: Design Pages**. The page
 style, fonts, paper, header, footer and logos appear with the PDF, and every choice shows on it
-at once. Press **Save** to keep the design.
+at once. Press **Save** to keep the design. Each section has a **Help** link to its page of the
+documentation.
 
 Page style, fonts, header, footer and logos live in one settings file, shared with the
 `markdown-pdf-export` command line and the other editors:
 `~/.config/markdown-pdf-export/settings.json` (`%APPDATA%\markdown-pdf-export\settings.json` on
 Windows). A `.markdown-pdf.json` file in a folder changes them for that folder only.
-See [the documentation](https://markdown-pdf.matinfo.tech).
+
+More in the documentation:
+
+- [Settings file](https://markdown-pdf.matinfo.tech/advanced/settings-file): where it lives and how files are combined.
+- [Header and footer](https://markdown-pdf.matinfo.tech/advanced/header-footer): zones, logos, page numbers and dates.
+- [Header and footer reference](https://markdown-pdf.matinfo.tech/reference/header-footer): every option, placeholder and
+  image setting.
+- [All settings](https://markdown-pdf.matinfo.tech/reference/settings).
 
 To edit the file by hand, run **Markdown PDF: Open Settings File**: VS Code completes and checks
 the setting names as you type. A file saved by **Design pages** names its schema on
@@ -87,6 +98,10 @@ by the extension; there is nothing to set up.
 
 Click **PDF** in the status bar (bottom right, in a Markdown file) → **Check Setup**. It tells you
 which browser and which settings files are used.
+
+**Markdown PDF: Open Documentation** (also in that menu, and **Help** in the PDF panel) opens a
+page of the documentation: header and footer, one document's own design, all settings, and
+[common problems](https://markdown-pdf.matinfo.tech/help).
 
 ## Privacy
 
