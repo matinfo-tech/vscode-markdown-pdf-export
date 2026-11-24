@@ -21,6 +21,8 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
   from the exporter's schema. The preview shows the result as you type.
 - A **walkthrough** (Welcome page, or *Help: Open Walkthrough*) in five steps: preview, design,
   one document, export, check setup.
+- **Default author**: `"author"` in your settings file is printed by `{author}` in documents
+  that set none; `author: none` in a document leaves it out there. Completion offers both.
 - **Problems panel**: raw HTML left out for safety and diagrams that could not be drawn are
   listed on the line that caused them, after a preview or an export.
 - **Export to PDF** command for Markdown files: Command Palette, the button in the editor title,
@@ -35,7 +37,7 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
   VS Code's own.
 - **Open Settings File**, **Open This Folder's Settings File** and **Check Setup** (browser and
   settings files) commands, and a **PDF** item in the status bar that lists everything.
-- No Node.js needed: the exporter ([markdown-pdf-export](https://markdown-pdf.matinfo.tech) 2.7.0)
+- No Node.js needed: the exporter ([markdown-pdf-export](https://markdown-pdf.matinfo.tech) 2.8.0)
   ships inside the extension and runs with VS Code's own runtime.
 - Small download (about 9 MB): parts of the exporter's dependencies that are never loaded (other
   languages' dates, trace viewer pages, type files) are left out, and a test unpacks the package

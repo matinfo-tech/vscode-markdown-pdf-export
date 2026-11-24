@@ -86,3 +86,15 @@ describe("suggest", () => {
     assert.deepEqual(labels(["---", "pdf:", "  nope:", "    ", "---"], 3, 4), []);
   });
 });
+
+describe("author (exporter 2.8.0)", () => {
+  it("the settings schema offers a default author, so settings completion shows it", () => {
+    assert.ok(schema.properties?.author, "settings.schema.json has no author");
+  });
+
+  it("the front matter author hint says it replaces the settings one and accepts none", () => {
+    const author = suggest(schema, contextAt(["---", "", "---"], 1, 0)).find((s) => s.label === "author")!;
+    assert.match(author.documentation ?? "", /settings file/);
+    assert.match(author.documentation ?? "", /none/);
+  });
+});

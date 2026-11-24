@@ -47,12 +47,16 @@ and their values as you type, and the preview shows the result:
 ```yaml
 ---
 title: Quarterly report
+author: Jane Smith
 pdf:
   orientation: landscape
   footer:
     center_text: "Draft, page {page}"
 ---
 ```
+
+`{author}` prints the document's `author:`. To print the same name in every document, add
+`"author": "Jane Smith"` to your settings file; `author: none` in a document leaves it out there.
 
 ## Page design
 
