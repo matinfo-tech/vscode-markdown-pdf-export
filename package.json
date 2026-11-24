@@ -109,6 +109,12 @@
         "command": "markdownPdfExport.showMenu",
         "title": "Show Menu",
         "category": "Markdown PDF"
+      },
+      {
+        "command": "markdownPdfExport.openDocs",
+        "title": "Open Documentation",
+        "category": "Markdown PDF",
+        "icon": "$(book)"
       }
     ],
     "menus": {
@@ -278,7 +284,7 @@
           {
             "id": "document",
             "title": "One document, its own design",
-            "description": "A pdf: block at the top of a file changes only that document, with suggestions as you type.",
+            "description": "A pdf: block at the top of a file changes only that document, with suggestions as you type.\n[Read more](command:markdownPdfExport.openDocs?%5B%22per-document%22%5D)",
             "media": {
               "markdown": "media/walkthrough/document.md"
             }

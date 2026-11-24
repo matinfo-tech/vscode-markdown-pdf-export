@@ -4,7 +4,7 @@
 //    (the server's token never enters the panel);
 //  - its PDF preview is drawn with pdf.js through Studio's `window.studioHost.showPdf` hook,
 //    because a VS Code panel has no built-in PDF viewer;
-//  - two buttons over the preview: show or hide the design controls, and export.
+//  - buttons over the preview: show or hide the design controls, export, and help.
 import * as pdfjs from "pdfjs-dist/legacy/build/pdf.min.mjs";
 
 const vscode = acquireVsCodeApi();
@@ -46,9 +46,16 @@ exportButton.textContent = "Export PDF";
 exportButton.title = "Save the file and write its PDF";
 exportButton.addEventListener("click", () => vscode.postMessage({ type: "export" }));
 
+const docsButton = document.createElement("button");
+docsButton.type = "button";
+docsButton.className = "btn small";
+docsButton.textContent = "Help";
+docsButton.title = "Open the documentation: header, footer, one document's own design, all settings";
+docsButton.addEventListener("click", () => vscode.postMessage({ type: "docs" }));
+
 const bar = document.createElement("div");
 bar.id = "mpe-bar";
-bar.append(modeButton, exportButton);
+bar.append(modeButton, exportButton, docsButton);
 document.querySelector(".desk").append(bar);
 
 // ── /api bridge ─────────────────────────────────────────────────────────────

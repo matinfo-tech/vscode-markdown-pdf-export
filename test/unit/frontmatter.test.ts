@@ -87,6 +87,24 @@ describe("suggest", () => {
   });
 });
 
+describe("links to the documentation", () => {
+  it("pdf: links to the per-document page", () => {
+    const pdf = suggest(schema, contextAt(["---", "", "---"], 1, 0)).find((s) => s.label === "pdf")!;
+    assert.match(pdf.documentation ?? "", /\(https:\/\/markdown-pdf\.matinfo\.tech\/advanced\/per-document\)/);
+  });
+
+  it("header and footer under pdf: link to the reference, other keys do not", () => {
+    const keys = suggest(schema, contextAt(["---", "pdf:", "  ", "---"], 2, 2));
+    for (const label of ["header", "footer"]) {
+      const entry = keys.find((s) => s.label === label)!;
+      assert.match(entry.documentation ?? "", /\(https:\/\/markdown-pdf\.matinfo\.tech\/reference\/header-footer\)/, label);
+    }
+    assert.doesNotMatch(keys.find((s) => s.label === "orientation")?.documentation ?? "", /matinfo/);
+    const zone = suggest(schema, contextAt(["---", "pdf:", "  header:", "    ", "---"], 3, 4));
+    assert.ok(zone.every((s) => !/matinfo/.test(s.documentation ?? "")));
+  });
+});
+
 describe("author (exporter 2.8.0)", () => {
   it("the settings schema offers a default author, so settings completion shows it", () => {
     assert.ok(schema.properties?.author, "settings.schema.json has no author");

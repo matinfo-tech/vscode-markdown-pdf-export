@@ -273,6 +273,8 @@ export async function openStudio(ctx: StudioContext, options: OpenStudioOptions)
         return failed.fire(message.message ?? "");
       }
       if (message.type === "export") return void vscode.commands.executeCommand("markdownPdfExport.export", previewed);
+      // A list of topics, opened by the extension: the panel never names the address to open.
+      if (message.type === "docs") return void vscode.commands.executeCommand("markdownPdfExport.openDocs");
       if (message.type !== "request" || !panel) return;
       note(ctx, `PDF panel → ${String(message.method)} ${String(message.path)}`);
       const reply = (answer: object) => void panel?.webview.postMessage({ type: "response", id: message.id, ...answer });

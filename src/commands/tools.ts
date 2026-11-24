@@ -3,6 +3,7 @@ import path from "node:path";
 import * as vscode from "vscode";
 import { readOptions, toEnv } from "../config.ts";
 import { parseDoctor, summarize, userSettingsFile, type DoctorReport } from "../doctor.ts";
+import { DOCS_TOPICS, docsUrl } from "../docs.ts";
 import { cliPath, errorMessage } from "../engine.ts";
 import { runCli } from "../process.ts";
 import type { Context } from "./export.ts";
@@ -78,6 +79,20 @@ export async function openFolderSettingsFile(): Promise<void> {
   if (pick) await vscode.commands.executeCommand("markdownPdfExport.openProjectStudio");
 }
 
+/** A page of the documentation site in the browser: the one named, or one picked from a list. */
+export async function openDocs(topic?: unknown): Promise<void> {
+  let id = DOCS_TOPICS.some((t) => t.id === topic) ? (topic as string) : undefined;
+  if (!id) {
+    const pick = await vscode.window.showQuickPick(
+      DOCS_TOPICS.map((t) => ({ label: t.label, description: t.detail, id: t.id })),
+      { placeHolder: "Markdown PDF Export documentation", matchOnDescription: true },
+    );
+    if (!pick) return;
+    id = pick.id;
+  }
+  await vscode.env.openExternal(vscode.Uri.parse(docsUrl(id)));
+}
+
 /** Everything the extension does, in one list (status bar item, or the command). */
 export async function showMenu(): Promise<void> {
   const items: (vscode.QuickPickItem & { command: string })[] = [
@@ -89,6 +104,7 @@ export async function showMenu(): Promise<void> {
     { label: "$(json) Open This Folder's Settings File", command: "markdownPdfExport.openFolderSettingsFile" },
     { label: "$(pulse) Check Setup", description: "browser and settings files", command: "markdownPdfExport.runDoctor" },
     { label: "$(output) Show Output", command: "markdownPdfExport.showOutput" },
+    { label: "$(book) Documentation", description: "header, footer, one document's own design, all settings", command: "markdownPdfExport.openDocs" },
   ];
   const pick = await vscode.window.showQuickPick(items, { placeHolder: "Markdown PDF Export" });
   if (pick) await vscode.commands.executeCommand(pick.command);
