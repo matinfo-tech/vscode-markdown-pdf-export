@@ -5,6 +5,7 @@ import { exportCommand, installBrowser, type Context } from "./commands/export.t
 import { openFolderSettingsFile, openSettingsFile, runDoctor, showMenu, statusBarItem } from "./commands/tools.ts";
 import { mcpLaunch, registerMcp, type McpLaunch } from "./mcp.ts";
 import { registerFrontMatterCompletion } from "./completion.ts";
+import { siteTrusted, trustSite, watchSchemaTrust } from "./schema-trust.ts";
 import { problemsOf, registerDiagnostics } from "./diagnostics.ts";
 import { disposeStudio, openStudio, studioEvents, watchDocuments, type StudioEvents } from "./studio.ts";
 
@@ -15,6 +16,7 @@ export interface Api {
   mcpLaunch(): McpLaunch;
   /** The Problems panel entries of a Markdown file. */
   problems(uri: vscode.Uri): readonly vscode.Diagnostic[];
+  schemaTrust: { trusted(): boolean; trust(): Promise<void> };
 }
 
 const markdownUri = (arg: unknown): vscode.Uri | undefined => {
@@ -61,10 +63,11 @@ export function activate(context: vscode.ExtensionContext): Api {
     registerMcp(context, exporterVersion(context.extensionPath)),
     registerDiagnostics(),
     registerFrontMatterCompletion(context.extensionPath),
+    watchSchemaTrust(context.globalState),
     watchDocuments(),
     { dispose: disposeStudio },
   );
-  return { studio: studioEvents, mcpLaunch: () => mcpLaunch(context.extensionPath), problems: problemsOf };
+  return { studio: studioEvents, mcpLaunch: () => mcpLaunch(context.extensionPath), problems: problemsOf, schemaTrust: { trusted: siteTrusted, trust: trustSite } };
 }
 
 export function deactivate(): void {

@@ -69,7 +69,10 @@ Windows). A `.markdown-pdf.json` file in a folder changes them for that folder o
 See [the documentation](https://markdown-pdf.matinfo.tech).
 
 To edit the file by hand, run **Markdown PDF: Open Settings File**: VS Code completes and checks
-the setting names as you type.
+the setting names as you type. A file saved by **Design pages** names its schema on
+markdown-pdf.matinfo.tech (`$schema`); the first time you open one, the extension asks whether
+VS Code may load it from there. A file without `$schema` uses the copy inside the extension, with
+no network connection.
 
 ## Ask your AI assistant
 

@@ -29,7 +29,10 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 - **AI tools**: in Copilot Chat's agent mode, ask *Export this file to PDF* or *Open Studio*. The
   extension offers the exporter's tools to VS Code itself; nothing to configure.
 - Completion and checking while you edit a settings file (`.markdown-pdf.json` or your own
-  `settings.json`), without a network connection.
+  `settings.json`). A file without `$schema` uses the schema inside the extension. For a file
+  that names the online schema (Studio writes it), the extension offers once to let VS Code load
+  it from markdown-pdf.matinfo.tech, adding that site to your trusted schema places and keeping
+  VS Code's own.
 - **Open Settings File**, **Open This Folder's Settings File** and **Check Setup** (browser and
   settings files) commands, and a **PDF** item in the status bar that lists everything.
 - No Node.js needed: the exporter ([markdown-pdf-export](https://markdown-pdf.matinfo.tech) 2.7.0)
