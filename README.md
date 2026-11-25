@@ -3,7 +3,10 @@
 The real PDF beside your Markdown, as you type. Design the header, footer, page numbers and logo
 by clicking, then export.
 
-> **In development.** Not on the Marketplace yet.
+Install it from the
+[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=matinfo-tech.markdown-pdf-export)
+or [Open VSX](https://open-vsx.org/extension/matinfo-tech/markdown-pdf-export) (VSCodium, Cursor and
+other editors), or search for **Markdown PDF Export** in the Extensions view.
 
 ![The real PDF beside the Markdown, drawn as you type](media/screenshots/preview.png)
 

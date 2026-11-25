@@ -6,6 +6,8 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 
 ## [Unreleased]
 
+## [0.1.0] - 2026-11-25
+
 ### Added
 
 - **PDF preview beside your Markdown**: the real PDF, with its pages, header, footer and page
