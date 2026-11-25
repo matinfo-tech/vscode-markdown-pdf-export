@@ -11,6 +11,9 @@ suite("PDF panel", () => {
   const folder = vscode.workspace.workspaceFolders[0].uri.fsPath;
   const md = vscode.Uri.file(path.join(folder, "my doc.md"));
   const other = vscode.Uri.file(path.join(folder, "other one.md"));
+  // A sub-folder with its own design: its .markdown-pdf.json applies to note.md.
+  const designed = path.join(folder, "designed");
+  const note = vscode.Uri.file(path.join(designed, "note.md"));
   let api;
   let original;
 
@@ -33,6 +36,9 @@ suite("PDF panel", () => {
     api = await vscode.extensions.getExtension(ID).activate();
     original = fs.readFileSync(md.fsPath, "utf8");
     fs.writeFileSync(other.fsPath, "# Other one\n\nSecond file.\n");
+    fs.mkdirSync(designed, { recursive: true });
+    fs.writeFileSync(path.join(designed, ".markdown-pdf.json"), '{ "orientation": "landscape" }\n');
+    fs.writeFileSync(note.fsPath, "# Note\n\nIn a folder with its own design.\n");
   });
 
   suiteTeardown(async () => {
@@ -40,6 +46,7 @@ suite("PDF panel", () => {
     await vscode.commands.executeCommand("workbench.action.closeAllEditors");
     fs.writeFileSync(md.fsPath, original);
     fs.rmSync(other.fsPath, { force: true });
+    fs.rmSync(designed, { recursive: true, force: true });
   });
 
   test("draws the real PDF of the Markdown file beside it", async () => {
@@ -73,6 +80,20 @@ suite("PDF panel", () => {
     assert.equal(await followed, 1);
     assert.equal(api.studio.previewed().toString(), other.toString());
     assert.equal(api.problems(other).length, 0);
+  });
+
+  test("edits the folder design that applies to the file in front, and switches back", async () => {
+    assert.equal(api.studio.scope(), "user", "no folder design applies to the file in front yet");
+    const switched = nextPreview("a file in a folder with its own design");
+    await vscode.window.showTextDocument(note, { viewColumn: vscode.ViewColumn.One });
+    assert.ok((await switched) >= 1);
+    assert.equal(api.studio.previewed().toString(), note.toString());
+    assert.equal(api.studio.scope(), `project ${designed}`);
+
+    const back = nextPreview("back to a file without a folder design");
+    await vscode.window.showTextDocument(other, { viewColumn: vscode.ViewColumn.One });
+    assert.ok((await back) >= 1);
+    assert.equal(api.studio.scope(), "user");
   });
 
   test("shows the design controls on request, on the same panel", async () => {

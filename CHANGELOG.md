@@ -6,6 +6,14 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 
 ## [Unreleased]
 
+### Fixed
+
+- **Design pages** edits the design the PDF uses. In a folder with its own `.markdown-pdf.json`
+  (the nearest one, as for export), it used to edit your settings file instead, which that folder
+  file overrides: choices made in the panel did not show on the PDF. The panel switches when the
+  file in front comes under another design, and keeps showing or hiding the design controls.
+  Restricted Mode, where folder files do not apply, still edits your settings file.
+
 ## [0.1.1] - 2026-11-25
 
 ### Changed

@@ -9,6 +9,7 @@ import path from "node:path";
 import { randomBytes } from "node:crypto";
 import * as vscode from "vscode";
 import { readOptions, toEnv } from "./config.ts";
+import { designScope } from "./design-scope.ts";
 import { releaseProblems, showProblems } from "./diagnostics.ts";
 import {
   allowedStudioRequest,
@@ -47,6 +48,8 @@ export interface StudioEvents {
   log(): string;
   /** The Markdown file the panel shows. */
   previewed(): vscode.Uri | undefined;
+  /** Which settings file the panel edits: "user", or "project <folder>" (plus " restricted"). */
+  scope(): string | undefined;
 }
 
 const rendered = new vscode.EventEmitter<number>();
@@ -66,12 +69,19 @@ let previewed: vscode.Uri | undefined;
 /** Version of that document's text in the last preview asked for. */
 let drawnVersion: number | undefined;
 let typingTimer: NodeJS.Timeout | undefined;
+/** For re-opening the panel on another design when the file in front changes. */
+let lastCtx: StudioContext | undefined;
+/** The PDF alone, or with the design controls, as the panel shows it now. */
+let currentMode: OpenStudioOptions["mode"] = "preview";
+/** The panel was opened with "Design Pages for This Folder Only". */
+let askedForProject = false;
 
 export const studioEvents: StudioEvents = {
   onRendered: rendered.event,
   onError: failed.event,
   log: () => notes.join("\n"),
   previewed: () => previewed,
+  scope: () => server?.key,
 };
 
 const same = (a: vscode.Uri | undefined, b: vscode.Uri | undefined) => a?.toString() === b?.toString();
@@ -89,9 +99,27 @@ function setTitle(): void {
   if (panel) panel.title = previewed ? `PDF: ${path.basename(previewed.fsPath)}` : "PDF: sample document";
 }
 
+/**
+ * The server a document needs: the settings file its design comes from, and the panel's trust.
+ * In Restricted Mode folder files do not apply to the PDF, so the panel edits the user's settings.
+ */
+function serverFor(ctx: StudioContext, file: vscode.Uri | undefined, project: boolean) {
+  const folder = (file && vscode.workspace.getWorkspaceFolder(file)) ?? vscode.workspace.workspaceFolders?.[0];
+  const restricted = !vscode.workspace.isTrusted;
+  const scope = designScope({ file: file?.fsPath, askedForProject: project, workspaceDir: folder?.uri.fsPath, trusted: !restricted });
+  const cwd = scope.dir ?? ctx.extensionUri.fsPath;
+  const key = `${scope.project ? `project ${cwd}` : "user"}${restricted ? " restricted" : ""}`;
+  return { scope, restricted, cwd, key };
+}
+
 /** Show another document in the open panel. */
 function follow(uri: vscode.Uri): void {
   if (same(uri, previewed)) return;
+  // Its design comes from another settings file: the panel edits that one instead.
+  if (lastCtx && server && serverFor(lastCtx, uri, askedForProject).key !== server.key) {
+    void openStudio(lastCtx, { file: uri, project: askedForProject, mode: currentMode });
+    return;
+  }
   if (previewed) releaseProblems(previewed);
   previewed = uri;
   drawnVersion = undefined;
@@ -215,7 +243,10 @@ function close(): void {
 export interface OpenStudioOptions {
   /** Markdown file to preview. */
   file?: vscode.Uri;
-  /** Design this folder's .markdown-pdf.json instead of the user's settings. */
+  /**
+   * Design this folder's .markdown-pdf.json instead of the user's settings. Without it the panel
+   * still edits a folder's design when one applies to the document: that is what its PDF uses.
+   */
   project?: boolean;
   /** Show the PDF alone, or with the design controls. */
   mode: "preview" | "design";
@@ -224,14 +255,14 @@ export interface OpenStudioOptions {
 export async function openStudio(ctx: StudioContext, options: OpenStudioOptions): Promise<void> {
   const asked = options.file?.scheme === "file" || options.file?.scheme === "vscode-remote" ? options.file : undefined;
   const file = asked ?? previewed;
-  const folder = (file && vscode.workspace.getWorkspaceFolder(file)) ?? vscode.workspace.workspaceFolders?.[0];
-  if (options.project && !folder) {
+  const { scope, restricted, cwd, key } = serverFor(ctx, file, Boolean(options.project));
+  if (options.project && !scope.project) {
     void vscode.window.showWarningMessage("Open a folder first: a project design is saved in that folder.");
     return;
   }
-  const restricted = !vscode.workspace.isTrusted;
-  const cwd = (options.project && folder?.uri.fsPath) || ctx.extensionUri.fsPath;
-  const key = `${options.project ? `project ${cwd}` : "user"}${restricted ? " restricted" : ""}`;
+  lastCtx = ctx;
+  askedForProject = Boolean(options.project);
+  currentMode = options.mode;
 
   let reload = !panel;
   if (server?.key !== key) {
@@ -239,7 +270,7 @@ export async function openStudio(ctx: StudioContext, options: OpenStudioOptions)
     try {
       server = await vscode.window.withProgress(
         { location: vscode.ProgressLocation.Window, title: "Starting the PDF preview…" },
-        () => startServer(ctx, key, studioArgs({ project: Boolean(options.project), restricted }), cwd),
+        () => startServer(ctx, key, studioArgs({ project: scope.project, restricted }), cwd),
       );
     } catch (error) {
       void vscode.window.showErrorMessage(`The PDF preview could not start: ${error instanceof Error ? error.message : String(error)}`);
@@ -264,9 +295,10 @@ export async function openStudio(ctx: StudioContext, options: OpenStudioOptions)
       clearTimeout(typingTimer);
       close();
     });
-    panel.webview.onDidReceiveMessage(async (message: { type?: string; id?: number; path?: unknown; method?: unknown; contentType?: string; body?: ArrayBuffer | null; pages?: number; message?: string }) => {
+    panel.webview.onDidReceiveMessage(async (message: { type?: string; id?: number; path?: unknown; method?: unknown; contentType?: string; body?: ArrayBuffer | null; pages?: number; message?: string; mode?: string }) => {
       if (message.type === "rendered") return rendered.fire(message.pages ?? 0);
       if (message.type === "ready") return note(ctx, "PDF panel loaded.");
+      if (message.type === "mode") return void (currentMode = message.mode === "design" ? "design" : "preview");
       if (message.type === "panel-error") return note(ctx, `PDF panel: ${message.message}`);
       if (message.type === "render-error") {
         note(ctx, `PDF preview: ${message.message}`);

@@ -78,6 +78,9 @@ Page style, fonts, header, footer and logos live in one settings file, shared wi
 `markdown-pdf-export` command line and the other editors:
 `~/.config/markdown-pdf-export/settings.json` (`%APPDATA%\markdown-pdf-export\settings.json` on
 Windows). A `.markdown-pdf.json` file in a folder changes them for that folder only.
+**Design pages** always edits the design the PDF uses: that folder file when one applies to the
+document in front, your settings file otherwise. **Design Pages for This Folder Only** starts a
+folder design where there is none yet.
 
 More in the documentation:
 

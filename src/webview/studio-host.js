@@ -36,7 +36,12 @@ function setMode(mode) {
   modeButton.textContent = preview ? "Design pages" : "Hide design";
   modeButton.title = preview ? "Choose the page style, fonts, header and footer" : "Show the PDF only";
 }
-modeButton.addEventListener("click", () => setMode(document.body.classList.contains("mpe-preview") ? "design" : "preview"));
+modeButton.addEventListener("click", () => {
+  const mode = document.body.classList.contains("mpe-preview") ? "design" : "preview";
+  setMode(mode);
+  // The extension keeps it when the panel is reloaded for another document.
+  vscode.postMessage({ type: "mode", mode });
+});
 setMode(document.body.classList.contains("mpe-preview") ? "preview" : "design");
 
 const exportButton = document.createElement("button");
