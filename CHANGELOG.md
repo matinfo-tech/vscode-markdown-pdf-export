@@ -6,6 +6,8 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 
 ## [Unreleased]
 
+## [0.1.1] - 2026-11-25
+
 ### Changed
 
 - Easier to find on the Marketplace and Open VSX: more search keywords, and questions go to the

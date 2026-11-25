@@ -2,7 +2,7 @@
   "name": "markdown-pdf-export",
   "displayName": "Markdown PDF Export",
   "description": "The real PDF beside your Markdown, as you type. Design the header, footer, page numbers and logo by clicking, then export.",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "publisher": "matinfo-tech",
   "icon": "media/icon.png",
   "galleryBanner": {
