@@ -5,8 +5,9 @@ by clicking, then export.
 
 Install it from the
 [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=matinfo-tech.markdown-pdf-export)
-or [Open VSX](https://open-vsx.org/extension/matinfo-tech/markdown-pdf-export) (VSCodium, Cursor and
-other editors), or search for **Markdown PDF Export** in the Extensions view.
+or [Open VSX](https://open-vsx.org/extension/matinfo-tech/markdown-pdf-export) (for VSCodium and
+other editors that install from there), or search for **Markdown PDF Export** in the Extensions
+view.
 
 ![The real PDF beside the Markdown, drawn as you type](media/screenshots/preview.png)
 
@@ -91,6 +92,31 @@ the setting names as you type. A file saved by **Design pages** names its schema
 markdown-pdf.matinfo.tech (`$schema`); the first time you open one, the extension asks whether
 VS Code may load it from there. A file without `$schema` uses the copy inside the extension, with
 no network connection.
+
+## Coming from Markdown PDF?
+
+The settings of *Markdown PDF* (`yzane.markdown-pdf`) have a place here too, but in the settings
+file above (or a document's `pdf:` block), not in VS Code's settings:
+
+| Markdown PDF (`markdown-pdf.…`) | Here |
+|---|---|
+| `headerTemplate`, `footerTemplate` (HTML) | `header`, `footer`: text, logo and placeholders such as `{page}` / `{pages}` in three zones, or click them in **Design pages** ([reference](https://markdown-pdf.matinfo.tech/reference/header-footer)) |
+| `displayHeaderFooter` | `display_header_footer` |
+| `format`, `orientation` | `page_format`, `orientation` |
+| `margin.top`, `.bottom`, `.left`, `.right` | `margin.top`, `.bottom`, `.left`, `.right` |
+| `styles` | `stylesheet_path` (one CSS file), or a page style in **Design pages** |
+| `includeDefaultStyles` | `include_default_styles` |
+| `highlight`, `highlightStyle` | `highlight`, `highlight_style` |
+| `breaks`, `emoji` | `breaks`, `emoji` |
+| `math.enabled`, `math.katex.macros` | `math`, `math_options.macros` |
+| `printBackground`, `scale`, `pageRanges` | `print_background`, `scale`, `page_ranges` |
+| `outputDirectory` | `output_directory` |
+| `sanitize` | `sanitize` (`safe` or `none`) |
+| `mermaidServer` | not needed: diagrams are drawn on your computer |
+| `executablePath` | VS Code setting `markdownPdfExport.browser` |
+
+Not here: HTML, PNG and JPEG output (PDF only), convert on save, PlantUML and file includes.
+[All settings](https://markdown-pdf.matinfo.tech/reference/settings).
 
 ## Ask your AI assistant
 

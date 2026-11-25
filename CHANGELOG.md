@@ -6,6 +6,13 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 
 ## [Unreleased]
 
+### Changed
+
+- Easier to find on the Marketplace and Open VSX: more search keywords, and questions go to the
+  GitHub issues.
+- README: a "Coming from Markdown PDF?" table maps the settings of `yzane.markdown-pdf` to this
+  extension's settings file.
+
 ## [0.1.0] - 2026-11-25
 
 ### Added
