@@ -23,6 +23,7 @@
   "bugs": {
     "url": "https://github.com/matinfo-tech/vscode-markdown-pdf-export/issues"
   },
+  "qna": "https://github.com/matinfo-tech/vscode-markdown-pdf-export/issues",
   "engines": {
     "vscode": "^1.101.0"
   },
@@ -34,7 +35,22 @@
     "pdf",
     "export",
     "header",
-    "footer"
+    "footer",
+    "markdown to pdf",
+    "markdown pdf",
+    "pdf export",
+    "pdf preview",
+    "convert",
+    "print",
+    "preview",
+    "page numbers",
+    "logo",
+    "letterhead",
+    "report",
+    "front matter",
+    "mermaid",
+    "math",
+    "katex"
   ],
   "main": "./dist/extension.cjs",
   "activationEvents": [],
