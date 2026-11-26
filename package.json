@@ -2,7 +2,7 @@
   "name": "markdown-pdf-export",
   "displayName": "Markdown PDF Export",
   "description": "The real PDF beside your Markdown, as you type. Design the header, footer, page numbers and logo by clicking, then export.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "publisher": "matinfo-tech",
   "icon": "media/icon.png",
   "galleryBanner": {
@@ -343,7 +343,7 @@
     "test:integration": "npm run build && vscode-test"
   },
   "dependencies": {
-    "markdown-pdf-export": "2.9.0"
+    "markdown-pdf-export": "2.9.1"
   },
   "devDependencies": {
     "@eslint/js": "10.0.1",
