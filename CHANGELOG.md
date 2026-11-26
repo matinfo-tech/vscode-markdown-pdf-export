@@ -6,6 +6,13 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 
 ## [Unreleased]
 
+### Added
+
+- More French: with VS Code in French, messages and their buttons, Check Setup, the Problems
+  entries, the help of `pdf:` suggestions, the list of documentation pages and the buttons over
+  the PDF are in French too. The design controls inside the PDF panel and messages from the PDF
+  engine are still in English.
+
 ## [0.1.3] - 2026-11-26
 
 ### Added

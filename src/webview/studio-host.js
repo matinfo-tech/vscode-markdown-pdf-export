@@ -10,6 +10,15 @@ import * as pdfjs from "pdfjs-dist/legacy/build/pdf.min.mjs";
 const vscode = acquireVsCodeApi();
 const realFetch = window.fetch.bind(window);
 
+// The buttons' text in VS Code's display language, given by the extension (src/studio-html.ts).
+let words = {};
+try {
+  words = JSON.parse(document.querySelector('meta[name="mpe-text"]')?.content ?? "{}");
+} catch {
+  // English, then.
+}
+const say = (english) => words[english] ?? english;
+
 // Problems inside the panel are invisible otherwise: send them to the extension's output.
 const report = (message) => vscode.postMessage({ type: "panel-error", message: String(message) });
 window.addEventListener(
@@ -33,8 +42,8 @@ modeButton.className = "btn small";
 function setMode(mode) {
   const preview = mode === "preview";
   document.body.classList.toggle("mpe-preview", preview);
-  modeButton.textContent = preview ? "Design pages" : "Hide design";
-  modeButton.title = preview ? "Choose the page style, fonts, header and footer" : "Show the PDF only";
+  modeButton.textContent = preview ? say("Design pages") : say("Hide design");
+  modeButton.title = preview ? say("Choose the page style, fonts, header and footer") : say("Show the PDF only");
 }
 modeButton.addEventListener("click", () => {
   const mode = document.body.classList.contains("mpe-preview") ? "design" : "preview";
@@ -47,21 +56,24 @@ setMode(document.body.classList.contains("mpe-preview") ? "preview" : "design");
 const exportButton = document.createElement("button");
 exportButton.type = "button";
 exportButton.className = "btn small";
-exportButton.textContent = "Export PDF";
-exportButton.title = "Save the file and write its PDF";
+exportButton.textContent = say("Export PDF");
+exportButton.title = say("Save the file and write its PDF");
 exportButton.addEventListener("click", () => vscode.postMessage({ type: "export" }));
 
 const docsButton = document.createElement("button");
 docsButton.type = "button";
 docsButton.className = "btn small";
-docsButton.textContent = "Help";
-docsButton.title = "Open the documentation: header, footer, one document's own design, all settings";
+docsButton.textContent = say("Help");
+docsButton.title = say("Open the documentation: header, footer, one document's own design, all settings");
 docsButton.addEventListener("click", () => vscode.postMessage({ type: "docs" }));
 
 const bar = document.createElement("div");
 bar.id = "mpe-bar";
 bar.append(modeButton, exportButton, docsButton);
 document.querySelector(".desk").append(bar);
+// Keep the status text clear of the buttons, whatever the language makes their width.
+const status = document.querySelector(".status");
+if (status) new ResizeObserver(() => (status.style.paddingRight = `${bar.offsetWidth + 24}px`)).observe(bar);
 
 // ── /api bridge ─────────────────────────────────────────────────────────────
 const waiting = new Map();

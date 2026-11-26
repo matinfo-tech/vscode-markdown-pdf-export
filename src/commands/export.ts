@@ -4,6 +4,7 @@ import * as vscode from "vscode";
 import { readOptions, toEnv } from "../config.ts";
 import { problemsOf, showProblems } from "../diagnostics.ts";
 import { cliPath, errorMessage, exportArgs, isNoBrowserError, parseExportResult } from "../engine.ts";
+import { t } from "../l10n.ts";
 import { runCli } from "../process.ts";
 import { studioEvents } from "../studio.ts";
 
@@ -12,6 +13,8 @@ const EXPORT_TIMEOUT_MS = 120_000;
 export interface Context {
   extensionPath: string;
   output: vscode.OutputChannel;
+  /** The extension's package.json as VS Code gives it (command titles in the display language). */
+  packageJSON?: unknown;
 }
 
 /** Markdown files to export: the explorer selection, the clicked file, or the active editor. */
@@ -25,11 +28,11 @@ function targets(clicked?: vscode.Uri, selected?: vscode.Uri[]): vscode.Uri[] {
 /** Save the document if it has unsaved edits; false when it cannot be exported. */
 async function ready(uri: vscode.Uri): Promise<boolean> {
   if (uri.scheme === "untitled") {
-    void vscode.window.showWarningMessage("Save the file first, then export it.");
+    void vscode.window.showWarningMessage(t("Save the file first, then export it."));
     return false;
   }
   if (uri.scheme !== "file" && uri.scheme !== "vscode-remote") {
-    void vscode.window.showWarningMessage(`Cannot export ${uri.toString()}: it is not a file on disk.`);
+    void vscode.window.showWarningMessage(t("Cannot export {0}: it is not a file on disk.", uri.toString()));
     return false;
   }
   const doc = vscode.workspace.textDocuments.find((d) => d.uri.toString() === uri.toString());
@@ -45,17 +48,22 @@ async function openPdf(pdf: string): Promise<void> {
 
 async function showDone(pdf: string, problems: number): Promise<void> {
   const name = path.basename(pdf);
+  const showProblems = t("Show Problems");
+  const open = t("Open PDF");
+  const reveal = t("Show in Folder");
   const choice = problems
     ? await vscode.window.showWarningMessage(
-        `PDF ready: ${name}. ${problems === 1 ? "One thing was" : `${problems} things were`} left out or not drawn.`,
-        "Show Problems",
-        "Open PDF",
-        "Show in Folder",
+        problems === 1
+          ? t("PDF ready: {0}. One thing was left out or not drawn.", name)
+          : t("PDF ready: {0}. {1} things were left out or not drawn.", name, problems),
+        showProblems,
+        open,
+        reveal,
       )
-    : await vscode.window.showInformationMessage(`PDF ready: ${name}`, "Open PDF", "Show in Folder");
-  if (choice === "Show Problems") await vscode.commands.executeCommand("workbench.actions.view.problems");
-  if (choice === "Open PDF") await openPdf(pdf);
-  if (choice === "Show in Folder") await vscode.commands.executeCommand("revealFileInOS", vscode.Uri.file(pdf));
+    : await vscode.window.showInformationMessage(t("PDF ready: {0}", name), open, reveal);
+  if (choice === showProblems) await vscode.commands.executeCommand("workbench.actions.view.problems");
+  if (choice === open) await openPdf(pdf);
+  if (choice === reveal) await vscode.commands.executeCommand("revealFileInOS", vscode.Uri.file(pdf));
 }
 
 /** The text that was just exported: the file is saved, so the editor and the disk agree. */
@@ -71,7 +79,7 @@ function exportedText(uri: vscode.Uri): string {
 
 export async function installBrowser(ctx: Context): Promise<boolean> {
   return vscode.window.withProgress(
-    { location: vscode.ProgressLocation.Notification, title: "Downloading the PDF browser (about 200 MB)", cancellable: true },
+    { location: vscode.ProgressLocation.Notification, title: t("Downloading the PDF browser (about 200 MB)"), cancellable: true },
     async (_progress, token) => {
       const abort = new AbortController();
       token.onCancellationRequested(() => abort.abort());
@@ -83,10 +91,10 @@ export async function installBrowser(ctx: Context): Promise<boolean> {
         onStderr: (d) => ctx.output.append(d),
       });
       if (result.code === 0) {
-        void vscode.window.showInformationMessage("PDF browser installed.");
+        void vscode.window.showInformationMessage(t("PDF browser installed."));
         return true;
       }
-      if (!result.cancelled) void vscode.window.showErrorMessage(`Browser download failed: ${errorMessage(result.stderr)}`);
+      if (!result.cancelled) void vscode.window.showErrorMessage(t("Browser download failed: {0}", errorMessage(result.stderr)));
       return false;
     },
   );
@@ -100,7 +108,7 @@ function getter() {
 export async function exportCommand(ctx: Context, clicked?: vscode.Uri, selected?: vscode.Uri[]): Promise<void> {
   const files = targets(clicked, selected);
   if (files.length === 0) {
-    void vscode.window.showInformationMessage("Open a Markdown file to export it.");
+    void vscode.window.showInformationMessage(t("Open a Markdown file to export it."));
     return;
   }
   const flags = { restricted: !vscode.workspace.isTrusted, remote: Boolean(vscode.env.remoteName) };
@@ -109,7 +117,7 @@ export async function exportCommand(ctx: Context, clicked?: vscode.Uri, selected
   let noBrowser = false;
 
   await vscode.window.withProgress(
-    { location: vscode.ProgressLocation.Notification, title: "Exporting to PDF", cancellable: true },
+    { location: vscode.ProgressLocation.Notification, title: t("Exporting to PDF"), cancellable: true },
     async (progress, token) => {
       const abort = new AbortController();
       token.onCancellationRequested(() => abort.abort());
@@ -142,28 +150,31 @@ export async function exportCommand(ctx: Context, clicked?: vscode.Uri, selected
           noBrowser = true;
           break;
         }
-        const why = result.timedOut ? "It took more than 2 minutes and was stopped." : errorMessage(result.stderr);
-        const pick = await vscode.window.showErrorMessage(`Could not export ${path.basename(file)}: ${why}`, "Show Output");
+        const why = result.timedOut ? t("It took more than 2 minutes and was stopped.") : errorMessage(result.stderr);
+        const pick = await vscode.window.showErrorMessage(t("Could not export {0}: {1}", path.basename(file), why), t("Show Output"));
         if (pick) ctx.output.show(true);
       }
     },
   );
 
   if (noBrowser) {
+    const download = t("Download Browser");
+    const showOutput = t("Show Output");
     const pick = await vscode.window.showErrorMessage(
-      "No Chrome or Edge found to draw the PDF. Install one, or download a private browser for this extension (about 200 MB, once).",
-      "Download browser",
-      "Show Output",
+      t("No Chrome or Edge found to draw the PDF. Install one, or download a private browser for this extension (about 200 MB, once)."),
+      download,
+      showOutput,
     );
-    if (pick === "Show Output") ctx.output.show(true);
-    if (pick === "Download browser" && (await installBrowser(ctx))) await exportCommand(ctx, clicked, selected);
+    if (pick === showOutput) ctx.output.show(true);
+    if (pick === download && (await installBrowser(ctx))) await exportCommand(ctx, clicked, selected);
     return;
   }
   if (done.length === 1 && done[0]) await showDone(done[0], problems);
   else if (done.length > 1) {
+    const showProblems = t("Show Problems");
     const pick = problems
-      ? await vscode.window.showWarningMessage(`${done.length} PDFs ready. Some things were left out or not drawn.`, "Show Problems")
-      : await vscode.window.showInformationMessage(`${done.length} PDFs ready.`);
-    if (pick === "Show Problems") await vscode.commands.executeCommand("workbench.actions.view.problems");
+      ? await vscode.window.showWarningMessage(t("{0} PDFs ready. Some things were left out or not drawn.", done.length), showProblems)
+      : await vscode.window.showInformationMessage(t("{0} PDFs ready.", done.length));
+    if (pick === showProblems) await vscode.commands.executeCommand("workbench.actions.view.problems");
   }
 }

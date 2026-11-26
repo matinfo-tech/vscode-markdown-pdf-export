@@ -131,9 +131,10 @@ page of the documentation: header and footer, one document's own design, all set
 
 ## Languages
 
-English and French. With VS Code's display language set to French, the commands, settings and
-Get Started walkthrough and the status bar's **PDF** menu are in French. Messages, the PDF panel
-and the documentation are in English for now.
+English and French. With VS Code's display language set to French, the extension speaks French:
+commands, settings, the Get Started walkthrough, the **PDF** menu, messages, the Problems
+entries, `pdf:` suggestions and the buttons over the PDF. The design controls inside the PDF
+panel, messages from the PDF engine and the documentation are in English for now.
 
 ## Privacy
 

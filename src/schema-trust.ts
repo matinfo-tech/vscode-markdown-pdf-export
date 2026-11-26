@@ -6,6 +6,7 @@
  * nothing VS Code trusts by itself is lost.
  */
 import * as vscode from "vscode";
+import { t } from "./l10n.ts";
 
 export const SCHEMA_SITE = "https://markdown-pdf.matinfo.tech/schema/";
 const SETTING = "json.schemaDownload.trustedDomains";
@@ -35,13 +36,15 @@ export function watchSchemaTrust(state: vscode.Memento): vscode.Disposable {
     if (asking || !namesOurSchema(doc) || siteTrusted() || state.get(DONT_ASK)) return;
     asking = true;
     try {
+      const allow = t("Allow");
+      const never = t("Don't Ask Again");
       const pick = await vscode.window.showInformationMessage(
-        "This Markdown PDF settings file takes its completion and checks from markdown-pdf.matinfo.tech. Let VS Code load that schema?",
-        "Allow",
-        "Don't Ask Again",
+        t("This Markdown PDF settings file takes its completion and checks from markdown-pdf.matinfo.tech. Let VS Code load that schema?"),
+        allow,
+        never,
       );
-      if (pick === "Allow") await trustSite();
-      if (pick === "Don't Ask Again") await state.update(DONT_ASK, true);
+      if (pick === allow) await trustSite();
+      if (pick === never) await state.update(DONT_ASK, true);
     } finally {
       asking = false;
     }

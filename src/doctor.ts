@@ -1,4 +1,5 @@
 /** Reading the exporter's `doctor --json` report (pure, no `vscode` import). */
+import { t } from "./l10n.ts";
 
 export interface SettingsSource {
   kind: string;
@@ -34,29 +35,33 @@ export interface DoctorSummary {
   lines: string[];
 }
 
-export function summarize(report: DoctorReport): DoctorSummary {
-  const lines = [`Exporter: markdown-pdf-export ${report.version}`];
+/**
+ * @param downloadCommand  the name of the command that downloads a browser, as the Command
+ *   Palette shows it in the display language.
+ */
+export function summarize(report: DoctorReport, downloadCommand = "Markdown PDF: Download PDF Browser"): DoctorSummary {
+  const lines = [t("Exporter: markdown-pdf-export {0}", report.version)];
   const { browser } = report;
   if (browser.available) {
     const which = browser.launch_options?.executablePath ?? browser.launch_options?.channel ?? "Chromium";
-    lines.push(`Browser: ${which}${browser.version ? ` ${browser.version}` : ""}`);
+    lines.push(t("Browser: {0}", `${which}${browser.version ? ` ${browser.version}` : ""}`));
   } else {
-    lines.push("Browser: none found. Install Chrome or Edge, or run “Markdown PDF: Download PDF Browser”.");
+    lines.push(t("Browser: none found. Install Chrome or Edge, or run “{0}”.", downloadCommand));
   }
   const broken: string[] = [];
   for (const source of report.settings_sources) {
-    const label = source.kind === "project" ? "Folder settings" : "Your settings";
+    const label = source.kind === "project" ? t("Folder settings") : t("Your settings");
     if (source.error) {
-      lines.push(`${label}: ${source.path} — not used: ${source.error}`);
+      lines.push(t("{0}: {1} — not used: {2}", label, source.path ?? "", source.error));
       broken.push(source.path ?? label);
-    } else if (source.loaded) lines.push(`${label}: ${source.path}`);
-    else lines.push(`${label}: none yet (${source.path}). Defaults are used.`);
+    } else if (source.loaded) lines.push(t("{0}: {1}", label, source.path ?? ""));
+    else lines.push(t("{0}: none yet ({1}). Defaults are used.", label, source.path ?? ""));
   }
   const ok = browser.available && broken.length === 0;
   const headline = !browser.available
-    ? "No browser found to draw PDFs."
+    ? t("No browser found to draw PDFs.")
     : broken.length
-      ? `A settings file has a mistake and is not used: ${broken.join(", ")}`
-      : "Ready to export.";
+      ? t("A settings file has a mistake and is not used: {0}", broken.join(", "))
+      : t("Ready to export.");
   return { ok, headline, lines };
 }
