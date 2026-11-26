@@ -346,7 +346,7 @@ export async function openStudio(ctx: StudioContext, options: OpenStudioOptions)
   }
   drawnVersion = undefined;
   const index = fs.readFileSync(path.join(studioDir.fsPath, "index.html"), "utf8");
-  const strings = JSON.parse(fs.readFileSync(path.join(studioDir.fsPath, "strings.json"), "utf8")) as string[];
+  const strings = studioStrings(studioDir.fsPath);
   // A new nonce each time also makes VS Code load the page again for the new server.
   panel.webview.html = studioPanelHtml(index, {
     studio: panel.webview.asWebviewUri(studioDir).toString(),
@@ -359,6 +359,15 @@ export async function openStudio(ctx: StudioContext, options: OpenStudioOptions)
     strings,
     language: vscode.l10n.bundle ? vscode.env.language : "en",
   });
+}
+
+/** The exporter's list of Studio's texts (studio/strings.json). Without one, Studio stays in English. */
+function studioStrings(dir: string): string[] {
+  try {
+    return JSON.parse(fs.readFileSync(path.join(dir, "strings.json"), "utf8")) as string[];
+  } catch {
+    return [];
+  }
 }
 
 export function disposeStudio(): void {

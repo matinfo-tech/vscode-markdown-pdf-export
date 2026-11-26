@@ -42,7 +42,7 @@
   "No browser found to draw PDFs.": "Aucun navigateur trouvé pour dessiner les PDF.",
   "A settings file has a mistake and is not used: {0}": "Un fichier de paramètres contient une erreur et n'est pas utilisé : {0}",
   "Ready to export.": "Prêt pour l'export.",
-  "You have no settings file yet ({0}). Design your pages and press Save to create it.": "Vous n'avez pas encore de fichier de paramètres ({0}). Concevez vos pages et appuyez sur Save pour le créer.",
+  "You have no settings file yet ({0}). Design your pages and press Save to create it.": "Vous n'avez pas encore de fichier de paramètres ({0}). Concevez vos pages et appuyez sur Enregistrer pour le créer.",
   "Design Pages": "Concevoir les pages",
   "Create Empty File": "Créer un fichier vide",
   "Could not create the file: {0}": "Impossible de créer le fichier : {0}",

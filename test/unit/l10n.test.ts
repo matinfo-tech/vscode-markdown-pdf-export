@@ -105,6 +105,19 @@ describe("translations", () => {
       }
     });
 
+    it(`${lang} text names the panel's buttons by their translated label`, () => {
+      const texts = [
+        ...Object.values(bundle),
+        ...Object.values(translated),
+        ...walkthroughPages.map((page) => read(`media/walkthrough/${page.replace(/\.md$/, `.nls.${lang}.md`)}`)),
+      ];
+      for (const label of ["Save", "Help", "Design pages", "Export PDF", "Hide design"]) {
+        assert.notEqual(bundle[label], label, `${label} is translated`);
+        const found = texts.filter((text) => new RegExp(String.raw`\b${label}\b`).test(text));
+        assert.deepEqual(found, [], `"${label}" is shown as "${bundle[label]}"`);
+      }
+    });
+
     it(`each walkthrough page has a ${lang} copy with the same command links`, () => {
       for (const page of walkthroughPages) {
         const copy = page.replace(/\.md$/, `.nls.${lang}.md`);
