@@ -30,6 +30,15 @@ suite("export command", () => {
     assert.doesNotMatch(JSON.stringify(manifest.contributes), /"%[\w.]+%"/);
   });
 
+  test("Get Started opens the extension's walkthrough", async () => {
+    await vscode.commands.executeCommand("markdownPdfExport.openWalkthrough");
+    const tab = vscode.window.tabGroups.activeTabGroup.activeTab;
+    assert.ok(tab, "no tab opened");
+    console.log(`walkthrough tab: ${tab.label}`);
+    assert.match(tab.label, /Welcome|Walkthrough|Get started|Markdown PDF/i, `opened: ${tab.label}`);
+    await vscode.commands.executeCommand("workbench.action.closeActiveEditor");
+  });
+
   test("exports a file whose path has spaces to a real PDF", async () => {
     // The success notification waits for a click; do not wait for it.
     void vscode.commands.executeCommand("markdownPdfExport.export", vscode.Uri.file(md));

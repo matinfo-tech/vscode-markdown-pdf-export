@@ -7,6 +7,9 @@ Install it from the [Visual Studio Marketplace](https://marketplace.visualstudio
 
 ![The real PDF beside the Markdown, drawn as you type](media/screenshots/preview.png)
 
+New here? **Markdown PDF: Get Started** in the Command Palette (or **Get Started** in the **PDF**
+menu of the status bar) opens a short tour: preview, design, export.
+
 ## See the PDF while you write
 
 Open a Markdown file and click the preview button at the top right of the editor (or run

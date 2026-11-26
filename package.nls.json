@@ -13,6 +13,7 @@
   "command.runDoctor.title": "Check Setup",
   "command.showMenu.title": "Show Menu",
   "command.openDocs.title": "Open Documentation",
+  "command.openWalkthrough.title": "Get Started",
   "config.settingsFile.markdownDescription": "Path of a settings file to use instead of your own (`~/.config/markdown-pdf-export/settings.json`, or `%APPDATA%\\markdown-pdf-export\\settings.json` on Windows). Leave empty in most cases: page design lives in that one file, shared with the command line and other editors.",
   "config.browser.markdownDescription": "Browser that draws the PDF: `chrome`, `msedge`, `chromium`, or the full path of a browser. Leave empty to use Chrome or Edge when installed.",
   "config.preview.refresh.onType": "Draw the PDF again shortly after you stop typing.",

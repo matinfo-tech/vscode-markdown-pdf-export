@@ -130,6 +130,11 @@
         "title": "%command.openDocs.title%",
         "category": "Markdown PDF",
         "icon": "$(book)"
+      },
+      {
+        "command": "markdownPdfExport.openWalkthrough",
+        "title": "%command.openWalkthrough.title%",
+        "category": "Markdown PDF"
       }
     ],
     "menus": {

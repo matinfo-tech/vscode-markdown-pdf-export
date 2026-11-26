@@ -104,6 +104,7 @@ export async function showMenu(): Promise<void> {
     { label: "$(json) Open This Folder's Settings File", command: "markdownPdfExport.openFolderSettingsFile" },
     { label: "$(pulse) Check Setup", description: "browser and settings files", command: "markdownPdfExport.runDoctor" },
     { label: "$(output) Show Output", command: "markdownPdfExport.showOutput" },
+    { label: "$(rocket) Get Started", description: "a short tour: preview, design, export", command: "markdownPdfExport.openWalkthrough" },
     { label: "$(book) Documentation", description: "header, footer, one document's own design, all settings", command: "markdownPdfExport.openDocs" },
   ];
   const pick = await vscode.window.showQuickPick(items, { placeHolder: "Markdown PDF Export" });
