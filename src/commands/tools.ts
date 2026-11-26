@@ -5,6 +5,7 @@ import { readOptions, toEnv } from "../config.ts";
 import { parseDoctor, summarize, userSettingsFile, type DoctorReport } from "../doctor.ts";
 import { DOCS_TOPICS, docsUrl } from "../docs.ts";
 import { cliPath, errorMessage } from "../engine.ts";
+import { commandTitle } from "../manifest.ts";
 import { runCli } from "../process.ts";
 import type { Context } from "./export.ts";
 
@@ -97,9 +98,7 @@ export async function openDocs(topic?: unknown): Promise<void> {
 export async function showMenu(extension: vscode.Extension<unknown>): Promise<void> {
   // The labels are the command titles VS Code has already put in the display language
   // (package.nls.*.json), so the menu and the Command Palette always say the same thing.
-  const commands = (extension.packageJSON as { contributes?: { commands?: { command: string; title: string }[] } })
-    .contributes?.commands ?? [];
-  const title = (command: string) => commands.find((c) => c.command === command)?.title ?? command;
+  const title = (command: string) => commandTitle(extension.packageJSON, command);
   const entries: { icon: string; command: string; description?: string }[] = [
     { icon: "file-pdf", command: "markdownPdfExport.export" },
     { icon: "open-preview", command: "markdownPdfExport.openPreview", description: vscode.l10n.t("the real PDF, as you type") },
