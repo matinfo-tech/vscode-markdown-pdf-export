@@ -18,8 +18,9 @@ suite("PDF panel", () => {
   let original;
 
   /**
-   * The next preview drawn in the panel: its number of pages. The first one starts the browser,
-   * which can take a minute on a busy CI runner (usually 4 to 20 s), so it is given longer.
+   * The next preview drawn in the panel: its number of pages. The first one starts the browser:
+   * usually 4 to 20 s on CI, up to 28 s seen, and once over 60 s for a reason not yet known. It
+   * is given longer; if it still fails, the panel log below includes what the engine reported.
    */
   const nextPreview = (why, seconds = 30) =>
     new Promise((resolve, reject) => {

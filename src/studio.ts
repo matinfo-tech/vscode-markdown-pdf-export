@@ -56,9 +56,14 @@ const rendered = new vscode.EventEmitter<number>();
 const failed = new vscode.EventEmitter<string>();
 const notes: string[] = [];
 
-function note(ctx: StudioContext, text: string): void {
+/** The panel's recent log, which the integration tests print when no preview arrives. */
+function remember(text: string): void {
   notes.push(text);
   if (notes.length > 200) notes.shift();
+}
+
+function note(ctx: StudioContext, text: string): void {
+  remember(text);
   ctx.output.appendLine(text);
 }
 
@@ -175,6 +180,7 @@ function startServer(ctx: StudioContext, key: string, args: string[], cwd: strin
     child.stderr.on("data", (d: string) => {
       stderr += d;
       ctx.output.append(d);
+      remember(`PDF engine: ${String(d).trimEnd()}`);
     });
     child.on("error", (error) => finish(error));
     child.on("close", () => {
