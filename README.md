@@ -126,6 +126,12 @@ Click **PDF** in the status bar (bottom right, in a Markdown file) → **Check S
 page of the documentation: header and footer, one document's own design, all settings, and
 [common problems](https://markdown-pdf.matinfo.tech/help).
 
+## Languages
+
+English and French. With VS Code's display language set to French, the commands, settings and
+Get Started walkthrough are in French. Messages, the status bar menu, the PDF panel and the
+documentation are in English for now.
+
 ## Privacy
 
 The export runs on your computer. The extension has no telemetry and sends your documents

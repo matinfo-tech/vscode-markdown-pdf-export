@@ -11,6 +11,8 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 - Privacy Policy, Terms of Use, EULA and third-party licenses, shipped with the extension. The
   README's Privacy section now says when the extension goes online: what a document loads from
   the web, and a browser download or the settings schema when you ask for them.
+- French. With VS Code in French, the commands, settings and Get Started walkthrough are in
+  French. Messages, the status bar menu and the PDF panel are still in English.
 
 ## [0.1.2] - 2026-11-26
 

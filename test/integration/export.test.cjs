@@ -23,6 +23,13 @@ suite("export command", () => {
     assert.ok(commands.includes("markdownPdfExport.export"));
   });
 
+  test("its titles come from package.nls.json, not raw %keys%", () => {
+    const manifest = vscode.extensions.getExtension(ID).packageJSON;
+    const exportCommand = manifest.contributes.commands.find((c) => c.command === "markdownPdfExport.export");
+    assert.equal(exportCommand.title, "Export to PDF");
+    assert.doesNotMatch(JSON.stringify(manifest.contributes), /"%[\w.]+%"/);
+  });
+
   test("exports a file whose path has spaces to a real PDF", async () => {
     // The success notification waits for a click; do not wait for it.
     void vscode.commands.executeCommand("markdownPdfExport.export", vscode.Uri.file(md));
