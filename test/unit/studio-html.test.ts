@@ -13,6 +13,8 @@ const uris = {
   cspSource: "https://*.vscode-cdn.net",
   nonce: "abc123",
   mode: "design" as const,
+  strings: JSON.parse(fs.readFileSync("node_modules/markdown-pdf-export/studio/strings.json", "utf8")) as string[],
+  language: "en",
 };
 
 describe("studioPanelHtml", () => {
@@ -49,6 +51,12 @@ describe("studioPanelHtml", () => {
   it("opens on the PDF alone when asked", () => {
     assert.match(studioPanelHtml(index, { ...uris, mode: "preview" }), /<body class="mpe-preview">/);
     assert.match(html, /<body class="">/);
+  });
+
+  it("gives Studio no translation in English, and says the page's language", () => {
+    assert.match(html, /<meta name="mpe-studio-text" content="\{\}">/);
+    assert.match(html, /<html lang="en">/);
+    assert.match(studioPanelHtml(index, { ...uris, language: "fr" }), /<html lang="fr">/);
   });
 
   it("locks the page down: no inline script, nothing from the network", () => {

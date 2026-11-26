@@ -346,6 +346,7 @@ export async function openStudio(ctx: StudioContext, options: OpenStudioOptions)
   }
   drawnVersion = undefined;
   const index = fs.readFileSync(path.join(studioDir.fsPath, "index.html"), "utf8");
+  const strings = JSON.parse(fs.readFileSync(path.join(studioDir.fsPath, "strings.json"), "utf8")) as string[];
   // A new nonce each time also makes VS Code load the page again for the new server.
   panel.webview.html = studioPanelHtml(index, {
     studio: panel.webview.asWebviewUri(studioDir).toString(),
@@ -355,6 +356,8 @@ export async function openStudio(ctx: StudioContext, options: OpenStudioOptions)
     cspSource: panel.webview.cspSource,
     nonce: randomBytes(16).toString("hex"),
     mode: options.mode,
+    strings,
+    language: vscode.l10n.bundle ? vscode.env.language : "en",
   });
 }
 

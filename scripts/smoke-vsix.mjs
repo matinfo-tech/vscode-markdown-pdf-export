@@ -57,6 +57,7 @@ try {
     "node_modules/markdown-pdf-export/studio/index.html",
     "node_modules/markdown-pdf-export/studio/style.css",
     "node_modules/markdown-pdf-export/studio/sample.md",
+    "node_modules/markdown-pdf-export/studio/strings.json",
     "node_modules/markdown-pdf-export/schema/settings.schema.json",
   ]) {
     // vsce stores README, CHANGELOG and LICENSE in lower case or upper case depending on its mood.

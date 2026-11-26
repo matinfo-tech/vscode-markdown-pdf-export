@@ -8,7 +8,7 @@ import { errorMessage } from "../../src/engine.ts";
 import { contextAt, suggest, type Schema } from "../../src/frontmatter.ts";
 import { translate, useTranslations } from "../../src/l10n.ts";
 import { findProblems } from "../../src/problems.ts";
-import { panelText, studioPanelHtml } from "../../src/studio-html.ts";
+import { panelText, studioPanelHtml, studioText } from "../../src/studio-html.ts";
 
 const root = path.join(import.meta.dirname, "..", "..");
 const read = (file: string): string => fs.readFileSync(path.join(root, file), "utf8");
@@ -37,6 +37,9 @@ const runtimeStrings = [
     ),
   ),
 ].sort();
+
+/** Every text the exporter's Studio shows (its studio/strings.json): translated in the panel. */
+const studioStrings = JSON.parse(read("node_modules/markdown-pdf-export/studio/strings.json")) as string[];
 
 /** `{0}`, `{title}`… : what a translation must keep, the same number of times. */
 const tokens = (text: string): string[] => (text.match(/\{[^{}\s]+\}/g) ?? []).sort();
@@ -88,9 +91,10 @@ describe("translations", () => {
       }
     });
 
-    it(`l10n/bundle.l10n.${lang}.json translates exactly the texts of src/`, () => {
+    it(`l10n/bundle.l10n.${lang}.json translates exactly the texts of src/ and of Studio`, () => {
       assert.ok(runtimeStrings.length > 50, `only ${runtimeStrings.length} texts found in src/`);
-      assert.deepEqual(Object.keys(bundle).sort(), runtimeStrings);
+      assert.ok(studioStrings.length > 100, `only ${studioStrings.length} texts in studio/strings.json`);
+      assert.deepEqual(Object.keys(bundle).sort(), [...new Set([...runtimeStrings, ...studioStrings])].sort());
       for (const [key, text] of Object.entries(bundle)) assert.ok(text.trim(), `${lang}: ${key} is empty`);
     });
 
@@ -179,9 +183,34 @@ describe("the pure modules in French", () => {
       cspSource: "c",
       nonce: "n",
       mode: "preview",
+      strings: studioStrings,
+      language: "fr",
     });
     assert.match(html, /aria-label="Aperçu PDF"/);
+    assert.match(html, /<html lang="fr">/);
     assert.match(html, /<meta name="mpe-text" content="[^"]*Concevoir les pages/);
     assert.equal(errorMessage(""), "L'export a échoué.");
+  });
+
+  it("Studio's own texts, and the footer text its layouts write", () => {
+    const table = studioText(studioStrings);
+    assert.equal(table["Design your pages"], "Concevez vos pages");
+    assert.equal(table["Page {page} of {pages}"], "Page {page} sur {pages}");
+    assert.equal(table["{0}: a {1} block at the top of a Markdown file changes only that document."], "{0} : un bloc {1} en tête d'un fichier Markdown ne change que ce document.");
+    assert.ok(!("Compact" in table), "a text the same in French is left out");
+    const html = studioPanelHtml(read("node_modules/markdown-pdf-export/studio/index.html"), {
+      studio: "s",
+      host: "h",
+      app: "a",
+      worker: "w",
+      cspSource: "c",
+      nonce: "n",
+      mode: "design",
+      strings: studioStrings,
+      language: "fr",
+    });
+    const meta = /<meta name="mpe-studio-text" content="([^"]*)">/.exec(html)?.[1] ?? "";
+    const given = JSON.parse(meta.replace(/&quot;/g, '"').replace(/&amp;/g, "&")) as Record<string, string>;
+    assert.deepEqual(given, table);
   });
 });
