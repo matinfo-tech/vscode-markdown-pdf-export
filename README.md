@@ -132,8 +132,8 @@ page of the documentation: header and footer, one document's own design, all set
 ## Languages
 
 English and French. With VS Code's display language set to French, the commands, settings and
-Get Started walkthrough are in French. Messages, the status bar menu, the PDF panel and the
-documentation are in English for now.
+Get Started walkthrough and the status bar's **PDF** menu are in French. Messages, the PDF panel
+and the documentation are in English for now.
 
 ## Privacy
 

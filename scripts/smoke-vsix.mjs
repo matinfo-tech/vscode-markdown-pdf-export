@@ -49,6 +49,7 @@ try {
     "media/walkthrough/setup.nls.fr.md",
     "package.nls.json",
     "package.nls.fr.json",
+    "l10n/bundle.l10n.fr.json",
     "dist/studio-host.js",
     "dist/studio-app.js",
     "dist/pdf.worker.min.js",

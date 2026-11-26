@@ -53,6 +53,7 @@
     "katex"
   ],
   "main": "./dist/extension.cjs",
+  "l10n": "./l10n",
   "activationEvents": [],
   "extensionKind": [
     "workspace"

@@ -11,9 +11,18 @@ const LANGUAGES = ["fr"];
 const english = json("package.nls.json");
 const placeholders = [...read("package.json").matchAll(/"%([\w.]+)%"/g)].map((m) => m[1]);
 const commandLinks = (text: string): string[] => [...text.matchAll(/\(command:[^)]+\)/g)].map((m) => m[0]).sort();
+// The text of every vscode.l10n.t("…") call in src/: the keys of l10n/bundle.l10n.<lang>.json.
+const sourceFiles = fs.readdirSync(path.join(root, "src"), { recursive: true }).map(String).filter((f) => f.endsWith(".ts"));
+const runtimeStrings = [
+  ...new Set(
+    sourceFiles.flatMap((f) =>
+      [...read(`src/${f}`).matchAll(/l10n\.t\(\s*("(?:[^"\\]|\\.)*")/g)].map((m) => JSON.parse(m[1] ?? '""') as string),
+    ),
+  ),
+].sort();
 const walkthroughPages = fs.readdirSync(path.join(root, "media/walkthrough")).filter((f) => /^[a-z]+\.md$/.test(f));
 
-describe("translations of package.json", () => {
+describe("translations", () => {
   it("every %key% of package.json is in package.nls.json, and no key is left unused", () => {
     assert.deepEqual([...new Set(placeholders)].sort(), Object.keys(english).sort());
   });
@@ -32,6 +41,13 @@ describe("translations of package.json", () => {
         assert.deepEqual(commandLinks(other), commandLinks(text), `${lang}: ${key}`);
         assert.deepEqual(other.match(/`[^`]+`/g) ?? [], text.match(/`[^`]+`/g) ?? [], `${lang}: ${key}`);
       }
+    });
+
+    it(`l10n/bundle.l10n.${lang}.json translates exactly the vscode.l10n.t texts of src/`, () => {
+      assert.ok(runtimeStrings.length > 0, "no vscode.l10n.t call found");
+      const bundle = json(`l10n/bundle.l10n.${lang}.json`);
+      assert.deepEqual(Object.keys(bundle).sort(), runtimeStrings);
+      for (const [key, text] of Object.entries(bundle)) assert.ok(text.trim(), `${lang}: ${key} is empty`);
     });
 
     it(`each walkthrough page has a ${lang} copy with the same command links`, () => {
