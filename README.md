@@ -3,11 +3,7 @@
 The real PDF beside your Markdown, as you type. Design the header, footer, page numbers and logo
 by clicking, then export.
 
-Install it from the
-[Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=matinfo-tech.markdown-pdf-export)
-or [Open VSX](https://open-vsx.org/extension/matinfo-tech/markdown-pdf-export) (for VSCodium and
-other editors that install from there), or search for **Markdown PDF Export** in the Extensions
-view.
+Install it from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=matinfo-tech.markdown-pdf-export) or [Open VSX](https://open-vsx.org/extension/matinfo-tech/markdown-pdf-export) (for VSCodium and other editors that install from there), or search for **Markdown PDF Export** in the Extensions view.
 
 ![The real PDF beside the Markdown, drawn as you type](media/screenshots/preview.png)
 
@@ -20,8 +16,7 @@ header, footer and page numbers, not an approximation:
 - it is drawn again shortly after you stop typing, saved or not
   (`markdownPdfExport.preview.refresh` set to `onSave` waits for a save);
 - it follows the Markdown file you bring to the front;
-- raw HTML left out for safety and diagrams that could not be drawn are listed in the **Problems**
-  panel, on the line that caused them.
+- raw HTML left out for safety and diagrams that could not be drawn are listed in the **Problems** panel, on the line that caused them.
 
 **Design pages**, **Export PDF** and **Help** are at the bottom of the panel.
 
@@ -45,8 +40,7 @@ The PDF is written next to the Markdown file.
 
 ## One document, its own design
 
-At the top of a Markdown file, a `pdf:` block changes only that document. VS Code suggests the keys
-and their values as you type, and the preview shows the result:
+At the top of a Markdown file, a `pdf:` block changes only that document. VS Code suggests the keys and their values as you type, and the preview shows the result:
 
 ```yaml
 ---
@@ -93,8 +87,7 @@ More in the documentation:
 To edit the file by hand, run **Markdown PDF: Open Settings File**: VS Code completes and checks
 the setting names as you type. A file saved by **Design pages** names its schema on
 markdown-pdf.matinfo.tech (`$schema`); the first time you open one, the extension asks whether
-VS Code may load it from there. A file without `$schema` uses the copy inside the extension, with
-no network connection.
+VS Code may load it from there. A file without `$schema` uses the copy inside the extension, with no network connection.
 
 ## Coming from Markdown PDF?
 
@@ -123,13 +116,11 @@ Not here: HTML, PNG and JPEG output (PDF only), convert on save, PlantUML and fi
 
 ## Ask your AI assistant
 
-In Copilot Chat's agent mode, ask *Export this file to PDF* or *Open Studio*. The tools are offered
-by the extension; there is nothing to set up.
+In Copilot Chat's agent mode, ask *Export this file to PDF* or *Open Studio*. The tools are offered by the extension; there is nothing to set up.
 
 ## Something not working?
 
-Click **PDF** in the status bar (bottom right, in a Markdown file) → **Check Setup**. It tells you
-which browser and which settings files are used.
+Click **PDF** in the status bar (bottom right, in a Markdown file) → **Check Setup**. It tells you which browser and which settings files are used.
 
 **Markdown PDF: Open Documentation** (also in that menu, and **Help** in the PDF panel) opens a
 page of the documentation: header and footer, one document's own design, all settings, and

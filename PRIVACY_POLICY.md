@@ -75,8 +75,7 @@ servers. Nothing about you or your documents is sent.
 A settings file saved by **Design pages** names its schema on `markdown-pdf.matinfo.tech`. The
 first time you open such a file, the Extension asks whether VS Code may load that schema. If you
 choose **Allow**, the Extension adds `https://markdown-pdf.matinfo.tech/schema/` to VS Code's
-`json.schemaDownload.trustedDomains` setting, and VS Code downloads the schema from there. As with
-any website, the server can see the request (your IP address and the file requested), but
+`json.schemaDownload.trustedDomains` setting, and VS Code downloads the schema from there. As with any website, the server can see the request (your IP address and the file requested), but
 nothing from your documents. A settings file without `$schema` uses the copy inside the Extension.
 
 ### Documentation links
@@ -90,8 +89,8 @@ These services are not run by us and follow their own privacy policies:
 
 - **Visual Studio Marketplace** (Microsoft) and **Open VSX** (Eclipse Foundation), when you
   install or update the Extension
-- **VS Code**, which has its own telemetry settings; the Extension does not send anything through
-  them
+- **VS Code**, which has its own telemetry settings; the Extension does not send anything
+  through them
 - **AI assistants** (such as GitHub Copilot in agent mode): the Extension offers them tools to
   export a file, open Studio or check the setup. When you ask an assistant to use them, what the
   assistant reads and sends to its provider is covered by that assistant's terms and privacy
@@ -100,10 +99,7 @@ These services are not run by us and follow their own privacy policies:
 
 ## Data security
 
-Since we do not collect or receive your data, there is nothing for us to lose or leak. The Studio
-server listens on your computer only and requires a random token for each session. In VS Code's
-Restricted Mode, project settings files are ignored and raw HTML in documents is always made
-safe.
+Since we do not collect or receive your data, there is nothing for us to lose or leak. The Studio server listens on your computer only and requires a random token for each session. In VS Code's Restricted Mode, project settings files are ignored and raw HTML in documents is always made safe.
 
 ## Children
 
@@ -111,14 +107,12 @@ The Extension does not collect information from anyone, children included.
 
 ## Your rights
 
-Data protection laws (such as the GDPR) give you rights over personal data held about you. We hold none through the Extension, so there is nothing to see, correct or
-delete. You can still contact us with any question.
+Data protection laws (such as the GDPR) give you rights over personal data held about you. We hold none through the Extension, so there is nothing to see, correct or delete. You can still contact us with any question.
 
 ## Changes to this policy
 
 If this policy changes, we will update the "Last Updated" date above and publish the new version
-in the [repository](https://github.com/matinfo-tech/vscode-markdown-pdf-export) and with the next
-release of the Extension.
+in the [repository](https://github.com/matinfo-tech/vscode-markdown-pdf-export) and with the next release of the Extension.
 
 ## Contact us
 
@@ -133,4 +127,4 @@ the source code: https://github.com/matinfo-tech/vscode-markdown-pdf-export
 
 ---
 
-Copyright © 2026 Matinfo. The Extension is released under the [MIT License](LICENSE).
+© 2026 Matinfo. The Extension is released under the [MIT License](LICENSE).

@@ -10,17 +10,11 @@ of Use ("Terms"). If you do not agree, do not use the Extension.
 
 ## Description
 
-Markdown PDF Export is a free, open-source extension that shows the PDF of a Markdown file as you
-type, lets you design its pages (header, footer, page numbers, logo, page style) in Studio or the
-**Design pages** panel, and exports it to PDF. It also offers these tools to AI assistants in
-VS Code's agent mode. It is made by Matinfo ("we", "us") and provided "as is", without any
-warranty.
+Markdown PDF Export is a free, open-source extension that shows the PDF of a Markdown file as you type, lets you design its pages (header, footer, page numbers, logo, page style) in Studio or the **Design pages** panel, and exports it to PDF. It also offers these tools to AI assistants in VS Code's agent mode. It is made by Matinfo ("we", "us") and provided "as is", without any warranty.
 
 ## License
 
-The Extension is licensed under the [MIT License](LICENSE). Nothing in these Terms takes away any
-right the MIT License gives you. If these Terms and the MIT License ever disagree about your right
-to use, copy, modify or distribute the software, the MIT License wins.
+The Extension is licensed under the [MIT License](LICENSE). Nothing in these Terms takes away any right the MIT License gives you. If these Terms and the MIT License ever disagree about your right to use, copy, modify or distribute the software, the MIT License wins.
 
 The third-party components inside the Extension keep their own licenses; see
 [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md).
@@ -40,16 +34,12 @@ You agree to use the Extension lawfully. In particular, you agree not to use it 
 
 ## Names
 
-"Markdown PDF Export", "Matinfo" and the Extension's icon identify the official Extension. If you
-publish a modified version, we ask you to give it its own name and icon so it is not mistaken for
-ours. This is a request, not a condition of the MIT License.
+"Markdown PDF Export", "Matinfo" and the Extension's icon identify the official Extension. If you publish a modified version, we ask you to give it its own name and icon so it is not mistaken for ours. This is a request, not a condition of the MIT License.
 
 ## Your content and files
 
-- **You own your content.** Your Markdown files, images, settings and PDFs are yours. We claim no
-  rights to them and never receive them.
-- **You are responsible for your content:** that you have the right to use it, and for what you
-  publish or share as PDF.
+- **You own your content.** Your Markdown files, images, settings and PDFs are yours. We claim no rights to them and never receive them.
+- **You are responsible for your content:** that you have the right to use it, and for what you publish or share as PDF.
 - **What the Extension writes:** the PDF files you export (an existing PDF of the same name is
   replaced), your settings files when you save a design, and logo images you add, copied beside
   the settings file. When Studio is opened in your web browser, it can also change other
@@ -64,8 +54,7 @@ ours. This is a request, not a condition of the MIT License.
 ## Disclaimer of warranties
 
 **THE EXTENSION IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-PURPOSE AND NON-INFRINGEMENT.** In particular, we do not promise that:
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.** In particular, we do not promise that:
 
 - The Extension meets your needs or suits your intended use
 - It is free of errors or works without interruption
@@ -74,9 +63,7 @@ PURPOSE AND NON-INFRINGEMENT.** In particular, we do not promise that:
 
 ## Limitation of liability
 
-**TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, MATINFO AND THE EXTENSION'S CONTRIBUTORS ARE
-NOT LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR EXEMPLARY DAMAGES, OR
-FOR ANY LOSS OF DATA, FILES, PROFITS, REVENUE OR GOODWILL, ARISING FROM:**
+**TO THE MAXIMUM EXTENT PERMITTED BY APPLICABLE LAW, MATINFO AND THE EXTENSION'S CONTRIBUTORS ARE NOT LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, CONSEQUENTIAL OR EXEMPLARY DAMAGES, OR FOR ANY LOSS OF DATA, FILES, PROFITS, REVENUE OR GOODWILL, ARISING FROM:**
 
 - Your use of, or inability to use, the Extension
 - Bugs, errors, defects or security vulnerabilities in the Extension
@@ -112,10 +99,7 @@ the project, and that you have the right to contribute it.
 
 ## Third-party services
 
-The Extension can use third-party software and services: a browser on your computer (Chrome, Edge
-or Chromium), Playwright's download servers when a browser download is requested, the Visual Studio
-Marketplace and Open VSX, and AI assistants you choose to use with it. Your use of them is subject
-to their own terms and privacy policies.
+The Extension can use third-party software and services: a browser on your computer (Chrome, Edge or Chromium), Playwright's download servers when a browser download is requested, the Visual Studio Marketplace and Open VSX, and AI assistants you choose to use with it. Your use of them is subject to their own terms and privacy policies.
 
 ## Export control
 
@@ -130,8 +114,7 @@ necessary, and the rest stays in effect.
 ## Entire agreement
 
 These Terms, together with the [MIT License](LICENSE), the [End User License Agreement](EULA.md)
-and the [Privacy Policy](PRIVACY_POLICY.md), are the whole agreement between you and Matinfo about
-the Extension.
+and the [Privacy Policy](PRIVACY_POLICY.md), are the whole agreement between you and Matinfo about the Extension.
 
 ## Contact
 
@@ -143,4 +126,4 @@ the Extension.
 
 **By using the Extension, you confirm that you have read and agree to these Terms of Use.**
 
-Copyright © 2026 Matinfo. The Extension is released under the [MIT License](LICENSE).
+© 2026 Matinfo. The Extension is released under the [MIT License](LICENSE).

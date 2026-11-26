@@ -1,8 +1,7 @@
 # Third-Party Licenses
 
 Markdown PDF Export is released under the [MIT License](LICENSE). It includes open-source
-software from other authors, listed below with their licenses. The copyright lines are taken from
-each component's own license file.
+software from other authors, listed below with their licenses. The copyright lines are taken from each component's own license file.
 
 Each package under `node_modules/` inside the Extension also ships with its own license file, which is the authoritative text. Components bundled into a single file (pdf.js and Mermaid) have their notices here.
 
@@ -70,10 +69,8 @@ code derived from Puppeteer (Apache-2.0); see `node_modules/playwright-core/NOTI
 
 ## Not included
 
-- **The browser** (Chrome, Edge or Chromium) that draws the PDFs is not part of the Extension. It
-  is either already on your computer or downloaded when you ask, and comes with its own license.
-- **Development tools** (TypeScript, esbuild, ESLint, the VS Code test tools and others) are used
-  to build and test the Extension and are not shipped in it.
+- **The browser** (Chrome, Edge or Chromium) that draws the PDFs is not part of the Extension. It is either already on your computer or downloaded when you ask, and comes with its own license.
+- **Development tools** (TypeScript, esbuild, ESLint, the VS Code test tools and others) are used to build and test the Extension and are not shipped in it.
 
 ---
 

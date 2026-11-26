@@ -4,9 +4,7 @@
 
 ## Agreement
 
-By installing, copying or using the Markdown PDF Export extension ("Extension") for Visual Studio
-Code and editors built on it, you agree to this End User License Agreement ("Agreement"). If you
-do not agree, do not install or use the Extension.
+By installing, copying or using the Markdown PDF Export extension ("Extension") for Visual Studio Code and editors built on it, you agree to this End User License Agreement ("Agreement"). If you do not agree, do not install or use the Extension.
 
 ## License grant
 
@@ -27,8 +25,8 @@ disagree about your right to use, copy, modify or distribute the software, the M
 
 ## What you must do
 
-- Keep the copyright notice and the MIT License text in all copies or substantial portions of the
-  Extension
+- Keep the copyright notice and the MIT License text in all copies or substantial 
+  portions of the Extension
 - Keep the licenses and notices of the third-party components (see
   [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md)) when you distribute them
 - Use the Extension in line with applicable laws and the rights of others (see "Acceptable use"
@@ -37,8 +35,7 @@ disagree about your right to use, copy, modify or distribute the software, the M
 ## No warranty
 
 **THE EXTENSION IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-PURPOSE, NON-INFRINGEMENT, ACCURACY OR RELIABILITY.**
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE, NON-INFRINGEMENT, ACCURACY OR RELIABILITY.**
 
 **THE LICENSOR MAKES NO WARRANTY, IN PARTICULAR, THAT:**
 
@@ -56,8 +53,7 @@ PURPOSE, NON-INFRINGEMENT, ACCURACY OR RELIABILITY.**
 EXTENSION'S CONTRIBUTORS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY (INCLUDING DIRECT,
 INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY OR CONSEQUENTIAL DAMAGES; LOSS OF USE, DATA, FILES OR
 PROFITS; OR BUSINESS INTERRUPTION), WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING
-FROM, OUT OF OR IN CONNECTION WITH THE EXTENSION OR ITS USE, EVEN IF ADVISED OF THE POSSIBILITY OF
-SUCH DAMAGE.**
+FROM, OUT OF OR IN CONNECTION WITH THE EXTENSION OR ITS USE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.**
 
 **WITHOUT LIMITING THE ABOVE, THE LICENSOR IS NOT LIABLE FOR:**
 
@@ -90,8 +86,7 @@ liable for files replaced, lost or damaged while using the Extension.
 
 The Extension includes open-source components from other authors, each under its own license
 (see [THIRD_PARTY_LICENSES.md](THIRD_PARTY_LICENSES.md)). Your use of those components is also
-subject to their licenses. The browser that draws the PDFs (Chrome, Edge or Chromium) is not part
-of the Extension and comes with its own license.
+subject to their licenses. The browser that draws the PDFs (Chrome, Edge or Chromium) is not part of the Extension and comes with its own license.
 
 ## Updates
 
@@ -115,9 +110,7 @@ as necessary, and the remaining provisions stay in effect.
 
 ## Entire agreement
 
-This Agreement, together with the [MIT License](LICENSE), the [Terms of Use](TERMS_OF_USE.md) and
-the [Privacy Policy](PRIVACY_POLICY.md), is the whole agreement between you and Matinfo about the
-Extension.
+This Agreement, together with the [MIT License](LICENSE), the [Terms of Use](TERMS_OF_USE.md) and the [Privacy Policy](PRIVACY_POLICY.md), is the whole agreement between you and Matinfo about the Extension.
 
 ## Contact
 
@@ -129,4 +122,4 @@ Extension.
 
 **By using the Extension, you confirm that you have read and agree to this Agreement.**
 
-Copyright © 2026 Matinfo. The Extension is released under the [MIT License](LICENSE).
+© 2026 Matinfo. The Extension is released under the [MIT License](LICENSE).
