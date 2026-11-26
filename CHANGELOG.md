@@ -11,6 +11,15 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 - Privacy Policy, Terms of Use, EULA and third-party licenses, shipped with the extension. The
   README's Privacy section now says when the extension goes online: what a document loads from
   the web, and a browser download or the settings schema when you ask for them.
+- French. With VS Code in French, the commands, settings and Get Started walkthrough are in
+  French, and so is the status bar's **PDF** menu. Messages and the PDF panel are still in English.
+- **Markdown PDF: Get Started**, also in the status bar's **PDF** menu, opens the Get Started
+  walkthrough. Before, it could only be found from VS Code's Welcome page.
+
+### Fixed
+
+- The **PDF** item in the status bar, the `pdf:` suggestions and the Problems entries now appear as
+  soon as a Markdown file is open. Before, they waited until one of the extension's commands had run.
 
 ## [0.1.2] - 2026-11-26
 

@@ -1,7 +1,7 @@
 {
   "name": "markdown-pdf-export",
   "displayName": "Markdown PDF Export",
-  "description": "The real PDF beside your Markdown, as you type. Design the header, footer, page numbers and logo by clicking, then export.",
+  "description": "%description%",
   "version": "0.1.2",
   "publisher": "matinfo-tech",
   "icon": "media/icon.png",
@@ -53,18 +53,21 @@
     "katex"
   ],
   "main": "./dist/extension.cjs",
-  "activationEvents": [],
+  "l10n": "./l10n",
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
   "extensionKind": [
     "workspace"
   ],
   "capabilities": {
     "virtualWorkspaces": {
       "supported": false,
-      "description": "Exporting reads the Markdown file and its images from disk."
+      "description": "%capabilities.virtualWorkspaces.description%"
     },
     "untrustedWorkspaces": {
       "supported": "limited",
-      "description": "In Restricted Mode, project settings files (.markdown-pdf.json) are ignored and raw HTML is always made safe.",
+      "description": "%capabilities.untrustedWorkspaces.description%",
       "restrictedConfigurations": [
         "markdownPdfExport.settingsFile"
       ]
@@ -74,62 +77,67 @@
     "commands": [
       {
         "command": "markdownPdfExport.export",
-        "title": "Export to PDF",
+        "title": "%command.export.title%",
         "category": "Markdown PDF",
         "icon": "$(file-pdf)"
       },
       {
         "command": "markdownPdfExport.openPreview",
-        "title": "Open PDF Preview to the Side",
+        "title": "%command.openPreview.title%",
         "category": "Markdown PDF",
         "icon": "$(open-preview)"
       },
       {
         "command": "markdownPdfExport.openStudio",
-        "title": "Design Pages",
+        "title": "%command.openStudio.title%",
         "category": "Markdown PDF",
         "icon": "$(paintcan)"
       },
       {
         "command": "markdownPdfExport.openProjectStudio",
-        "title": "Design Pages for This Folder Only",
+        "title": "%command.openProjectStudio.title%",
         "category": "Markdown PDF"
       },
       {
         "command": "markdownPdfExport.installBrowser",
-        "title": "Download PDF Browser",
+        "title": "%command.installBrowser.title%",
         "category": "Markdown PDF"
       },
       {
         "command": "markdownPdfExport.showOutput",
-        "title": "Show Output",
+        "title": "%command.showOutput.title%",
         "category": "Markdown PDF"
       },
       {
         "command": "markdownPdfExport.openSettingsFile",
-        "title": "Open Settings File",
+        "title": "%command.openSettingsFile.title%",
         "category": "Markdown PDF"
       },
       {
         "command": "markdownPdfExport.openFolderSettingsFile",
-        "title": "Open This Folder's Settings File",
+        "title": "%command.openFolderSettingsFile.title%",
         "category": "Markdown PDF"
       },
       {
         "command": "markdownPdfExport.runDoctor",
-        "title": "Check Setup",
+        "title": "%command.runDoctor.title%",
         "category": "Markdown PDF"
       },
       {
         "command": "markdownPdfExport.showMenu",
-        "title": "Show Menu",
+        "title": "%command.showMenu.title%",
         "category": "Markdown PDF"
       },
       {
         "command": "markdownPdfExport.openDocs",
-        "title": "Open Documentation",
+        "title": "%command.openDocs.title%",
         "category": "Markdown PDF",
         "icon": "$(book)"
+      },
+      {
+        "command": "markdownPdfExport.openWalkthrough",
+        "title": "%command.openWalkthrough.title%",
+        "category": "Markdown PDF"
       }
     ],
     "menus": {
@@ -223,13 +231,13 @@
           "type": "string",
           "default": "",
           "scope": "machine-overridable",
-          "markdownDescription": "Path of a settings file to use instead of your own (`~/.config/markdown-pdf-export/settings.json`, or `%APPDATA%\\markdown-pdf-export\\settings.json` on Windows). Leave empty in most cases: page design lives in that one file, shared with the command line and other editors."
+          "markdownDescription": "%config.settingsFile.markdownDescription%"
         },
         "markdownPdfExport.browser": {
           "type": "string",
           "default": "",
           "scope": "machine",
-          "markdownDescription": "Browser that draws the PDF: `chrome`, `msedge`, `chromium`, or the full path of a browser. Leave empty to use Chrome or Edge when installed."
+          "markdownDescription": "%config.browser.markdownDescription%"
         },
         "markdownPdfExport.preview.refresh": {
           "type": "string",
@@ -238,18 +246,18 @@
             "onSave"
           ],
           "enumDescriptions": [
-            "Draw the PDF again shortly after you stop typing.",
-            "Draw the PDF again when the file is saved."
+            "%config.preview.refresh.onType%",
+            "%config.preview.refresh.onSave%"
           ],
           "default": "onType",
           "scope": "window",
-          "description": "When the PDF preview follows your changes."
+          "description": "%config.preview.refresh.description%"
         },
         "markdownPdfExport.debug": {
           "type": "boolean",
           "default": false,
           "scope": "machine",
-          "description": "Write a debug log in the temporary folder."
+          "description": "%config.debug.description%"
         }
       }
     },
@@ -271,13 +279,13 @@
     "walkthroughs": [
       {
         "id": "markdownPdfExport.start",
-        "title": "Get started with Markdown PDF Export",
-        "description": "See the real PDF beside your Markdown, design its header and footer, and export.",
+        "title": "%walkthrough.title%",
+        "description": "%walkthrough.description%",
         "steps": [
           {
             "id": "preview",
-            "title": "See the real PDF while you write",
-            "description": "Open a Markdown file, then open the preview beside it.\n[Open the PDF preview](command:markdownPdfExport.openPreview)",
+            "title": "%walkthrough.preview.title%",
+            "description": "%walkthrough.preview.description%",
             "media": {
               "markdown": "media/walkthrough/preview.md"
             },
@@ -287,8 +295,8 @@
           },
           {
             "id": "design",
-            "title": "Design your header and footer",
-            "description": "Page style, fonts, header, footer and logo, shown on the PDF as you choose.\n[Design pages](command:markdownPdfExport.openStudio)",
+            "title": "%walkthrough.design.title%",
+            "description": "%walkthrough.design.description%",
             "media": {
               "markdown": "media/walkthrough/design.md"
             },
@@ -298,16 +306,16 @@
           },
           {
             "id": "document",
-            "title": "One document, its own design",
-            "description": "A pdf: block at the top of a file changes only that document, with suggestions as you type.\n[Read more](command:markdownPdfExport.openDocs?%5B%22per-document%22%5D)",
+            "title": "%walkthrough.document.title%",
+            "description": "%walkthrough.document.description%",
             "media": {
               "markdown": "media/walkthrough/document.md"
             }
           },
           {
             "id": "export",
-            "title": "Export",
-            "description": "One key press writes the PDF next to the Markdown.\n[Export this file](command:markdownPdfExport.export)",
+            "title": "%walkthrough.export.title%",
+            "description": "%walkthrough.export.description%",
             "media": {
               "markdown": "media/walkthrough/export.md"
             },
@@ -317,8 +325,8 @@
           },
           {
             "id": "setup",
-            "title": "Something not working?",
-            "description": "Check the browser and the settings files in use.\n[Check setup](command:markdownPdfExport.runDoctor)",
+            "title": "%walkthrough.setup.title%",
+            "description": "%walkthrough.setup.description%",
             "media": {
               "markdown": "media/walkthrough/setup.md"
             },

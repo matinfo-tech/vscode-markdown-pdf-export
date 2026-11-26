@@ -7,6 +7,9 @@ Install it from the [Visual Studio Marketplace](https://marketplace.visualstudio
 
 ![The real PDF beside the Markdown, drawn as you type](media/screenshots/preview.png)
 
+New here? **Markdown PDF: Get Started** in the Command Palette (or **Get Started** in the **PDF**
+menu of the status bar) opens a short tour: preview, design, export.
+
 ## See the PDF while you write
 
 Open a Markdown file and click the preview button at the top right of the editor (or run
@@ -125,6 +128,12 @@ Click **PDF** in the status bar (bottom right, in a Markdown file) → **Check S
 **Markdown PDF: Open Documentation** (also in that menu, and **Help** in the PDF panel) opens a
 page of the documentation: header and footer, one document's own design, all settings, and
 [common problems](https://markdown-pdf.matinfo.tech/help).
+
+## Languages
+
+English and French. With VS Code's display language set to French, the commands, settings and
+Get Started walkthrough and the status bar's **PDF** menu are in French. Messages, the PDF panel
+and the documentation are in English for now.
 
 ## Privacy
 

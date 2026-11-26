@@ -5,6 +5,7 @@ import { readOptions, toEnv } from "../config.ts";
 import { parseDoctor, summarize, userSettingsFile, type DoctorReport } from "../doctor.ts";
 import { DOCS_TOPICS, docsUrl } from "../docs.ts";
 import { cliPath, errorMessage } from "../engine.ts";
+import { commandTitle } from "../manifest.ts";
 import { runCli } from "../process.ts";
 import type { Context } from "./export.ts";
 
@@ -94,19 +95,24 @@ export async function openDocs(topic?: unknown): Promise<void> {
 }
 
 /** Everything the extension does, in one list (status bar item, or the command). */
-export async function showMenu(): Promise<void> {
-  const items: (vscode.QuickPickItem & { command: string })[] = [
-    { label: "$(file-pdf) Export to PDF", command: "markdownPdfExport.export" },
-    { label: "$(open-preview) Open PDF Preview to the Side", description: "the real PDF, as you type", command: "markdownPdfExport.openPreview" },
-    { label: "$(paintcan) Design Pages", description: "style, fonts, header, footer, logo", command: "markdownPdfExport.openStudio" },
-    { label: "$(folder) Design Pages for This Folder Only", command: "markdownPdfExport.openProjectStudio" },
-    { label: "$(json) Open Settings File", command: "markdownPdfExport.openSettingsFile" },
-    { label: "$(json) Open This Folder's Settings File", command: "markdownPdfExport.openFolderSettingsFile" },
-    { label: "$(pulse) Check Setup", description: "browser and settings files", command: "markdownPdfExport.runDoctor" },
-    { label: "$(output) Show Output", command: "markdownPdfExport.showOutput" },
-    { label: "$(book) Documentation", description: "header, footer, one document's own design, all settings", command: "markdownPdfExport.openDocs" },
+export async function showMenu(extension: vscode.Extension<unknown>): Promise<void> {
+  // The labels are the command titles VS Code has already put in the display language
+  // (package.nls.*.json), so the menu and the Command Palette always say the same thing.
+  const title = (command: string) => commandTitle(extension.packageJSON, command);
+  const entries: { icon: string; command: string; description?: string }[] = [
+    { icon: "file-pdf", command: "markdownPdfExport.export" },
+    { icon: "open-preview", command: "markdownPdfExport.openPreview", description: vscode.l10n.t("the real PDF, as you type") },
+    { icon: "paintcan", command: "markdownPdfExport.openStudio", description: vscode.l10n.t("style, fonts, header, footer, logo") },
+    { icon: "folder", command: "markdownPdfExport.openProjectStudio" },
+    { icon: "json", command: "markdownPdfExport.openSettingsFile" },
+    { icon: "json", command: "markdownPdfExport.openFolderSettingsFile" },
+    { icon: "pulse", command: "markdownPdfExport.runDoctor", description: vscode.l10n.t("browser and settings files") },
+    { icon: "output", command: "markdownPdfExport.showOutput" },
+    { icon: "rocket", command: "markdownPdfExport.openWalkthrough", description: vscode.l10n.t("a short tour: preview, design, export") },
+    { icon: "book", command: "markdownPdfExport.openDocs", description: vscode.l10n.t("header, footer, one document's own design, all settings") },
   ];
-  const pick = await vscode.window.showQuickPick(items, { placeHolder: "Markdown PDF Export" });
+  const items = entries.map((e) => ({ label: `$(${e.icon}) ${title(e.command)}`, description: e.description, command: e.command }));
+  const pick = await vscode.window.showQuickPick(items, { placeHolder: "Markdown PDF Export", matchOnDescription: true });
   if (pick) await vscode.commands.executeCommand(pick.command);
 }
 
@@ -114,7 +120,7 @@ export async function showMenu(): Promise<void> {
 export function statusBarItem(): vscode.Disposable {
   const item = vscode.window.createStatusBarItem(vscode.StatusBarAlignment.Right, 90);
   item.text = "$(file-pdf) PDF";
-  item.tooltip = "Markdown PDF Export: export, preview, design pages, settings";
+  item.tooltip = vscode.l10n.t("Markdown PDF Export: export, preview, design pages, settings");
   item.command = "markdownPdfExport.showMenu";
   const update = () => (vscode.window.activeTextEditor?.document.languageId === "markdown" ? item.show() : item.hide());
   update();

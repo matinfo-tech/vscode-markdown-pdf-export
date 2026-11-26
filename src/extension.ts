@@ -58,8 +58,11 @@ export function activate(context: vscode.ExtensionContext): Api {
     vscode.commands.registerCommand("markdownPdfExport.runDoctor", () => runDoctor(ctx)),
     vscode.commands.registerCommand("markdownPdfExport.openSettingsFile", () => openSettingsFile(ctx)),
     vscode.commands.registerCommand("markdownPdfExport.openFolderSettingsFile", () => openFolderSettingsFile()),
-    vscode.commands.registerCommand("markdownPdfExport.showMenu", () => showMenu()),
+    vscode.commands.registerCommand("markdownPdfExport.showMenu", () => showMenu(context.extension)),
     vscode.commands.registerCommand("markdownPdfExport.openDocs", (topic?: unknown) => openDocs(topic)),
+    vscode.commands.registerCommand("markdownPdfExport.openWalkthrough", () =>
+      vscode.commands.executeCommand("workbench.action.openWalkthrough", `${context.extension.id}#markdownPdfExport.start`, false),
+    ),
     statusBarItem(),
     registerMcp(context, exporterVersion(context.extensionPath)),
     registerDiagnostics(),
