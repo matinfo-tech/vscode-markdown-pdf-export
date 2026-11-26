@@ -17,14 +17,20 @@ suite("PDF panel", () => {
   let api;
   let original;
 
-  /** The next preview drawn in the panel: its number of pages. */
-  const nextPreview = (why) =>
+  /**
+   * The next preview drawn in the panel: its number of pages. The first one starts the browser,
+   * which can take a minute on a busy CI runner (usually 4 to 20 s), so it is given longer.
+   */
+  const nextPreview = (why, seconds = 30) =>
     new Promise((resolve, reject) => {
       const done = [
         api.studio.onRendered((pages) => finish(resolve, pages)),
         api.studio.onError((message) => finish(reject, new Error(`preview failed (${why}): ${message}`))),
       ];
-      const timer = setTimeout(() => finish(reject, new Error(`no preview after 30 s (${why}). Panel log:\n${api.studio.log()}`)), 30_000);
+      const timer = setTimeout(
+        () => finish(reject, new Error(`no preview after ${seconds} s (${why}). Panel log:\n${api.studio.log()}`)),
+        seconds * 1000,
+      );
       const finish = (settle, value) => {
         clearTimeout(timer);
         for (const d of done) d.dispose();
@@ -51,7 +57,7 @@ suite("PDF panel", () => {
 
   test("draws the real PDF of the Markdown file beside it", async () => {
     await vscode.window.showTextDocument(md, { viewColumn: vscode.ViewColumn.One });
-    const first = nextPreview("opening the panel");
+    const first = nextPreview("opening the panel", 90);
     await vscode.commands.executeCommand("markdownPdfExport.openPreview", md);
     assert.ok((await first) >= 1, "no page drawn");
     assert.equal(api.studio.previewed().toString(), md.toString());
