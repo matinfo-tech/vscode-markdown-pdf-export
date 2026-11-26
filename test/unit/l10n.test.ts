@@ -55,7 +55,7 @@ describe("translations", () => {
 
   it("no message or button is shown in English only, and buttons are compared with their translated text", () => {
     const found = sources.flatMap(({ file, code }) =>
-      [...code.matchAll(/show(?:Information|Warning|Error)Message\(\s*[`"']|\b(?:pick|choice) === [`"']|location: [^,]+, title: [`"']/g)].map(
+      [...code.matchAll(/show(?:Information|Warning|Error)Message\(\s*[`"']|\b(?:pick|choice) [!=]== [`"']|location: [^,]+, title: [`"']/g)].map(
         (m) => `src/${file}:${lineOf(code, m.index)}: ${m[0]}`,
       ),
     );
