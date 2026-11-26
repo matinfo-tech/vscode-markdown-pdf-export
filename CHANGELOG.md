@@ -6,6 +6,8 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 
 ## [Unreleased]
 
+## [0.1.4] - 2026-11-26
+
 ### Added
 
 - More French: with VS Code in French, messages and their buttons, Check Setup, the Problems
