@@ -137,7 +137,9 @@ page of the documentation: header and footer, one document's own design, all set
 
 ## Privacy
 
-The export runs on your computer and sends nothing anywhere.
+The export runs on your computer. The extension has no telemetry and sends your documents
+nowhere. It goes online only for what a document or its styles load from the web (such as an
+image link), and when you ask it to download a browser or allow the settings schema. Details in the [Privacy Policy](PRIVACY_POLICY.md).
 
 ## Development
 
@@ -151,4 +153,5 @@ To try the extension in a new VS Code window: `npm run build && code --extension
 
 ## License
 
-MIT
+[MIT](LICENSE). See also the [Terms of Use](TERMS_OF_USE.md), the [EULA](EULA.md) and the
+[third-party licenses](THIRD_PARTY_LICENSES.md).
