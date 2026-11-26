@@ -6,8 +6,13 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 
 ## [Unreleased]
 
+## [0.1.2] - 2026-11-26
+
 ### Fixed
 
+- Maths prints in KaTeX's own fonts: `\mathbb{R}`, `\mathcal` letters and large brackets were
+  drawn in a fallback font (exporter
+  [markdown-pdf-export](https://markdown-pdf.matinfo.tech) 2.9.1).
 - **Design pages** edits the design the PDF uses. In a folder with its own `.markdown-pdf.json`
   (the nearest one, as for export), it used to edit your settings file instead, which that folder
   file overrides: choices made in the panel did not show on the PDF. The panel switches when the
