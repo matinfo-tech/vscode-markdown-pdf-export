@@ -15,6 +15,16 @@ suite("front matter completion", () => {
   suiteSetup(() => vscode.extensions.getExtension(ID).activate());
   suiteTeardown(() => vscode.commands.executeCommand("workbench.action.closeAllEditors"));
 
+  test("offers title, author and pdf on an empty line of the front matter", async () => {
+    for (const [text, line, character] of [
+      ["---\n\n---\n", 1, 0],
+      ["---\nti\n---\n", 1, 2],
+    ]) {
+      const labels = await complete(text, line, character);
+      for (const key of ["title", "author", "pdf"]) assert.ok(labels.includes(key), `${key} in ${labels.join(",")} for ${JSON.stringify(text)}`);
+    }
+  });
+
   test("offers the pdf: keys of one document", async () => {
     const labels = await complete("---\ntitle: T\npdf:\n  \n---\n\n# T\n", 3, 2);
     for (const key of ["orientation", "header", "footer", "margin", "toc"]) assert.ok(labels.includes(key), `${key} in ${labels.join(",")}`);

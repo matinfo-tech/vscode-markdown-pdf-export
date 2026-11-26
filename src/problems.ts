@@ -2,6 +2,7 @@
  * What an export or a preview had to change, and where that is in the Markdown text.
  * Pure (no `vscode` import): the extension turns the result into entries of the Problems panel.
  */
+import { t } from "./l10n.ts";
 
 /** As printed by `cli.mjs <file> --json` and sent in Studio's X-Preview-Report header. */
 export interface Report {
@@ -75,7 +76,7 @@ export function findProblems(text: string, report: Report): Problem[] {
   const firstLine = (message: string) => problems.push({ line: 0, start: 0, end: lines[0]?.length ?? 0, message });
 
   for (const label of report.removed_html) {
-    const message = `${label} is left out of the PDF: raw HTML is made safe.`;
+    const message = t("{0} is left out of the PDF: raw HTML is made safe.", label);
     const find = pattern(label);
     let found = false;
     for (const n of find ? prose : []) {
@@ -89,7 +90,7 @@ export function findProblems(text: string, report: Report): Problem[] {
 
   for (const error of report.diagram_errors) {
     const numbered = /^Diagram (\d+): ([\s\S]*)$/.exec(error);
-    const message = `This diagram is printed as code in the PDF: ${(numbered?.[2] ?? error).trim()}`;
+    const message = t("This diagram is printed as code in the PDF: {0}", (numbered?.[2] ?? error).trim());
     const line = numbered ? diagrams[Number(numbered[1]) - 1] : undefined;
     if (line === undefined) firstLine(message);
     else problems.push({ line, start: 0, end: lines[line]!.length, message });

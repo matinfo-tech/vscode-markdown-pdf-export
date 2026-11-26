@@ -3,6 +3,27 @@
  * Pure: the unit tests run it on the real file of the pinned exporter, so an exporter update
  * that changes the page breaks a test, not the panel.
  */
+import { t } from "./l10n.ts";
+
+/**
+ * The text of the buttons the panel adds over the PDF (src/webview/studio-host.js), in the
+ * display language. The script inside the panel cannot translate: it gets this table, keyed by
+ * the English text, in a <meta name="mpe-text"> tag.
+ */
+export function panelText(): Record<string, string> {
+  return {
+    "Design pages": t("Design pages"),
+    "Hide design": t("Hide design"),
+    "Choose the page style, fonts, header and footer": t("Choose the page style, fonts, header and footer"),
+    "Show the PDF only": t("Show the PDF only"),
+    "Export PDF": t("Export PDF"),
+    "Save the file and write its PDF": t("Save the file and write its PDF"),
+    Help: t("Help"),
+    "Open the documentation: header, footer, one document's own design, all settings": t(
+      "Open the documentation: header, footer, one document's own design, all settings",
+    ),
+  };
+}
 export interface StudioPageUris {
   /** Folder of the exporter's studio/ files, as a panel URI (no trailing slash). */
   studio: string;
@@ -48,7 +69,7 @@ body {
 /* The PDF: a scrolling column of pages drawn by pdf.js. */
 #pdf-pages { position: absolute; inset: 0; overflow: hidden auto; scrollbar-gutter: stable; background: var(--desk); padding: 12px; }
 #pdf-pages canvas { display: block; margin: 0 auto 12px; max-width: 100%; background: #fff; box-shadow: 0 1px 4px rgba(0, 0, 0, .25); }
-/* Two buttons at the end of the status line, clear of the page. */
+/* The buttons at the end of the status line, clear of the page (the script widens the gap for longer words). */
 #mpe-bar { position: absolute; right: 10px; bottom: 4px; z-index: 2; display: flex; gap: 6px; }
 #mpe-bar .btn { padding: 3px 9px; font-size: 12px; }
 .status { min-height: 34px; padding-right: 210px; box-sizing: border-box; }
@@ -92,7 +113,7 @@ export function studioPanelHtml(indexHtml: string, uris: StudioPageUris): string
   html = swap(
     html,
     '<meta charset="utf-8">',
-    `<meta charset="utf-8">\n<meta http-equiv="Content-Security-Policy" content="${escapeAttr(csp)}">\n<meta name="mpe-pdf-worker" content="${escapeAttr(worker)}">`,
+    `<meta charset="utf-8">\n<meta http-equiv="Content-Security-Policy" content="${escapeAttr(csp)}">\n<meta name="mpe-pdf-worker" content="${escapeAttr(worker)}">\n<meta name="mpe-text" content="${escapeAttr(JSON.stringify(panelText()))}">`,
     "charset meta",
   );
   html = swap(
@@ -112,7 +133,7 @@ export function studioPanelHtml(indexHtml: string, uris: StudioPageUris): string
   html = swap(
     html,
     /<div class="frames">\s*<iframe\b[^>]*><\/iframe>\s*<iframe\b[^>]*><\/iframe>\s*<\/div>/,
-    '<div class="frames"><div id="pdf-pages" tabindex="0" role="document" aria-label="PDF preview"></div></div>',
+    `<div class="frames"><div id="pdf-pages" tabindex="0" role="document" aria-label="${escapeAttr(t("PDF preview"))}"></div></div>`,
     "pair of preview frames",
   );
   if (/<iframe\b/i.test(html)) throw new Error("Studio page: a viewer frame is left that the panel cannot show.");

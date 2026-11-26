@@ -1,5 +1,6 @@
 /** Pure helpers around the exporter's command line (no `vscode` import, testable with node --test). */
 import path from "node:path";
+import { t } from "./l10n.ts";
 import { toReport, type Report } from "./problems.ts";
 
 /** Where `cli.mjs` lives inside the installed extension. */
@@ -93,7 +94,7 @@ export function withPreviewSource(body: Uint8Array | null | undefined, source: P
   } catch {
     parsed = null;
   }
-  if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error("The preview request is not valid.");
+  if (parsed === null || typeof parsed !== "object" || Array.isArray(parsed)) throw new Error(t("The preview request is not valid."));
   const rest = { ...(parsed as Record<string, unknown>) };
   delete rest.source;
   return new TextEncoder().encode(JSON.stringify(source ? { ...rest, source } : rest));
@@ -111,5 +112,5 @@ export function errorMessage(stderr: string): string {
   const lines = stderr.split(/\r?\n/).map((l) => l.trim()).filter(Boolean);
   const own = lines.filter((l) => l.startsWith("markdown-pdf-export:"));
   const text = (own.length ? own : lines).join("\n");
-  return text.replace(/^markdown-pdf-export:\s*/gm, "") || "The export failed.";
+  return text.replace(/^markdown-pdf-export:\s*/gm, "") || t("The export failed.");
 }

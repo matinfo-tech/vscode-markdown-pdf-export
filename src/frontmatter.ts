@@ -5,6 +5,7 @@
  */
 
 import { docsLink } from "./docs.ts";
+import { t } from "./l10n.ts";
 
 /** The part of JSON Schema the settings schema uses. */
 export interface SchemaNode {
@@ -48,12 +49,12 @@ export const PDF_KEYS = [
   "display_header_footer",
 ];
 
-/** Keys of the front matter that the exporter reads outside `pdf:`. */
-const ROOT_KEYS: Record<string, string> = {
-  title: "Document title: printed by {title} in a header or footer.",
-  author: "Author printed by {author}. Replaces the author of your settings file; `none` prints no author in this document.",
-  pdf: `Page design for this document only. It wins over your settings file.\n\n${docsLink("per-document", "One document, its own design")}`,
-};
+/** Keys of the front matter that the exporter reads outside `pdf:`, in the display language. */
+const rootKeys = (): Record<string, string> => ({
+  title: t("Document title: printed by {title} in a header or footer."),
+  author: t("Author printed by {author}. Replaces the author of your settings file; `none` prints no author in this document."),
+  pdf: `${t("Page design for this document only. It wins over your settings file.")}\n\n${docsLink("per-document", t("One document, its own design"))}`,
+});
 
 export type Context =
   | { kind: "none" }
@@ -139,7 +140,7 @@ const entryFor = (key: string, node: SchemaNode | undefined, indent: number, ste
   return {
     label: key,
     insert: object ? `${key}:\n${pad}` : `${key}: `,
-    detail: object ? "block" : (node?.type ?? undefined),
+    detail: object ? t("block") : (node?.type ?? undefined),
     ...(node?.description ? { documentation: node.description } : {}),
   };
 };
@@ -147,7 +148,7 @@ const entryFor = (key: string, node: SchemaNode | undefined, indent: number, ste
 /** `header` and `footer` right under `pdf:`: their many options are on one page of the site. */
 function withDocs(path: string[], entry: Suggestion): Suggestion {
   if (path.length !== 1 || (entry.label !== "header" && entry.label !== "footer")) return entry;
-  const link = docsLink("header-footer-reference", "Header and footer reference");
+  const link = docsLink("header-footer-reference", t("Header and footer reference"));
   return { ...entry, documentation: entry.documentation ? `${entry.documentation}\n\n${link}` : link };
 }
 
@@ -156,7 +157,7 @@ export function suggest(schema: Schema, context: Context, step = 2): Suggestion[
   if (context.kind === "none") return [];
   if (context.kind === "key") {
     if (context.path.length === 0) {
-      return Object.entries(ROOT_KEYS).map(([key, documentation]) => ({
+      return Object.entries(rootKeys()).map(([key, documentation]) => ({
         label: key,
         insert: key === "pdf" ? `pdf:\n${" ".repeat(context.indent + step)}` : `${key}: `,
         documentation,

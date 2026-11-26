@@ -5,6 +5,7 @@ import { exportCommand, installBrowser, type Context } from "./commands/export.t
 import { openDocs, openFolderSettingsFile, openSettingsFile, runDoctor, showMenu, statusBarItem } from "./commands/tools.ts";
 import { mcpLaunch, registerMcp, type McpLaunch } from "./mcp.ts";
 import { registerFrontMatterCompletion } from "./completion.ts";
+import { useTranslations } from "./l10n.ts";
 import { siteTrusted, trustSite, watchSchemaTrust } from "./schema-trust.ts";
 import { problemsOf, registerDiagnostics } from "./diagnostics.ts";
 import { disposeStudio, openStudio, studioEvents, watchDocuments, type StudioEvents } from "./studio.ts";
@@ -36,8 +37,10 @@ function exporterVersion(extensionPath: string): string {
 }
 
 export function activate(context: vscode.ExtensionContext): Api {
+  // Before anything shows text: VS Code's translations for its display language, if any.
+  useTranslations(vscode.l10n.bundle);
   const output = vscode.window.createOutputChannel("Markdown PDF Export");
-  const ctx: Context = { extensionPath: context.extensionPath, output };
+  const ctx: Context = { extensionPath: context.extensionPath, output, packageJSON: context.extension.packageJSON };
   const studio = { extensionUri: context.extensionUri, output };
   context.subscriptions.push(
     output,

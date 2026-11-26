@@ -21,6 +21,7 @@ import {
   type PreviewSource,
   type StudioLink,
 } from "./engine.ts";
+import { t } from "./l10n.ts";
 import { parseReportHeader } from "./problems.ts";
 import { killTree, spawnCli } from "./process.ts";
 import { studioPanelHtml } from "./studio-html.ts";
@@ -101,7 +102,7 @@ function refresh(): void {
 }
 
 function setTitle(): void {
-  if (panel) panel.title = previewed ? `PDF: ${path.basename(previewed.fsPath)}` : "PDF: sample document";
+  if (panel) panel.title = previewed ? t("PDF: {0}", path.basename(previewed.fsPath)) : t("PDF: sample document");
 }
 
 /**
@@ -163,13 +164,13 @@ function startServer(ctx: StudioContext, key: string, args: string[], cwd: strin
     let settled = false;
     const timer = setTimeout(() => {
       stop();
-      finish(new Error("The PDF engine took too long to start."));
+      finish(new Error(t("The PDF engine took too long to start.")));
     }, START_TIMEOUT_MS);
     const finish = (error: Error | null, link?: StudioLink) => {
       if (settled) return;
       settled = true;
       clearTimeout(timer);
-      if (error || !link) reject(error ?? new Error("The PDF engine did not start."));
+      if (error || !link) reject(error ?? new Error(t("The PDF engine did not start.")));
       else resolve({ ...link, key, stop });
     };
     child.stdout.on("data", (d: string) => {
@@ -263,7 +264,7 @@ export async function openStudio(ctx: StudioContext, options: OpenStudioOptions)
   const file = asked ?? previewed;
   const { scope, restricted, cwd, key } = serverFor(ctx, file, Boolean(options.project));
   if (options.project && !scope.project) {
-    void vscode.window.showWarningMessage("Open a folder first: a project design is saved in that folder.");
+    void vscode.window.showWarningMessage(t("Open a folder first: a project design is saved in that folder."));
     return;
   }
   lastCtx = ctx;
@@ -275,11 +276,11 @@ export async function openStudio(ctx: StudioContext, options: OpenStudioOptions)
     close();
     try {
       server = await vscode.window.withProgress(
-        { location: vscode.ProgressLocation.Window, title: "Starting the PDF preview…" },
+        { location: vscode.ProgressLocation.Window, title: t("Starting the PDF preview…") },
         () => startServer(ctx, key, studioArgs({ project: scope.project, restricted }), cwd),
       );
     } catch (error) {
-      void vscode.window.showErrorMessage(`The PDF preview could not start: ${error instanceof Error ? error.message : String(error)}`);
+      void vscode.window.showErrorMessage(t("The PDF preview could not start: {0}", error instanceof Error ? error.message : String(error)));
       return;
     }
     reload = true;
@@ -317,7 +318,7 @@ export async function openStudio(ctx: StudioContext, options: OpenStudioOptions)
       note(ctx, `PDF panel → ${String(message.method)} ${String(message.path)}`);
       const reply = (answer: object) => void panel?.webview.postMessage({ type: "response", id: message.id, ...answer });
       if (!server || !allowedStudioRequest(message.path, message.method)) {
-        return reply({ status: 403, headers: { "content-type": "application/json" }, body: new TextEncoder().encode('{"error":"Not available in VS Code."}') });
+        return reply({ status: 403, headers: { "content-type": "application/json" }, body: new TextEncoder().encode(JSON.stringify({ error: t("Not available in VS Code.") })) });
       }
       const request = { path: message.path, method: message.method as string, contentType: message.contentType, body: message.body };
       try {
