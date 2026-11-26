@@ -18,6 +18,13 @@ try {
   // English, then.
 }
 const say = (english) => words[english] ?? english;
+// Studio's own texts, for its `window.studioHost.text` hook (set below).
+let studioWords = {};
+try {
+  studioWords = JSON.parse(document.querySelector('meta[name="mpe-studio-text"]')?.content ?? "{}");
+} catch {
+  // English, then.
+}
 
 // Problems inside the panel are invisible otherwise: send them to the extension's output.
 const report = (message) => vscode.postMessage({ type: "panel-error", message: String(message) });
@@ -211,6 +218,8 @@ async function draw(blob, fresh) {
 }
 
 window.studioHost = {
+  /** Studio's texts in VS Code's display language, keyed by the English text. */
+  text: studioWords,
   /** Called by Studio with each new preview. */
   async showPdf(blob) {
     lastBlob = blob;

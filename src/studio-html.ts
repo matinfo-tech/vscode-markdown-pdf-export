@@ -3,7 +3,7 @@
  * Pure: the unit tests run it on the real file of the pinned exporter, so an exporter update
  * that changes the page breaks a test, not the panel.
  */
-import { t } from "./l10n.ts";
+import { t, translate } from "./l10n.ts";
 
 /**
  * The text of the buttons the panel adds over the PDF (src/webview/studio-host.js), in the
@@ -24,6 +24,15 @@ export function panelText(): Record<string, string> {
     ),
   };
 }
+/**
+ * Studio's own texts in the display language, for `window.studioHost.text` (the exporter's
+ * studio/app.mjs). `strings` is the exporter's studio/strings.json: every text Studio shows, in
+ * English. Only those with a translation are given; Studio shows the others in English.
+ */
+export function studioText(strings: readonly string[]): Record<string, string> {
+  return Object.fromEntries(strings.map((english) => [english, translate(english)]).filter(([english, text]) => text !== english));
+}
+
 export interface StudioPageUris {
   /** Folder of the exporter's studio/ files, as a panel URI (no trailing slash). */
   studio: string;
@@ -38,6 +47,10 @@ export interface StudioPageUris {
   nonce: string;
   /** What the panel shows first: the PDF alone, or the PDF with the design controls. */
   mode: "preview" | "design";
+  /** The exporter's studio/strings.json, translated into the page with studioText(). */
+  strings: readonly string[];
+  /** The page's language: VS Code's display language when the extension is translated into it. */
+  language: string;
 }
 
 /** Styles for what the panel changes. */
@@ -98,7 +111,7 @@ function swap(html: string, find: string | RegExp, replacement: string, what: st
 }
 
 export function studioPanelHtml(indexHtml: string, uris: StudioPageUris): string {
-  const { studio, host, app, worker, cspSource, nonce, mode } = uris;
+  const { studio, host, app, worker, cspSource, nonce, mode, strings, language } = uris;
   const csp = [
     "default-src 'none'",
     `style-src ${cspSource} 'nonce-${nonce}'`,
@@ -113,7 +126,7 @@ export function studioPanelHtml(indexHtml: string, uris: StudioPageUris): string
   html = swap(
     html,
     '<meta charset="utf-8">',
-    `<meta charset="utf-8">\n<meta http-equiv="Content-Security-Policy" content="${escapeAttr(csp)}">\n<meta name="mpe-pdf-worker" content="${escapeAttr(worker)}">\n<meta name="mpe-text" content="${escapeAttr(JSON.stringify(panelText()))}">`,
+    `<meta charset="utf-8">\n<meta http-equiv="Content-Security-Policy" content="${escapeAttr(csp)}">\n<meta name="mpe-pdf-worker" content="${escapeAttr(worker)}">\n<meta name="mpe-text" content="${escapeAttr(JSON.stringify(panelText()))}">\n<meta name="mpe-studio-text" content="${escapeAttr(JSON.stringify(studioText(strings)))}">`,
     "charset meta",
   );
   html = swap(
@@ -128,6 +141,8 @@ export function studioPanelHtml(indexHtml: string, uris: StudioPageUris): string
     `<script type="module" src="${escapeAttr(host)}"></script>\n<script type="module" src="${escapeAttr(app)}"></script>`,
     "app script",
   );
+  // Studio writes numbers in the page's language ("1,8 s" in French).
+  html = swap(html, '<html lang="en">', `<html lang="${escapeAttr(language)}">`, "html tag");
   html = swap(html, "<body>", `<body class="${mode === "preview" ? "mpe-preview" : ""}">`, "body tag");
   // Studio's two viewer frames give way to one element, filled through its showPdf hook.
   html = swap(

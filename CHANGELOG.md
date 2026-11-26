@@ -6,6 +6,19 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 
 ## [Unreleased]
 
+### Added
+
+- The design controls in the PDF panel are in French too, with VS Code in French: page style,
+  fonts, paper, header and footer, **Enregistrer**. The starting layouts and the "Page 1 sur 9"
+  chip write the footer in French (`Page {page} sur {pages}`); a layout saved in English is still
+  recognised. Still in English: messages from the PDF engine and the documentation.
+
+### Fixed
+
+- In the design controls, a logo spot with no image yet no longer shows the word "null", and a
+  long page style name wraps inside its card instead of running into the next one in a narrow
+  panel (exporter [markdown-pdf-export](https://markdown-pdf.matinfo.tech) 2.10.1).
+
 ## [0.1.4] - 2026-11-26
 
 ### Added
