@@ -16,6 +16,11 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 - **Markdown PDF: Get Started**, also in the status bar's **PDF** menu, opens the Get Started
   walkthrough. Before, it could only be found from VS Code's Welcome page.
 
+### Fixed
+
+- The **PDF** item in the status bar, the `pdf:` suggestions and the Problems entries now appear as
+  soon as a Markdown file is open. Before, they waited until one of the extension's commands had run.
+
 ## [0.1.2] - 2026-11-26
 
 ### Fixed

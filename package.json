@@ -54,7 +54,9 @@
   ],
   "main": "./dist/extension.cjs",
   "l10n": "./l10n",
-  "activationEvents": [],
+  "activationEvents": [
+    "onLanguage:markdown"
+  ],
   "extensionKind": [
     "workspace"
   ],
