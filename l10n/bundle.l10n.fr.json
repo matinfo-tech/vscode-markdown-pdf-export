@@ -237,5 +237,5 @@
   "{0}: a {1} block at the top of a Markdown file changes only that document.": "{0} : un bloc {1} en tête d'un fichier Markdown ne change que ce document.",
   "{0}: empty": "{0} : vide",
   "{0}: every option, placeholder and image setting, for the settings file.": "{0} : chaque option, variable et réglage d'image, pour le fichier de paramètres.",
-  "{0}: text": "{0} : texte"
+  "{0} text": "Texte : {0}"
 }
