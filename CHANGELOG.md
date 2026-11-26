@@ -6,6 +6,12 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 
 ## [Unreleased]
 
+### Added
+
+- Privacy Policy, Terms of Use, EULA and third-party licenses, shipped with the extension. The
+  README's Privacy section now says when the extension goes online: what a document loads from
+  the web, and a browser download or the settings schema when you ask for them.
+
 ## [0.1.2] - 2026-11-26
 
 ### Fixed
