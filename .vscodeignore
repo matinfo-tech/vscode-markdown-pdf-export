@@ -18,6 +18,8 @@ PLAN.md
 scripts/**
 # Sample documents and scripts for recording the README's GIFs.
 demo/**
+# For translators, on GitHub.
+l10n/README.md
 # Shown in the README from GitHub; not needed inside the extension.
 media/screenshots/**
 media/recordings/**
