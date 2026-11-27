@@ -16,6 +16,8 @@ eslint.config.mjs
 PLAN.md
 .vscode-test.mjs
 scripts/**
+# For translators, on GitHub.
+l10n/README.md
 # Shown in the README from GitHub; not needed inside the extension.
 media/screenshots/**
 media/recordings/**
