@@ -16,6 +16,8 @@ eslint.config.mjs
 PLAN.md
 .vscode-test.mjs
 scripts/**
+# Sample documents and scripts for recording the README's GIFs.
+demo/**
 # Shown in the README from GitHub; not needed inside the extension.
 media/screenshots/**
 media/recordings/**

@@ -8,8 +8,8 @@ export default tseslint.config(
   ...tseslint.configs.recommended,
   { rules: { "@typescript-eslint/no-unused-vars": ["error", { argsIgnorePattern: "^_" }] } },
   { files: ["*.mjs"], languageOptions: { globals: globals.node } },
-  // Dev scripts also hold code that Playwright runs inside the page.
-  { files: ["scripts/**/*.mjs"], languageOptions: { globals: { ...globals.node, ...globals.browser } } },
+  // Dev scripts and the demo recording scripts also hold code that Playwright runs inside the page.
+  { files: ["scripts/**/*.mjs", "demo/recording/*.mjs"], languageOptions: { globals: { ...globals.node, ...globals.browser } } },
   {
     // The Studio panel's script runs in a VS Code webview (a browser page).
     files: ["src/webview/**/*.js"],
