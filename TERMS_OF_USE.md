@@ -26,7 +26,7 @@ You agree to use the Extension lawfully. In particular, you agree not to use it 
 2. **Infringe rights:** infringe intellectual property, privacy or other rights of others, or handle confidential or personal data you are not allowed to handle
 3. **Spread harmful code:** create or distribute viruses, malware or other harmful code
 4. **Attack systems:** attempt to gain unauthorised access to any system or network
-5. **Mislead:** present a modified version as the official Extension, or misrepresent youraffiliation with Matinfo
+5. **Mislead:** present a modified version as the official Extension, or misrepresent your affiliation with Matinfo
 
 ## Names
 
