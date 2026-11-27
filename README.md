@@ -25,6 +25,7 @@ Tables, diagrams, maths, alerts: it all shows in the preview and prints in the P
 - **Emoji**: `:tada:` shortcodes and emoji typed directly.
 - **Footnotes**, numbered and collected at the end with links back.
 - **Code blocks**, coloured by language.
+- **Heading IDs**: every heading gets an id, so `[the results](#results)` jumps to it in the PDF.
 - **Table of contents**: `[[toc]]` on its own line (`toc: true`).
 - **Page breaks**: `<div class="page-break"></div>` or `<!-- page-break -->`.
 
@@ -74,16 +75,27 @@ header, footer and page numbers, not an approximation:
 
 **Design pages**, **Export PDF** and **Help** are at the bottom of the panel.
 
-## Export
+## Right-click to export, preview or design
 
-Open a Markdown file, then any of:
+![Export to PDF, Open PDF Preview to the Side and Design Pages in the right-click menu](media/screenshots/right-click.png)
 
-- press **Cmd+K Cmd+E** (Mac) or **Ctrl+K Ctrl+E** (Windows, Linux);
-- click the PDF button at the top right of the editor;
-- right-click the file (in the editor or the Explorer) → **Export to PDF**;
-- Command Palette → **Markdown PDF: Export to PDF**.
+Right-click a Markdown file, in the editor, on its tab or in the Explorer:
 
-The PDF is written next to the Markdown file.
+- **Export to PDF** writes the PDF next to the Markdown file. Shortcut: **Cmd+K Cmd+E** (Mac) or
+  **Ctrl+K Ctrl+E** (Windows, Linux).
+- **Open PDF Preview to the Side** opens the live PDF.
+- **Design Pages** opens the page design beside the PDF.
+
+The same commands are in the buttons at the top right of the editor :
+
+![Export to PDF, Open PDF Preview to the Side and Design Pages in the top right](media/screenshots/top-right.png)
+
+or in the **PDF** menu of the status bar, and in the Command Palette under **Markdown PDF**.
+
+
+## Ask your AI assistant
+
+An other simple way to ask your AI assistant to export a Markdown file to PDF is to use Copilot Chat's agent mode. In this mode, ask *Export this file to PDF* or *Open Studio*. The tools are offered by the extension; there is nothing to set up.
 
 ## One document, its own design
 
@@ -116,10 +128,6 @@ Install it from the [Visual Studio Marketplace](https://marketplace.visualstudio
   browser for itself (about 200 MB, once).
 - Nothing else: no Node.js, no terminal. The exporter,
   [markdown-pdf-export](https://markdown-pdf.matinfo.tech), ships inside the extension.
-
-## Ask your AI assistant
-
-In Copilot Chat's agent mode, ask *Export this file to PDF* or *Open Studio*. The tools are offered by the extension; there is nothing to set up.
 
 ## Something not working?
 

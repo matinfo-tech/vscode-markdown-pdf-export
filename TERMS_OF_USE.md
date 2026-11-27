@@ -4,9 +4,7 @@
 
 ## Acceptance of terms
 
-Welcome to Markdown PDF Export. By downloading, installing or using the Markdown PDF Export
-extension ("Extension") for Visual Studio Code and editors built on it, you agree to these Terms
-of Use ("Terms"). If you do not agree, do not use the Extension.
+Welcome to Markdown PDF Export. By downloading, installing or using the Markdown PDF Export extension ("Extension") for Visual Studio Code and editors built on it, you agree to these Terms of Use ("Terms"). If you do not agree, do not use the Extension.
 
 ## Description
 
@@ -25,12 +23,10 @@ You agree to use the Extension lawfully. In particular, you agree not to use it 
 
 1. **Break the law:** create, process or distribute material in a way that violates any
    applicable law or regulation
-2. **Infringe rights:** infringe intellectual property, privacy or other rights of others, or
-   handle confidential or personal data you are not allowed to handle
+2. **Infringe rights:** infringe intellectual property, privacy or other rights of others, or handle confidential or personal data you are not allowed to handle
 3. **Spread harmful code:** create or distribute viruses, malware or other harmful code
 4. **Attack systems:** attempt to gain unauthorised access to any system or network
-5. **Mislead:** present a modified version as the official Extension, or misrepresent your
-   affiliation with Matinfo
+5. **Mislead:** present a modified version as the official Extension, or misrepresent youraffiliation with Matinfo
 
 ## Names
 
@@ -40,21 +36,15 @@ You agree to use the Extension lawfully. In particular, you agree not to use it 
 
 - **You own your content.** Your Markdown files, images, settings and PDFs are yours. We claim no rights to them and never receive them.
 - **You are responsible for your content:** that you have the right to use it, and for what you publish or share as PDF.
-- **What the Extension writes:** the PDF files you export (an existing PDF of the same name is
-  replaced), your settings files when you save a design, and logo images you add, copied beside
-  the settings file. When Studio is opened in your web browser, it can also change other
-  editors' configuration files, only for the setup steps you click. It does not change your
-  Markdown files.
-- **Keep backups.** Use version control (such as Git) or keep copies of files you care about. We
-  are not responsible for files replaced, lost or damaged while using the Extension.
+- **What the Extension writes:** the PDF files you export (an existing PDF of the same name is replaced), your settings files when you save a design, and logo images you add, copied beside the settings file. When Studio is opened in your web browser, it can also change other editors' configuration files, only for the setup steps you click. It does not change your Markdown files.
+- **Keep backups.** Use version control (such as Git) or keep copies of files you care about. We are not responsible for files replaced, lost or damaged while using the Extension.
 - **Check your PDFs.** Before you rely on or share a PDF, check that it looks right.
 - **Raw HTML:** by default, unsafe HTML in documents is removed. If you turn this off
   (`"sanitize": "none"`), only do so for documents you trust.
 
 ## Disclaimer of warranties
 
-**THE EXTENSION IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
-IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.** In particular, we do not promise that:
+**THE EXTENSION IS PROVIDED "AS IS" AND "AS AVAILABLE", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NON-INFRINGEMENT.** In particular, we do not promise that:
 
 - The Extension meets your needs or suits your intended use
 - It is free of errors or works without interruption
@@ -69,33 +59,22 @@ IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS
 - Bugs, errors, defects or security vulnerabilities in the Extension
 - Files replaced, lost or damaged while using the Extension
 - Incompatibility with VS Code, other extensions, browsers or operating systems
-- Third-party software, services or content (including browsers, the extension marketplaces,
-  AI assistants and websites your documents link to)
+- Third-party software, services or content (including browsers, the extension marketplaces, AI assistants and websites your documents link to)
 - Changes to, or the end of, the Extension
 
-**THE EXTENSION IS FREE. TO THE EXTENT ANY LIABILITY CANNOT BE EXCLUDED, IT IS LIMITED TO THE
-AMOUNT YOU PAID FOR THE EXTENSION, WHICH IS ZERO.**
+**THE EXTENSION IS FREE. TO THE EXTENT ANY LIABILITY CANNOT BE EXCLUDED, IT IS LIMITED TO THE AMOUNT YOU PAID FOR THE EXTENSION, WHICH IS ZERO.**
 
-Some jurisdictions do not allow certain warranties or liabilities to be excluded or limited. In
-those jurisdictions, the exclusions and limits above apply as far as the law allows, and nothing
-in these Terms limits liability that cannot be limited by law (for example for intent or gross
-negligence where the law requires it).
+Some jurisdictions do not allow certain warranties or liabilities to be excluded or limited. In those jurisdictions, the exclusions and limits above apply as far as the law allows, and nothing in these Terms limits liability that cannot be limited by law (for example for intent or gross negligence where the law requires it).
 
 ## Changes to the Extension and to these Terms
 
-We may change, update or stop developing the Extension at any time, and we have no obligation to
-provide support or updates. Updates may add, change or remove features.
+We may change, update or stop developing the Extension at any time, and we have no obligation to provide support or updates. Updates may add, change or remove features.
 
-We may update these Terms. We will update the "Last Updated" date and publish the new version in
-the [repository](https://github.com/matinfo-tech/vscode-markdown-pdf-export) and with the next
-release. Using a release published after a change means you accept the updated Terms for that
-release.
+We may update these Terms. We will update the "Last Updated" date and publish the new version in the [repository](https://github.com/matinfo-tech/vscode-markdown-pdf-export) and with the next release. Using a release published after a change means you accept the updated Terms for that release.
 
 ## Contributions
 
-The Extension is open source. If you contribute code, documentation or other material to the
-repository, you agree that your contribution is licensed under the MIT License, like the rest of
-the project, and that you have the right to contribute it.
+The Extension is open source. If you contribute code, documentation or other material to the repository, you agree that your contribution is licensed under the MIT License, like the rest of the project, and that you have the right to contribute it.
 
 ## Third-party services
 
@@ -103,18 +82,15 @@ The Extension can use third-party software and services: a browser on your compu
 
 ## Export control
 
-You are responsible for complying with the export control laws that apply to you when you use or
-distribute the Extension.
+You are responsible for complying with the export control laws that apply to you when you use or distribute the Extension.
 
 ## Severability
 
-If any part of these Terms is found unenforceable, it is limited or removed only as far as
-necessary, and the rest stays in effect.
+If any part of these Terms is found unenforceable, it is limited or removed only as far as necessary, and the rest stays in effect.
 
 ## Entire agreement
 
-These Terms, together with the [MIT License](LICENSE), the [End User License Agreement](EULA.md)
-and the [Privacy Policy](PRIVACY_POLICY.md), are the whole agreement between you and Matinfo about the Extension.
+These Terms, together with the [MIT License](LICENSE), the [End User License Agreement](EULA.md) and the [Privacy Policy](PRIVACY_POLICY.md), are the whole agreement between you and Matinfo about the Extension.
 
 ## Contact
 
