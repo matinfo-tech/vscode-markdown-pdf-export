@@ -1,5 +1,5 @@
 {
-  "description": "The real PDF beside your Markdown, as you type. Design the header, footer, page numbers and logo by clicking, then export.",
+  "description": "The real PDF beside your Markdown, as you type. Design pages by clicking, then export.",
   "capabilities.virtualWorkspaces.description": "Exporting reads the Markdown file and its images from disk.",
   "capabilities.untrustedWorkspaces.description": "In Restricted Mode, project settings files (.markdown-pdf.json) are ignored and raw HTML is always made safe.",
   "command.export.title": "Export to PDF",

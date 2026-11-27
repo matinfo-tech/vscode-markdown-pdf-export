@@ -1,14 +1,65 @@
 # Markdown PDF Export for VS Code
 
-The real PDF beside your Markdown, as you type. Design the header, footer, page numbers and logo
-by clicking, then export.
+**The real PDF beside your Markdown, as you type.**
 
-Install it from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=matinfo-tech.markdown-pdf-export) or [Open VSX](https://open-vsx.org/extension/matinfo-tech/markdown-pdf-export) (for VSCodium and other editors that install from there), or search for **Markdown PDF Export** in the Extensions view.
+Design the header, footer, page numbers and logo by clicking, then export. No Node.js, no
+terminal, no HTML templates.
 
-![The real PDF beside the Markdown, drawn as you type](media/screenshots/preview.png)
+![The real PDF beside the Markdown, drawn as you type](media/recordings/shot-1.gif)
 
 New here? **Markdown PDF: Get Started** in the Command Palette (or **Get Started** in the **PDF**
 menu of the status bar) opens a short tour: preview, design, export.
+
+## Everything Markdown can say
+
+Tables, diagrams, maths, alerts: it all shows in the preview and prints in the PDF.
+
+![Cover, table, diagrams, maths and code scrolling by in the PDF](media/recordings/shot-3.gif)
+
+- **Tables**, with alignment.
+- **Task lists**: real ticked and empty checkboxes.
+- **Mermaid diagrams**: flowcharts, sequence and Gantt charts, pie charts and the rest, drawn
+  on your computer as vector graphics that stay sharp when zoomed.
+- **Maths** with KaTeX: `$A = \pi r^2$` inline, `$$…$$` centred (`math: true`).
+- **Alerts**: GitHub's `[!NOTE]`, `[!TIP]`, `[!IMPORTANT]`, `[!WARNING]` and `[!CAUTION]`.
+- **Emoji**: `:tada:` shortcodes and emoji typed directly.
+- **Footnotes**, numbered and collected at the end with links back.
+- **Code blocks**, coloured by language.
+- **Table of contents**: `[[toc]]` on its own line (`toc: true`).
+- **Page breaks**: `<div class="page-break"></div>` or `<!-- page-break -->`.
+
+Details and examples: [Content](https://markdown-pdf.matinfo.tech/advanced/content).
+
+## Design pages by clicking
+
+Professional pages without writing CSS or HTML: pick a page style, fonts and paper, click a spot
+of the page to put the title, page numbers, date or logo there, and every choice shows on the
+real PDF at once.
+
+![Page style, fonts, header and footer, shown on the PDF as you choose](media/recordings/shot-2.gif)
+
+Click **Design pages** in the preview panel, or run **Markdown PDF: Design Pages**. Press
+**Save** to keep the design. Each section has a **Help** link to its page of the documentation.
+
+The design lives in one settings file, shared with the `markdown-pdf-export` command line and the
+other editors: `~/.config/markdown-pdf-export/settings.json`
+(`%APPDATA%\markdown-pdf-export\settings.json` on Windows). A `.markdown-pdf.json` file in a
+folder changes it for that folder only. **Design pages** always edits the design the PDF uses:
+that folder file when one applies to the document in front, your settings file otherwise.
+**Design Pages for This Folder Only** starts a folder design where there is none yet.
+
+More in the documentation:
+
+- [Settings file](https://markdown-pdf.matinfo.tech/advanced/settings-file): where it lives and how files are combined.
+- [Header and footer](https://markdown-pdf.matinfo.tech/advanced/header-footer): zones, logos, page numbers and dates.
+- [Header and footer reference](https://markdown-pdf.matinfo.tech/reference/header-footer): every option, placeholder and
+  image setting.
+- [All settings](https://markdown-pdf.matinfo.tech/reference/settings).
+
+To edit the file by hand, run **Markdown PDF: Open Settings File**: VS Code completes and checks
+the setting names as you type. A file saved by **Design pages** names its schema on
+markdown-pdf.matinfo.tech (`$schema`); the first time you open one, the extension asks whether
+VS Code may load it from there. A file without `$schema` uses the copy inside the extension, with no network connection.
 
 ## See the PDF while you write
 
@@ -34,13 +85,6 @@ Open a Markdown file, then any of:
 
 The PDF is written next to the Markdown file.
 
-## Requirements
-
-- Google Chrome or Microsoft Edge. If neither is installed, the extension offers to download a
-  browser for itself (about 200 MB, once).
-- Nothing else: no Node.js, no terminal. The exporter,
-  [markdown-pdf-export](https://markdown-pdf.matinfo.tech), ships inside the extension.
-
 ## One document, its own design
 
 At the top of a Markdown file, a `pdf:` block changes only that document. VS Code suggests the keys and their values as you type, and the preview shows the result:
@@ -62,60 +106,16 @@ pdf:
 Every key of the `pdf:` block, with examples:
 [One document, its own design](https://markdown-pdf.matinfo.tech/advanced/per-document).
 
-## Page design
+## Install
 
-![Page style, fonts, header and footer, shown on the PDF as you choose](media/screenshots/design.png)
+Install it from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=matinfo-tech.markdown-pdf-export) or [Open VSX](https://open-vsx.org/extension/matinfo-tech/markdown-pdf-export) (for VSCodium and other editors that install from there), or search for **Markdown PDF Export** in the Extensions view.
 
-Click **Design pages** in the preview panel, or run **Markdown PDF: Design Pages**. The page
-style, fonts, paper, header, footer and logos appear with the PDF, and every choice shows on it
-at once. Press **Save** to keep the design. Each section has a **Help** link to its page of the
-documentation.
+## Requirements
 
-Page style, fonts, header, footer and logos live in one settings file, shared with the
-`markdown-pdf-export` command line and the other editors:
-`~/.config/markdown-pdf-export/settings.json` (`%APPDATA%\markdown-pdf-export\settings.json` on
-Windows). A `.markdown-pdf.json` file in a folder changes them for that folder only.
-**Design pages** always edits the design the PDF uses: that folder file when one applies to the
-document in front, your settings file otherwise. **Design Pages for This Folder Only** starts a
-folder design where there is none yet.
-
-More in the documentation:
-
-- [Settings file](https://markdown-pdf.matinfo.tech/advanced/settings-file): where it lives and how files are combined.
-- [Header and footer](https://markdown-pdf.matinfo.tech/advanced/header-footer): zones, logos, page numbers and dates.
-- [Header and footer reference](https://markdown-pdf.matinfo.tech/reference/header-footer): every option, placeholder and
-  image setting.
-- [All settings](https://markdown-pdf.matinfo.tech/reference/settings).
-
-To edit the file by hand, run **Markdown PDF: Open Settings File**: VS Code completes and checks
-the setting names as you type. A file saved by **Design pages** names its schema on
-markdown-pdf.matinfo.tech (`$schema`); the first time you open one, the extension asks whether
-VS Code may load it from there. A file without `$schema` uses the copy inside the extension, with no network connection.
-
-## Coming from Markdown PDF?
-
-The settings of *Markdown PDF* (`yzane.markdown-pdf`) have a place here too, but in the settings
-file above (or a document's `pdf:` block), not in VS Code's settings:
-
-| Markdown PDF (`markdown-pdf.…`) | Here |
-|---|---|
-| `headerTemplate`, `footerTemplate` (HTML) | `header`, `footer`: text, logo and placeholders such as `{page}` / `{pages}` in three zones, or click them in **Design pages** ([reference](https://markdown-pdf.matinfo.tech/reference/header-footer)) |
-| `displayHeaderFooter` | `display_header_footer` |
-| `format`, `orientation` | `page_format`, `orientation` |
-| `margin.top`, `.bottom`, `.left`, `.right` | `margin.top`, `.bottom`, `.left`, `.right` |
-| `styles` | `stylesheet_path` (one CSS file), or a page style in **Design pages** |
-| `includeDefaultStyles` | `include_default_styles` |
-| `highlight`, `highlightStyle` | `highlight`, `highlight_style` |
-| `breaks`, `emoji` | `breaks`, `emoji` |
-| `math.enabled`, `math.katex.macros` | `math`, `math_options.macros` |
-| `printBackground`, `scale`, `pageRanges` | `print_background`, `scale`, `page_ranges` |
-| `outputDirectory` | `output_directory` |
-| `sanitize` | `sanitize` (`safe` or `none`) |
-| `mermaidServer` | not needed: diagrams are drawn on your computer |
-| `executablePath` | VS Code setting `markdownPdfExport.browser` |
-
-Not here: HTML, PNG and JPEG output (PDF only), convert on save, PlantUML and file includes.
-[All settings](https://markdown-pdf.matinfo.tech/reference/settings).
+- Google Chrome or Microsoft Edge. If neither is installed, the extension offers to download a
+  browser for itself (about 200 MB, once).
+- Nothing else: no Node.js, no terminal. The exporter,
+  [markdown-pdf-export](https://markdown-pdf.matinfo.tech), ships inside the extension.
 
 ## Ask your AI assistant
 
@@ -143,6 +143,34 @@ English, as are the engine's messages and the documentation.
 The export runs on your computer. The extension has no telemetry and sends your documents
 nowhere. It goes online only for what a document or its styles load from the web (such as an
 image link), and when you ask it to download a browser or allow the settings schema. Details in the [Privacy Policy](PRIVACY_POLICY.md).
+
+<details>
+<summary><b>Coming from Markdown PDF (<code>yzane.markdown-pdf</code>)?</b> Most of its settings map straight across, and you get what it never had: the live PDF preview, and page design by clicking instead of HTML templates.</summary>
+
+The settings of *Markdown PDF* (`yzane.markdown-pdf`) have a place here too, but in the settings
+file above (or a document's `pdf:` block), not in VS Code's settings:
+
+| Markdown PDF (`markdown-pdf.…`) | Here |
+|---|---|
+| `headerTemplate`, `footerTemplate` (HTML) | `header`, `footer`: text, logo and placeholders such as `{page}` / `{pages}` in three zones, or click them in **Design pages** ([reference](https://markdown-pdf.matinfo.tech/reference/header-footer)) |
+| `displayHeaderFooter` | `display_header_footer` |
+| `format`, `orientation` | `page_format`, `orientation` |
+| `margin.top`, `.bottom`, `.left`, `.right` | `margin.top`, `.bottom`, `.left`, `.right` |
+| `styles` | `stylesheet_path` (one CSS file), or a page style in **Design pages** |
+| `includeDefaultStyles` | `include_default_styles` |
+| `highlight`, `highlightStyle` | `highlight`, `highlight_style` |
+| `breaks`, `emoji` | `breaks`, `emoji` |
+| `math.enabled`, `math.katex.macros` | `math`, `math_options.macros` |
+| `printBackground`, `scale`, `pageRanges` | `print_background`, `scale`, `page_ranges` |
+| `outputDirectory` | `output_directory` |
+| `sanitize` | `sanitize` (`safe` or `none`) |
+| `mermaidServer` | not needed: diagrams are drawn on your computer |
+| `executablePath` | VS Code setting `markdownPdfExport.browser` |
+
+Not here: HTML, PNG and JPEG output (PDF only), convert on save, PlantUML and file includes.
+[All settings](https://markdown-pdf.matinfo.tech/reference/settings).
+
+</details>
 
 ## Development
 
