@@ -75,16 +75,19 @@ header, footer and page numbers, not an approximation:
 
 **Design pages**, **Export PDF** and **Help** are at the bottom of the panel.
 
-## Export
+## Right-click to export, preview or design
 
-Open a Markdown file, then any of:
+![Export to PDF, Open PDF Preview to the Side and Design Pages in the right-click menu](media/screenshots/right-click.png)
 
-- press **Cmd+K Cmd+E** (Mac) or **Ctrl+K Ctrl+E** (Windows, Linux);
-- click the PDF button at the top right of the editor;
-- right-click the file (in the editor or the Explorer) → **Export to PDF**;
-- Command Palette → **Markdown PDF: Export to PDF**.
+Right-click a Markdown file, in the editor, on its tab or in the Explorer:
 
-The PDF is written next to the Markdown file.
+- **Export to PDF** writes the PDF next to the Markdown file. Shortcut: **Cmd+K Cmd+E** (Mac) or
+  **Ctrl+K Ctrl+E** (Windows, Linux).
+- **Open PDF Preview to the Side** opens the live PDF.
+- **Design Pages** opens the page design beside the PDF.
+
+The same commands are in the buttons at the top right of the editor, in the **PDF** menu of the
+status bar, and in the Command Palette under **Markdown PDF**.
 
 ## Ask your AI assistant
 
