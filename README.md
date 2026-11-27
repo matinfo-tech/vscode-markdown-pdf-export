@@ -25,6 +25,7 @@ Tables, diagrams, maths, alerts: it all shows in the preview and prints in the P
 - **Emoji**: `:tada:` shortcodes and emoji typed directly.
 - **Footnotes**, numbered and collected at the end with links back.
 - **Code blocks**, coloured by language.
+- **Heading IDs**: every heading gets an id, so `[the results](#results)` jumps to it in the PDF.
 - **Table of contents**: `[[toc]]` on its own line (`toc: true`).
 - **Page breaks**: `<div class="page-break"></div>` or `<!-- page-break -->`.
 
