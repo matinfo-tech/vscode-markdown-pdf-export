@@ -1,5 +1,5 @@
 {
-  "description": "Le vrai PDF à côté de votre Markdown, pendant que vous tapez. Concevez l'en-tête, le pied de page, les numéros de page et le logo en cliquant, puis exportez.",
+  "description": "Le vrai PDF à côté de votre Markdown, pendant que vous tapez. Concevez les pages en cliquant, puis exportez.",
   "capabilities.virtualWorkspaces.description": "L'export lit le fichier Markdown et ses images sur le disque.",
   "capabilities.untrustedWorkspaces.description": "En mode restreint, les fichiers de paramètres de projet (.markdown-pdf.json) sont ignorés et le HTML brut est toujours rendu sûr.",
   "command.export.title": "Exporter en PDF",

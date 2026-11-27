@@ -18,6 +18,7 @@ PLAN.md
 scripts/**
 # Shown in the README from GitHub; not needed inside the extension.
 media/screenshots/**
+media/recordings/**
 
 # Parts of the exporter's dependencies it never loads. `npm run smoke:vsix` exports from the
 # packaged files (math, code colours, a diagram, emoji, a date) to prove nothing needed is gone.
