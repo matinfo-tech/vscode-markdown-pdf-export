@@ -8,7 +8,9 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 
 ### Fixed
 
-- MCP Servers view: Markdown PDF Export no longer shows "Partially supported. See Migrations for details." when a folder is open. The server no longer sets a working directory, which Copilot's newer agent runtime can't carry over.
+- MCP Servers view: Markdown PDF Export no longer shows "Partially supported. See Migrations for details." when a folder is open. The server no longer sets a working directory, which Copilot's newer agent runtime can't carry over;
+  its tools ask the assistant for an absolute path to the Markdown file instead (exporter
+  [markdown-pdf-export](https://markdown-pdf.matinfo.tech) 2.10.2).
 
 ## [0.1.5] - 2026-11-27
 
