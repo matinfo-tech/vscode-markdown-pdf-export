@@ -92,10 +92,9 @@ The same commands are in the buttons at the top right of the editor :
 
 or in the **PDF** menu of the status bar, and in the Command Palette under **Markdown PDF**.
 
-
 ## Ask your AI assistant
 
-An other simple way to ask your AI assistant to export a Markdown file to PDF is to use Copilot Chat's agent mode. In this mode, ask *Export this file to PDF* or *Open Studio*. The tools are offered by the extension; there is nothing to set up.
+Another simple way to export a Markdown file to PDF is by using Copilot Chat's agent mode. Just prompt your AI assistant with **Export this file to PDF** or **Open Studio**. The extension provides these tools automatically, so there's nothing to set up.
 
 ## One document, its own design
 
