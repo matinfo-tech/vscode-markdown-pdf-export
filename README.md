@@ -86,8 +86,12 @@ Right-click a Markdown file, in the editor, on its tab or in the Explorer:
 - **Open PDF Preview to the Side** opens the live PDF.
 - **Design Pages** opens the page design beside the PDF.
 
-The same commands are in the buttons at the top right of the editor, in the **PDF** menu of the
-status bar, and in the Command Palette under **Markdown PDF**.
+The same commands are in the buttons at the top right of the editor :
+
+![Export to PDF, Open PDF Preview to the Side and Design Pages in the top right](media/screenshots/top-right.png)
+
+or in the **PDF** menu of the status bar, and in the Command Palette under **Markdown PDF**.
+
 
 ## Ask your AI assistant
 
