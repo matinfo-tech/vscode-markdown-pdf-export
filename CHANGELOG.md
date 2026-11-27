@@ -6,6 +6,17 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 
 ## [Unreleased]
 
+## [0.1.7] - 2026-11-28
+
+### Changed
+
+- A new store page: animated demos of the live preview, page design and a full report; the
+  right-click menu; a shorter description ("Design pages by clicking, then export"); and a short
+  guide for anyone coming from Markdown PDF (`yzane.markdown-pdf`).
+- Translations into other languages are welcome: the store page links to a guide for adding one.
+- Shorter Privacy Policy, Terms of Use and third-party licenses page; the license texts now ship
+  in a `licenses/` folder.
+
 ## [0.1.6] - 2026-11-27
 
 ### Fixed
