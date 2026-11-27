@@ -1,0 +1,12 @@
+# PDFs made while recording
+*.pdf
+.DS_Store
+
+# The window settings the recordings need (a global gitignore often drops .vscode/).
+!.vscode/
+
+# Recording scripts: dependencies, work files and finished clips. The README's GIFs are
+# copied to media/recordings/ at the root of the repo.
+recording/node_modules/
+recording/.work/
+recordings/

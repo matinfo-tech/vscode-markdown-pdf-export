@@ -1,0 +1,17 @@
+{
+  "name": "markdown-pdf-export-demo-recording",
+  "private": true,
+  "type": "module",
+  "description": "Records the demo shots of this folder's README without touching the keyboard or mouse.",
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "start-vscode": "node start-vscode.mjs",
+    "rehearse": "node run.mjs",
+    "record": "node record.mjs"
+  },
+  "dependencies": {
+    "playwright-core": "1.65.1"
+  }
+}

@@ -138,12 +138,11 @@ page of the documentation: header and footer, one document's own design, all set
 
 ## Languages
 
-English and French. With VS Code's display language set to French, the extension speaks French:
-commands, settings, the Get Started walkthrough, the **PDF** menu, messages, the Problems
-entries, and the PDF panel with its design controls. Footers that Studio sets up are then written
-in French too (`Page {page} sur {pages}`). In `pdf:` suggestions, the help for `title`, `author`
-and `pdf` is in French; the description of each page setting comes from the PDF engine and is in
-English, as are the engine's messages and the documentation.
+English and French: the extension follows VS Code's display language. The documentation and the
+PDF engine's own messages stay in English.
+
+Want it in your language? Translations are welcome as a pull request: see
+[how to add a language](l10n/README.md).
 
 ## Privacy
 
@@ -151,33 +150,13 @@ The export runs on your computer. The extension has no telemetry and sends your 
 nowhere. It goes online only for what a document or its styles load from the web (such as an
 image link), and when you ask it to download a browser or allow the settings schema. Details in the [Privacy Policy](PRIVACY_POLICY.md).
 
-<details>
-<summary><b>Coming from Markdown PDF (<code>yzane.markdown-pdf</code>)?</b> Most of its settings map straight across, and you get what it never had: the live PDF preview, and page design by clicking instead of HTML templates.</summary>
+## Coming from Markdown PDF (`yzane.markdown-pdf`)?
 
-The settings of *Markdown PDF* (`yzane.markdown-pdf`) have a place here too, but in the settings
-file above (or a document's `pdf:` block), not in VS Code's settings:
+Most of its settings map straight across, and you get what it never had: the live PDF preview, and page design by clicking instead of HTML templates.
 
-| Markdown PDF (`markdown-pdf.…`) | Here |
-|---|---|
-| `headerTemplate`, `footerTemplate` (HTML) | `header`, `footer`: text, logo and placeholders such as `{page}` / `{pages}` in three zones, or click them in **Design pages** ([reference](https://markdown-pdf.matinfo.tech/reference/header-footer)) |
-| `displayHeaderFooter` | `display_header_footer` |
-| `format`, `orientation` | `page_format`, `orientation` |
-| `margin.top`, `.bottom`, `.left`, `.right` | `margin.top`, `.bottom`, `.left`, `.right` |
-| `styles` | `stylesheet_path` (one CSS file), or a page style in **Design pages** |
-| `includeDefaultStyles` | `include_default_styles` |
-| `highlight`, `highlightStyle` | `highlight`, `highlight_style` |
-| `breaks`, `emoji` | `breaks`, `emoji` |
-| `math.enabled`, `math.katex.macros` | `math`, `math_options.macros` |
-| `printBackground`, `scale`, `pageRanges` | `print_background`, `scale`, `page_ranges` |
-| `outputDirectory` | `output_directory` |
-| `sanitize` | `sanitize` (`safe` or `none`) |
-| `mermaidServer` | not needed: diagrams are drawn on your computer |
-| `executablePath` | VS Code setting `markdownPdfExport.browser` |
+The settings of *Markdown PDF* (`yzane.markdown-pdf`) have a place here too, but in the settings file above (or a document's `pdf:` block), not in VS Code's settings.
 
-Not here: HTML, PNG and JPEG output (PDF only), convert on save, PlantUML and file includes.
-[All settings](https://markdown-pdf.matinfo.tech/reference/settings).
-
-</details>
+Not here: HTML, PNG and JPEG output (PDF only), convert on save, PlantUML and file includes. [All settings](https://markdown-pdf.matinfo.tech/reference/settings).
 
 ## Development
 

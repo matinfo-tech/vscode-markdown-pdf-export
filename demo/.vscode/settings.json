@@ -1,0 +1,16 @@
+{
+  // Clean window for screen recordings.
+  "editor.minimap.enabled": false,
+  "editor.wordWrap": "on",
+  "editor.fontSize": 15,
+  "editor.lineHeight": 24,
+  "editor.renderWhitespace": "none",
+  "editor.stickyScroll.enabled": false,
+  "breadcrumbs.enabled": false,
+  "workbench.editor.showTabs": "single",
+  "[markdown]": {
+    "editor.quickSuggestions": { "other": false, "comments": false, "strings": false }
+  },
+  // Redraw the PDF while typing (the default), for the live preview shot.
+  "markdownPdfExport.preview.refresh": "onType"
+}

@@ -1,0 +1,36 @@
+{
+  "$schema": "https://markdown-pdf.matinfo.tech/schema/settings.schema.json",
+  "look": "report",
+  "accent_color": "#1d4ed8",
+  "font": "humanist",
+  "heading_font": "serif",
+  "page_format": "A4",
+  "margin": { "top": "24mm", "right": "18mm", "bottom": "20mm", "left": "18mm" },
+  "highlight_style": "github.css",
+  "math": true,
+  "math_options": {
+    "macros": { "\\RR": "\\mathbb{R}", "\\E": "\\mathbb{E}" }
+  },
+  "toc": true,
+  "toc_options": { "level": [2, 3] },
+  "header": {
+    "height": "16mm",
+    "padding": "0 18mm",
+    "font_size": "9px",
+    "color": "#475569",
+    "border_bottom": "1px solid #cbd5e1",
+    "left_image": "assets/northwind-logo.svg",
+    "left_image_height": "7mm",
+    "center_text": "{title}",
+    "right_text": "{client}"
+  },
+  "footer": {
+    "height": "12mm",
+    "padding": "0 18mm",
+    "font_size": "9px",
+    "color": "#64748b",
+    "left_text": "{author}",
+    "center_text": "Page {page} of {pages}",
+    "right_text": "{date}"
+  }
+}

@@ -348,7 +348,11 @@
     "vscode:prepublish": "node esbuild.mjs --production",
     "package": "vsce package",
     "smoke:vsix": "npm run vscode:prepublish && node scripts/smoke-vsix.mjs",
-    "test:integration": "npm run build && vscode-test"
+    "test:integration": "npm run build && vscode-test",
+    "demo:install": "env -u npm_config_allow_scripts npm ci --prefix demo/recording",
+    "demo:start": "node demo/recording/start-vscode.mjs",
+    "demo:rehearse": "node demo/recording/run.mjs",
+    "demo:record": "node demo/recording/record.mjs"
   },
   "dependencies": {
     "markdown-pdf-export": "2.10.2"
