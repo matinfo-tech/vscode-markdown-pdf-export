@@ -86,6 +86,10 @@ Open a Markdown file, then any of:
 
 The PDF is written next to the Markdown file.
 
+## Ask your AI assistant
+
+An other simple way to ask your AI assistant to export a Markdown file to PDF is to use Copilot Chat's agent mode. In this mode, ask *Export this file to PDF* or *Open Studio*. The tools are offered by the extension; there is nothing to set up.
+
 ## One document, its own design
 
 At the top of a Markdown file, a `pdf:` block changes only that document. VS Code suggests the keys and their values as you type, and the preview shows the result:
@@ -117,10 +121,6 @@ Install it from the [Visual Studio Marketplace](https://marketplace.visualstudio
   browser for itself (about 200 MB, once).
 - Nothing else: no Node.js, no terminal. The exporter,
   [markdown-pdf-export](https://markdown-pdf.matinfo.tech), ships inside the extension.
-
-## Ask your AI assistant
-
-In Copilot Chat's agent mode, ask *Export this file to PDF* or *Open Studio*. The tools are offered by the extension; there is nothing to set up.
 
 ## Something not working?
 
