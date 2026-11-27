@@ -35,11 +35,10 @@ export function registerMcp(context: vscode.ExtensionContext, exporterVersion: s
     provideMcpServerDefinitions() {
       // An untrusted folder gets no tools that read its files.
       if (!vscode.workspace.isTrusted) return [];
+      // No cwd: Copilot's newer agent runtime can't carry one over and flags the server as
+      // "Partially supported". The tools ask for absolute paths instead.
       const launch = mcpLaunch(context.extensionPath);
-      const server = new vscode.McpStdioServerDefinition("Markdown PDF Export", launch.command, launch.args, launch.env, exporterVersion);
-      const folder = vscode.workspace.workspaceFolders?.[0];
-      if (folder) server.cwd = folder.uri;
-      return [server];
+      return [new vscode.McpStdioServerDefinition("Markdown PDF Export", launch.command, launch.args, launch.env, exporterVersion)];
     },
   });
   return vscode.Disposable.from(
