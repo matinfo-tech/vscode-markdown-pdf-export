@@ -6,6 +6,11 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 
 ## [Unreleased]
 
+### Changed
+
+- The store page now covers Cursor: install from the Extensions view (Open VSX), export with the
+  button or the right-click menu, and add the chat tools by hand.
+
 ## [0.1.7] - 2026-11-28
 
 ### Changed

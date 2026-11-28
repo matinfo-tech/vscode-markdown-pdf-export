@@ -50,7 +50,10 @@
     "front matter",
     "mermaid",
     "math",
-    "katex"
+    "katex",
+    "cursor",
+    "vscodium",
+    "open vsx"
   ],
   "main": "./dist/extension.cjs",
   "l10n": "./l10n",
