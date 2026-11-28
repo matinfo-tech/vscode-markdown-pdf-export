@@ -6,6 +6,8 @@ All notable changes to the Markdown PDF Export extension for VS Code. The format
 
 ## [Unreleased]
 
+## [0.1.8] - 2026-11-28
+
 ### Changed
 
 - The store page now covers Cursor: install from the Extensions view (Open VSX), export with the
