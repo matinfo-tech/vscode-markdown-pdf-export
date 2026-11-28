@@ -96,6 +96,9 @@ or in the **PDF** menu of the status bar, and in the Command Palette under **Mar
 
 Another simple way to export a Markdown file to PDF is by using Copilot Chat's agent mode. Just prompt your AI assistant with **Export this file to PDF** or **Open Studio**. The extension provides these tools automatically, so there's nothing to set up.
 
+In Cursor, the chat does not get these tools from the extension: add them once with
+[these steps](https://markdown-pdf.matinfo.tech/editors#cursor).
+
 ## One document, its own design
 
 At the top of a Markdown file, a `pdf:` block changes only that document. VS Code suggests the keys and their values as you type, and the preview shows the result:
@@ -120,6 +123,11 @@ Every key of the `pdf:` block, with examples:
 ## Install
 
 Install it from the [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=matinfo-tech.markdown-pdf-export) or [Open VSX](https://open-vsx.org/extension/matinfo-tech/markdown-pdf-export) (for VSCodium and other editors that install from there), or search for **Markdown PDF Export** in the Extensions view.
+
+**In Cursor**, search for **Markdown PDF Export** in the Extensions view: Cursor installs it from
+Open VSX. The preview, **Design pages** and **Export to PDF** work as in VS Code. Cursor keeps
+<kbd>Cmd</kbd>+<kbd>K</kbd> for itself, so export with the button at the top right or the right-click
+menu, and add the chat tools [by hand](https://markdown-pdf.matinfo.tech/editors#cursor).
 
 ## Requirements
 
